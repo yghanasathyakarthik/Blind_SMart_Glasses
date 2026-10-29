@@ -1,0 +1,831 @@
+{
+  "project": "Smart Glasses Assistive Vision Research Evaluation",
+  "evaluation_platform": "Google Colab (NVIDIA Tesla T4, PyTorch 2.11.0+cu128)",
+  "source_files": {
+    "notebook": "Smart_Glasses_Research_Evaluation (1).ipynb",
+    "python_script": "smart_glasses_research_evaluation.py"
+  },
+  "modules": {
+    "Module_1_Object_Detection": {
+      "name": "Object Detection",
+      "dataset": "MS COCO 2017",
+      "eval_100": {
+        "target_count": 100,
+        "images_retrieved": 100,
+        "images_processed": 100,
+        "failed_images": 0,
+        "annotations": 699,
+        "model": "YOLOv8n",
+        "hardware": "Tesla T4",
+        "inference_time_sec": 8.717,
+        "avg_latency_ms": 87.17,
+        "throughput_fps": 11.47,
+        "map_50": 0.5997,
+        "map_50_95": 0.4343,
+        "map_75": 0.4634,
+        "precision_at_05": 0.8942,
+        "recall_at_05": 0.3546,
+        "f1_at_05": 0.5078,
+        "tp": 245,
+        "fp": 29,
+        "fn": 446,
+        "notebook_cells": [
+          0,
+          1,
+          2,
+          3,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          12,
+          13,
+          15,
+          23,
+          24,
+          25,
+          30,
+          31,
+          33,
+          35,
+          38
+        ],
+        "saved_files": [
+          "/content/coco_eval/coco_predictions_100.json",
+          "/content/coco_eval/coco_subset_100.json",
+          "/content/coco_eval/COCO_EXP_001_results.csv",
+          "/content/coco_eval/COCO_EXP_001_summary.json",
+          "/content/coco_eval/COCO_EXP_001_per_class.csv"
+        ]
+      },
+      "eval_1000": {
+        "target_count": 1000,
+        "images_retrieved": 1000,
+        "images_processed": 1000,
+        "failed_images": 0,
+        "annotations": 7522,
+        "model": "YOLOv8n",
+        "hardware": "Tesla T4",
+        "download_time_sec": 28.5,
+        "inference_time_sec": 30.1,
+        "avg_latency_ms": 28.97,
+        "throughput_fps": 33.22,
+        "precision_at_05": 0.6812,
+        "recall_at_05": 0.4868,
+        "f1_at_05": 0.5678,
+        "tp_05": 3662,
+        "fp_05": 1714,
+        "fn_05": 3860,
+        "precision_at_75": 0.5657,
+        "recall_at_75": 0.4043,
+        "f1_at_75": 0.4715,
+        "tp_75": 3041,
+        "fp_75": 2335,
+        "fn_75": 4481,
+        "notebook_cells": [
+          285,
+          288,
+          289,
+          290,
+          291,
+          292,
+          293
+        ],
+        "saved_files": [
+          "/content/module1_eval_1000/EXP_002_subset_1000/EXP_002_ground_truth.csv",
+          "/content/module1_eval_1000/EXP_002_subset_1000/EXP_002_ground_truth.json",
+          "/content/module1_eval_1000/EXP_002_results/EXP_002_summary.json"
+        ]
+      }
+    },
+    "Module_2_Outdoor_Navigation": {
+      "name": "Outdoor Navigation",
+      "dataset": "BDD100K",
+      "eval_100": {
+        "target_count": 100,
+        "images_retrieved": 100,
+        "images_processed": 100,
+        "failed_images": 0,
+        "annotations": 1994,
+        "source_archive": "a7madmostafa/bdd100k-yolo (5.33 GB)",
+        "val_pool_images": 10000,
+        "val_pool_labels": 10000,
+        "model": "YOLOv8n (pre-trained COCO baseline)",
+        "hardware": "Tesla T4",
+        "inference_time_sec": 3.01,
+        "avg_latency_ms": 30.09,
+        "throughput_fps": 33.24,
+        "map_50": 0.3246,
+        "map_50_95": 0.1917,
+        "map_75": 0.1858,
+        "precision_at_05": 0.8914,
+        "recall_at_05": 0.1705,
+        "f1_at_05": 0.2863,
+        "tp": 279,
+        "fp": 34,
+        "fn": 1357,
+        "notebook_cells": [
+          39,
+          40,
+          41,
+          42,
+          48,
+          63,
+          65,
+          66,
+          67,
+          68,
+          70,
+          71
+        ],
+        "saved_files": [
+          "/content/bdd_eval/BDD_EXP_001/BDD_EXP_001_predictions.json",
+          "/content/bdd_eval/BDD_EXP_001/BDD_EXP_001_results.json"
+        ]
+      },
+      "eval_1000": {
+        "target_count": 1000,
+        "images_retrieved": 1000,
+        "images_processed": 1000,
+        "failed_images": 0,
+        "task": "Drivable-area segmentation",
+        "source_archive": "BDD100K drivable-area numpy arrays (3430 samples)",
+        "model": "HybridNets (hybridnets.pth, 52.20 MB)",
+        "hardware": "Tesla T4",
+        "runtime_sec": 121.29,
+        "avg_latency_ms": 112.59,
+        "median_latency_ms": 116.61,
+        "p95_latency_ms": 194.22,
+        "throughput_fps": 8.88,
+        "pixel_accuracy": 0.0556,
+        "mean_iou": 0.0764,
+        "mean_dice": 0.1286,
+        "class_0_iou": 0.0124,
+        "class_1_iou": 0.209,
+        "class_2_iou": 0.0078,
+        "notes": "Sanity check revealed label permutation / background encoding inversion in ground truth vs HybridNets convention.",
+        "notebook_cells": [
+          294,
+          301,
+          308,
+          317,
+          322,
+          323,
+          324,
+          325,
+          327,
+          331,
+          333,
+          334,
+          336,
+          337,
+          338
+        ],
+        "saved_files": [
+          "/content/module2_eval_1000/EXP_002_subset_1000/EXP_002_ground_truth.json",
+          "/content/module2_eval_1000/EXP_002_results/EXP_002_predictions.npy",
+          "/content/module2_eval_1000/EXP_002_results/EXP_002_summary.json",
+          "/content/module2_eval_1000/EXP_002_results/EXP_002_timing.json",
+          "/content/module2_eval_1000/EXP_002_results/EXP_002_confusion_matrix.npy"
+        ]
+      }
+    },
+    "Module_3_Obstacle_Detection": {
+      "name": "Obstacle Detection",
+      "dataset_planned": "Mapillary Vistas",
+      "eval_100": {
+        "dataset_executed": "Mapillary Vistas v2.0",
+        "target_count": 100,
+        "images_retrieved": 100,
+        "images_processed": 100,
+        "failed_images": 0,
+        "source_archive": "candylion/mapillary-vistas-v2 (27.28 GB zip, 165,033 entries)",
+        "validation_pool": 2000,
+        "evaluated_pixels": 845259878,
+        "ignored_pixels": 74202620,
+        "ignored_percentage": 8.07,
+        "gt_obstacle_pixels": 93686905,
+        "predicted_obstacle_pixels": 45397677,
+        "model": "YOLOv8n-seg baseline",
+        "throughput_fps": 4.93,
+        "tp": 42459075,
+        "fp": 2938602,
+        "fn": 51227830,
+        "tn": 748634371,
+        "obstacle_iou": 0.4394,
+        "non_obstacle_iou": 0.9325,
+        "binary_miou": 0.686,
+        "precision": 0.9353,
+        "recall": 0.4532,
+        "f1_score": 0.6106,
+        "pixel_accuracy": 0.9359,
+        "notebook_cells": [
+          72,
+          75,
+          76,
+          78,
+          86,
+          90,
+          91,
+          92,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          105,
+          109,
+          110,
+          111,
+          112,
+          113
+        ],
+        "saved_files": [
+          "/content/mapillary_eval/MAPILLARY_EXP_001_experiment_record.csv",
+          "/content/mapillary_eval/MAPILLARY_EXP_001_experiment_record.json"
+        ]
+      },
+      "eval_1000": {
+        "dataset_executed": "Open Images",
+        "target_count": 1000,
+        "manifest_images": 1000,
+        "images_retrieved": 0,
+        "images_processed": 0,
+        "failed_images": 1000,
+        "annotations": 3075,
+        "candidate_images_in_gt": 14308,
+        "total_annotation_rows": 204621,
+        "obstacle_annotation_rows": 45169,
+        "runtime": "Not recorded",
+        "throughput": "Not recorded",
+        "model_metrics": "Not recorded in supplied execution files (No inference performed)",
+        "notes": "Cell 363 explicitly records: 'EXP_003 manifest verified, Exactly 1000 unique images, No inference performed'. S3/GCS pixel downloads failed with HTTP 403 Forbidden.",
+        "notebook_cells": [
+          361,
+          362,
+          363,
+          364,
+          365,
+          371,
+          372,
+          375,
+          378
+        ],
+        "saved_files": [
+          "/content/module3_eval_1000/EXP_003_subset_1000/EXP_003_ground_truth.csv",
+          "/content/module3_eval_1000/EXP_003_subset_1000/EXP_003_ground_truth.json"
+        ]
+      }
+    },
+    "Module_4_Place_Recognition": {
+      "name": "Place Recognition",
+      "dataset": "Places365",
+      "eval_100": {
+        "target_count": 100,
+        "images_retrieved": 100,
+        "images_processed": 100,
+        "failed_images": 0,
+        "categories_count": 365,
+        "validation_pool": 36500,
+        "subset_classes_represented": 88,
+        "model": "ResNet-50 Places365 (resnet50_places365.pth.tar)",
+        "image_resolution": "256x256 (input: 224x224)",
+        "hardware": "Tesla T4",
+        "avg_latency_ms": 7.14,
+        "median_latency_ms": 6.19,
+        "throughput_fps": 140.0,
+        "top1_correct": 54,
+        "top1_accuracy": 0.54,
+        "top5_correct": 87,
+        "top5_accuracy": 0.87,
+        "notebook_cells": [
+          114,
+          116,
+          117,
+          118,
+          120,
+          121,
+          127,
+          128,
+          129,
+          130,
+          131
+        ],
+        "saved_files": [
+          "/content/places365_eval/EXP_001_subset_100/EXP_001_ground_truth.csv",
+          "/content/places365_eval/EXP_001_results/EXP_001_predictions.csv",
+          "/content/places365_eval/EXP_001_results/EXP_001_per_class.csv",
+          "/content/places365_eval/EXP_001_results/EXP_001_summary.json"
+        ]
+      },
+      "eval_1000": {
+        "target_count": 1000,
+        "status": "Not recorded in supplied execution files."
+      }
+    },
+    "Module_5_Storytelling_Captioning": {
+      "name": "Storytelling / Captioning",
+      "dataset": "VizWiz-Captions",
+      "eval_100": {
+        "target_count": 100,
+        "images_retrieved": 100,
+        "images_processed": 100,
+        "failed_images": 0,
+        "model": "Salesforce/blip-image-captioning-base",
+        "hardware": "Tesla T4",
+        "avg_latency_ms": 686.97,
+        "median_latency_ms": 513.0,
+        "throughput_fps": 1.46,
+        "bleu_1": 0.576613,
+        "bleu_2": 0.387261,
+        "bleu_3": 0.257341,
+        "bleu_4": 0.164867,
+        "cider_d": 0.393221,
+        "meteor": 0.335947,
+        "rouge_l": 0.436122,
+        "spice": "None (unavailable due to Java environment compatibility)",
+        "notebook_cells": [
+          132,
+          133,
+          136,
+          137,
+          138,
+          139,
+          144,
+          146,
+          147,
+          148,
+          150,
+          151,
+          156,
+          158,
+          161,
+          162,
+          168
+        ],
+        "saved_files": [
+          "/content/vizwiz_eval/EXP_001_results/EXP_001_predictions.json",
+          "/content/vizwiz_eval/EXP_001_results/EXP_001_predictions.csv",
+          "/content/vizwiz_eval/EXP_001_results/EXP_001_meteor_rouge.json",
+          "/content/vizwiz_eval/EXP_001_results/EXP_001_experiment_record.json",
+          "/content/vizwiz_eval/EXP_001_results/EXP_001_experiment_record.csv"
+        ]
+      },
+      "eval_1000": {
+        "target_count": 1000,
+        "status": "Not recorded in supplied execution files."
+      }
+    },
+    "Module_6_OCR": {
+      "name": "OCR",
+      "eval_100": {
+        "dataset": "COCO-Text v2",
+        "target_count": 100,
+        "images_retrieved": 100,
+        "images_processed": 100,
+        "failed_images": 0,
+        "unique_source_images": 99,
+        "exact_match_accuracy": 0.13,
+        "case_insensitive_exact": 0.15,
+        "cer": 0.7356,
+        "edit_similarity": 0.2099,
+        "avg_latency_ms": 20.54,
+        "median_latency_ms": 13.47,
+        "throughput_fps": 48.68,
+        "notebook_cells": [
+          169,
+          172,
+          173,
+          174,
+          175,
+          177,
+          178,
+          179,
+          180,
+          182,
+          183,
+          184,
+          194,
+          195,
+          196,
+          199
+        ],
+        "saved_files": [
+          "/content/ocr_eval/cocotext/EXP_001_results/EXP_001_experiment_record.json",
+          "/content/ocr_eval/cocotext/EXP_001_results/EXP_001_experiment_record.csv"
+        ]
+      },
+      "eval_full_benchmark": {
+        "dataset": "ICDAR 2015",
+        "target_count": 2077,
+        "images_retrieved": 2077,
+        "images_processed": 2077,
+        "failed_images": 0,
+        "empty_predictions": 0,
+        "model": "microsoft/trocr-base-printed",
+        "hardware": "Tesla T4",
+        "total_inference_time_sec": 305.05,
+        "avg_latency_sec": 0.147,
+        "throughput_fps": 6.81,
+        "checkpoint_100_fps": 3.73,
+        "checkpoint_1000_fps": 5.97,
+        "total_samples": 2077,
+        "correct_predictions": 1250,
+        "error_count": 827,
+        "exact_match_accuracy": 0.411651,
+        "case_insensitive_accuracy": 0.60183,
+        "raw_cer": 0.485956,
+        "raw_wer": 0.631554,
+        "case_normalized_cer": 0.209606,
+        "case_normalized_wer": 0.442803,
+        "notebook_cells": [
+          379,
+          381,
+          382,
+          383,
+          384,
+          386,
+          388,
+          395,
+          403,
+          404,
+          405,
+          406,
+          408,
+          409,
+          410,
+          412,
+          413,
+          414,
+          415,
+          416,
+          417,
+          418
+        ],
+        "saved_files": [
+          "/content/module6_ocr/ICDAR2015_results/ICDAR2015_test_predictions.json",
+          "/content/module6_ocr/ICDAR2015_results/ICDAR2015_final_results.json"
+        ]
+      }
+    },
+    "Module_7_GPS_Navigation": {
+      "name": "GPS / Navigation",
+      "source": "OpenStreetMap",
+      "eval_100_queries": {
+        "target_queries": 100,
+        "queries_attempted": 100,
+        "successful_queries": 17,
+        "failed_queries": 83,
+        "api_errors": 18,
+        "network_exceptions": 65,
+        "overpass_api_success_rate": 0.17,
+        "target_id_retrieval_success_rate": 1.0,
+        "exact_name_retrieval_success_rate": 1.0,
+        "dataset_pool_landmarks": 1664,
+        "named_pois_available": 1541,
+        "location": "Hyderabad, India",
+        "notebook_cells": [
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207
+        ],
+        "saved_files": [
+          "/content/osm_eval/EXP_001_results/EXP_001_osm_landmarks.csv",
+          "/content/osm_eval/EXP_001_results/EXP_001_osm_landmarks.json",
+          "/content/osm_eval/EXP_001_results/EXP_001_final_summary.json",
+          "/content/osm_eval/EXP_001_results/EXP_001_final_summary.csv"
+        ]
+      },
+      "eval_10_queries": {
+        "target_queries": 10,
+        "landmark_queries": 5,
+        "routing_queries": 5,
+        "location": "Bengaluru, India",
+        "landmark_results": {
+          "completed": 5,
+          "landmarks_retrieved_per_query": [
+            40,
+            17,
+            0,
+            25,
+            0
+          ],
+          "total_landmarks_retrieved": 82,
+          "zero_landmark_queries": 2,
+          "http_errors": 0,
+          "latencies_sec": [
+            0.99,
+            0.87,
+            11.55,
+            8.47,
+            4.98
+          ]
+        },
+        "routing_results": {
+          "completed": 5,
+          "routes_found": 5,
+          "routes_failed": 0,
+          "distances_m": [
+            7503.0,
+            3887.9,
+            9706.4,
+            8858.8,
+            5532.3
+          ],
+          "latencies_sec": [
+            0.66,
+            0.5,
+            0.49,
+            0.48,
+            0.48
+          ]
+        },
+        "conflicting_recorded_outputs": {
+          "occurrence_1": "Cell 424 reported 'Routes found: 5, Routes failed: 0'",
+          "occurrence_2": "Cell 427 reported 'Routes found: 0, Routes failed: 5'",
+          "resolution": "Cell 428 diagnosed that verification code checked key 'route' instead of benchmark output key 'route_found: True'. Cell 430 fixed script and confirmed 'Routes found: 5, Routes failed: 0'."
+        },
+        "notebook_cells": [
+          419,
+          420,
+          421,
+          422,
+          423,
+          424,
+          425,
+          427,
+          428,
+          429,
+          430
+        ],
+        "saved_files": [
+          "/content/module7_navigation/OSM_results/OSM_frozen_evaluation_subset.json",
+          "/content/module7_navigation/OSM_results/OSM_10query_benchmark.json",
+          "/content/module7_navigation/OSM_results/OSM_final_results.json"
+        ]
+      },
+      "eval_1000": {
+        "status": "Not recorded in supplied execution files."
+      }
+    },
+    "Module_8_Depth_Distance": {
+      "name": "Depth / Distance",
+      "dataset": "KITTI",
+      "eval_100": {
+        "target_count": 100,
+        "images_retrieved": 100,
+        "images_processed": 100,
+        "failed_images": 0,
+        "model": "UniDepth V2 metric-depth model (sanitied with Depth-Anything-V2-Small-hf)",
+        "hardware": "Tesla T4",
+        "total_elapsed_sec": 17.5,
+        "avg_latency_ms": 100.97,
+        "median_latency_ms": 96.69,
+        "throughput_fps": 9.9,
+        "mae_m": 4.417104,
+        "abs_rel": 0.313025,
+        "sq_rel": 2.195649,
+        "rmse_m": 6.573931,
+        "rmse_log": 0.326732,
+        "delta1": 0.469463,
+        "delta2": 0.835794,
+        "delta3": 0.947666,
+        "notebook_cells": [
+          208,
+          209,
+          211,
+          212,
+          226,
+          227,
+          228,
+          230,
+          231,
+          232,
+          233
+        ],
+        "saved_files": [
+          "/content/module8_eval/EXP_001_subset_100/EXP_001_config.json",
+          "/content/module8_eval/EXP_001_results/EXP_001_predictions.json",
+          "/content/module8_eval/EXP_001_results/EXP_001_predictions.csv",
+          "/content/module8_eval/EXP_001_results/EXP_001_summary.json",
+          "/content/module8_eval/EXP_001_results/EXP_001_experiment_record.json",
+          "/content/module8_eval/EXP_001_results/EXP_001_experiment_record.csv"
+        ]
+      },
+      "eval_1000_rgb": {
+        "target_count": 1000,
+        "images_retrieved": 1000,
+        "failed_images": 0,
+        "source": "Koshti10/Kitti-Images (train split via HF datasets-server rows API)",
+        "size_distribution": {
+          "1242x375": 816,
+          "1224x370": 88,
+          "1238x374": 48,
+          "1241x376": 48
+        },
+        "all_modes": "RGB (1000)",
+        "directory": "/content/module8_depth/KITTI_results/rgb_1000",
+        "notebook_cells": [
+          480,
+          481,
+          482
+        ]
+      },
+      "validated_rgb_depth_pairs": [
+        {
+          "pair_id": "depth_001",
+          "depth_frame": "0000000008",
+          "rgb_file": "000008.jpg",
+          "depth_file": "0000000008.png",
+          "drive": "2011_09_29_drive_0026_sync",
+          "camera": "image_02",
+          "rgb_dimensions": [
+            1242,
+            375
+          ],
+          "depth_dimensions": [
+            1238,
+            374
+          ],
+          "depth_dtype": "uint16",
+          "depth_min": 0,
+          "depth_max": 20172,
+          "depth_nonzero_pixels": 61401,
+          "total_pixels": 463012,
+          "tar_header_offset": 354816,
+          "tar_data_offset": 355328,
+          "size_bytes": 133481,
+          "byte_range": "355328-488808",
+          "validation_result": "PASS"
+        },
+        {
+          "pair_id": "depth_002",
+          "depth_frame": "0000000009",
+          "rgb_file": "000009.jpg",
+          "depth_file": "0000000009.png",
+          "drive": "2011_09_29_drive_0026_sync",
+          "camera": "image_02",
+          "rgb_dimensions": [
+            1242,
+            375
+          ],
+          "depth_dimensions": [
+            1238,
+            374
+          ],
+          "depth_dtype": "uint16",
+          "depth_min": 0,
+          "depth_max": 20628,
+          "depth_nonzero_pixels": 61199,
+          "total_pixels": 463012,
+          "tar_header_offset": 655360,
+          "tar_data_offset": 655872,
+          "size_bytes": 133325,
+          "byte_range": "655872-789196",
+          "validation_result": "PASS"
+        },
+        {
+          "pair_id": "depth_003",
+          "depth_frame": "0000000020",
+          "rgb_file": "000020.jpg",
+          "depth_file": "0000000020.png",
+          "drive": "2011_09_29_drive_0026_sync",
+          "camera": "image_02",
+          "rgb_dimensions": [
+            1242,
+            375
+          ],
+          "depth_dimensions": [
+            1238,
+            374
+          ],
+          "depth_dtype": "uint16",
+          "depth_min": 0,
+          "depth_max": 20251,
+          "depth_nonzero_pixels": 84212,
+          "total_pixels": 463012,
+          "tar_header_offset": 174592,
+          "tar_data_offset": 175104,
+          "size_bytes": 179273,
+          "byte_range": "175104-354376",
+          "validation_result": "PASS"
+        },
+        {
+          "pair_id": "depth_004",
+          "depth_frame": "0000000021",
+          "rgb_file": "000021.jpg",
+          "depth_file": "0000000021.png",
+          "drive": "2011_09_29_drive_0026_sync",
+          "camera": "image_02",
+          "rgb_dimensions": [
+            1242,
+            375
+          ],
+          "depth_dimensions": [
+            1238,
+            374
+          ],
+          "depth_dtype": "uint16",
+          "depth_min": 0,
+          "depth_max": 20231,
+          "depth_nonzero_pixels": 83880,
+          "total_pixels": 463012,
+          "tar_header_offset": 789504,
+          "tar_data_offset": 790016,
+          "size_bytes": 179350,
+          "byte_range": "790016-969365",
+          "validation_result": "PASS"
+        },
+        {
+          "pair_id": "depth_005",
+          "depth_frame": "0000000034",
+          "rgb_file": "000034.jpg",
+          "depth_file": "0000000034.png",
+          "drive": "2011_09_29_drive_0026_sync",
+          "camera": "image_02",
+          "rgb_dimensions": [
+            1242,
+            375
+          ],
+          "depth_dimensions": [
+            1238,
+            374
+          ],
+          "depth_dtype": "uint16",
+          "depth_min": 0,
+          "depth_max": 20402,
+          "depth_nonzero_pixels": 80194,
+          "total_pixels": 463012,
+          "tar_header_offset": 4096,
+          "tar_data_offset": 4608,
+          "size_bytes": 169497,
+          "byte_range": "4608-174104",
+          "validation_result": "PASS"
+        },
+        {
+          "pair_id": "depth_006",
+          "depth_frame": "0000000140",
+          "rgb_file": "000140.jpg",
+          "depth_file": "0000000140.png",
+          "drive": "2011_09_29_drive_0026_sync",
+          "camera": "image_02",
+          "rgb_dimensions": [
+            1242,
+            375
+          ],
+          "depth_dimensions": [
+            1238,
+            374
+          ],
+          "depth_dtype": "uint16",
+          "depth_min": 0,
+          "depth_max": 20401,
+          "depth_nonzero_pixels": 41034,
+          "total_pixels": 463012,
+          "tar_header_offset": 488960,
+          "tar_data_offset": 489472,
+          "size_bytes": 80069,
+          "byte_range": "489472-569540",
+          "validation_result": "PASS"
+        },
+        {
+          "pair_id": "depth_007",
+          "depth_frame": "0000000141",
+          "rgb_file": "000141.jpg",
+          "depth_file": "0000000141.png",
+          "drive": "2011_09_29_drive_0026_sync",
+          "camera": "image_02",
+          "rgb_dimensions": [
+            1242,
+            375
+          ],
+          "depth_dimensions": [
+            1238,
+            374
+          ],
+          "depth_dtype": "uint16",
+          "depth_min": 0,
+          "depth_max": 20402,
+          "depth_nonzero_pixels": 44544,
+          "total_pixels": 463012,
+          "tar_header_offset": 569856,
+          "tar_data_offset": 570368,
+          "size_bytes": 84820,
+          "byte_range": "570368-655187",
+          "validation_result": "PASS"
+        }
+      ],
+      "saved_pairing_json": "/content/module8_depth/KITTI_results/KITTI_validated_pairing_7.json"
+    }
+  }
+}
