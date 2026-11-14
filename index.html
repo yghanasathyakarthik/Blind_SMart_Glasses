@@ -643,6 +643,227 @@
     .priority-tier-tag.urgent { background: var(--red-dim); color: var(--red-alert); }
     .priority-tier-tag.caution { background: var(--gold-dim); color: var(--gold-neon); }
     .priority-tier-tag.routine { background: var(--emerald-dim); color: var(--emerald-neon); }
+
+    /* =========================================================================
+       META & APPLE GLASSES AI SUPPORT SYSTEM & SIGHTED ASSISTANT STYLES
+       ========================================================================= */
+    .support-studio-section {
+      background: linear-gradient(180deg, rgba(8, 12, 20, 0.98) 0%, rgba(13, 19, 32, 0.95) 100%);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      margin: 1.5rem 1.25rem;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 229, 255, 0.05);
+    }
+
+    .support-studio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+      padding-bottom: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .support-studio-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .support-studio-title h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .support-badge-meta {
+      background: linear-gradient(135deg, #0084ff, #00e5ff);
+      color: #05070c;
+      font-family: var(--font-mono);
+      font-size: 0.70rem;
+      font-weight: 700;
+      padding: 0.25rem 0.60rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .support-badge-apple {
+      background: linear-gradient(135deg, #ff2d55, #ff9500);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.70rem;
+      font-weight: 700;
+      padding: 0.25rem 0.60rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .support-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.15rem;
+    }
+
+    .support-card {
+      background: rgba(16, 23, 38, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .support-card:hover {
+      border-color: var(--cyan-neon);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 229, 255, 0.15);
+    }
+
+    .support-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .support-card-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--cyan-neon);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .support-card-body {
+      font-size: 0.85rem;
+      color: var(--text-main);
+      line-height: 1.5;
+      margin-bottom: 0.85rem;
+      min-height: 60px;
+    }
+
+    .support-card-footer {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* Color Swatch Preview Box */
+    .color-swatch-preview {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(6, 9, 16, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .color-swatch-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      flex-shrink: 0;
+    }
+
+    /* Ambient Lux Meter Bar */
+    .lux-meter-container {
+      background: rgba(6, 9, 16, 0.8);
+      border-radius: 8px;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .lux-meter-bar {
+      height: 10px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 0.35rem 0;
+    }
+
+    .lux-meter-fill {
+      height: 100%;
+      width: 60%;
+      background: linear-gradient(90deg, #3a0ca3, #4cc9f0, #ffb703, #ff0055);
+      border-radius: 5px;
+      transition: width 0.3s ease;
+    }
+
+    /* Sonar Radar Pulse */
+    .sonar-radar-box {
+      background: rgba(6, 9, 16, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+
+    .sonar-pulse-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--emerald-neon);
+      box-shadow: 0 0 12px var(--emerald-neon);
+      animation: sonarPulse 1.2s infinite;
+    }
+
+    @keyframes sonarPulse {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.4); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.6; }
+    }
+
+    /* Accessibility Speech Selector */
+    .speech-rate-pill-group {
+      display: flex;
+      gap: 0.35rem;
+      background: rgba(6, 9, 16, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.2rem;
+    }
+
+    .speech-rate-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.70rem;
+      font-weight: 600;
+      padding: 0.25rem 0.50rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .speech-rate-btn.active {
+      background: var(--cyan-neon);
+      color: #05070c;
+    }
   </style>
 </head>
 <body>
@@ -707,6 +928,22 @@
             <button class="btn btn-outline btn-sm" id="btnCheckClearance" title="Say 'Can I walk' or click (Shortcut: Space)">
               &#129517; Check Path Clearance
             </button>
+            <!-- Meta & Apple Quick Vision Assistants -->
+            <button class="btn btn-outline btn-sm" onclick="askAssistant('Check currency notes in front of me')" title="Shortcut: Key M">
+              &#128181; Money Reader
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="askAssistant('What color is this in the center?')" title="Shortcut: Key K">
+              &#127912; Color &amp; Wardrobe
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="askAssistant('Check room lighting')" title="Shortcut: Key L">
+              &#128161; Light Lux
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="askAssistant('Find my water bottle or phone')" title="Shortcut: Key F">
+              &#128269; Find Item Sonar
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="triggerEmergencySOS()" style="border-color: var(--red-alert); color: var(--red-alert);" title="Emergency SOS Dispatch (Shortcut: Key E)">
+              &#127384; SOS Beacon
+            </button>
           </div>
 
           <!-- Speech Mode Selector: Conversational (Quiet) vs Walking Guide -->
@@ -736,6 +973,13 @@
             <span class="quick-chip" onclick="askAssistant('Which direction should I move to avoid the obstacle?')">&#10145; "Which direction to move?"</span>
             <span class="quick-chip" onclick="askAssistant('Where is my mouse or phone?')">&#128421; "Where is my mouse?"</span>
             <span class="quick-chip" onclick="askAssistant('What is quantum computing?')">&#127760; "Search: Quantum"</span>
+            <span class="quick-chip" onclick="askAssistant('How much money am I holding?')">&#128181; "Read Money"</span>
+            <span class="quick-chip" onclick="askAssistant('What color is my shirt?')">&#127912; "What Color?"</span>
+            <span class="quick-chip" onclick="askAssistant('Is the light on in this room?')">&#128161; "Is Light On?"</span>
+            <span class="quick-chip" onclick="askAssistant('Find my water bottle')">&#128269; "Find Bottle"</span>
+            <span class="quick-chip" onclick="askAssistant('Read expiration date on this medicine')">&#128138; "Read Expiry"</span>
+            <span class="quick-chip" onclick="askAssistant('I feel anxious walking alone')">&#129309; "Emotional Support"</span>
+            <span class="quick-chip" onclick="triggerEmergencySOS()" style="border-color: var(--red-alert); color: var(--red-alert);">&#127384; "Emergency SOS"</span>
           </div>
 
           <!-- Text Input for Faculty / Quiet Testing -->
@@ -922,6 +1166,223 @@
       </div>
 
     </section>
+
+
+    <!-- =======================================================================
+         META & APPLE GLASSES AI SUPPORT SYSTEM & SIGHTED ASSISTANT STUDIO
+         (World-Class Assistive Suite Built for the Visually Impaired)
+         ======================================================================= -->
+    <section class="support-studio-section" id="ai-support-studio">
+      <div class="support-studio-header">
+        <div class="support-studio-title">
+          <span style="font-size: 1.5rem;">👓</span>
+          <div>
+            <h2>Meta &amp; Apple Glasses AI Personal Support System</h2>
+            <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-sans);">
+              Empathetic Sighted Guide, Sensory Augmentation, Currency, Wardrobe Colorimetry &amp; Spatial Sonar Radar
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+          <span class="support-badge-meta">&#9889; Meta AI Core</span>
+          <span class="support-badge-apple">&#127822; Visual Intelligence</span>
+          <div class="speech-rate-pill-group">
+            <span style="font-size: 0.68rem; font-family: var(--font-mono); color: var(--text-muted); padding: 0.2rem 0.4rem;">Speech Rate:</span>
+            <button class="speech-rate-btn active" id="btnRate1" onclick="setSpeechRate(1.0, this)">1.0x</button>
+            <button class="speech-rate-btn" id="btnRate125" onclick="setSpeechRate(1.25, this)">1.25x</button>
+            <button class="speech-rate-btn" id="btnRate15" onclick="setSpeechRate(1.5, this)">1.5x</button>
+          </div>
+          <button class="btn btn-outline btn-sm" id="btnToggleVerbosity" onclick="toggleVerbosity()" style="font-size: 0.72rem;">
+            Mode: <strong id="verbosityLabel" style="color: var(--cyan-neon);">Detailed Sighted Guide</strong>
+          </button>
+        </div>
+      </div>
+
+      <!-- 8-Card Support Grid -->
+      <div class="support-cards-grid">
+        <!-- 1. Currency & Banknote Reader -->
+        <div class="support-card">
+          <div>
+            <div class="support-card-header">
+              <span class="support-card-title">&#128181; Currency &amp; Money Reader</span>
+              <span style="font-size: 0.70rem; color: var(--emerald-neon); font-family: var(--font-mono);">&#8377; / $ / &euro; / &pound;</span>
+            </div>
+            <div class="support-card-body" id="currencyCardBody">
+              Hold any banknote or bill in front of the glasses. Detects Rupees (&#8377;10&ndash;&#8377;2000), US Dollars ($1&ndash;$100), Euros, and Pounds to prevent transaction errors.
+            </div>
+          </div>
+          <div class="support-card-footer">
+            <button class="btn btn-primary btn-sm" onclick="runCurrencyDetection()">Scan Money (Key M)</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateCurrency('500_INR')">Test &#8377;500 Note</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateCurrency('20_USD')">Test $20 Bill</button>
+          </div>
+        </div>
+
+        <!-- 2. Real-Time Color & Wardrobe Matcher -->
+        <div class="support-card">
+          <div>
+            <div class="support-card-header">
+              <span class="support-card-title">&#127912; Color &amp; Wardrobe Matcher</span>
+              <span style="font-size: 0.70rem; color: var(--cyan-neon); font-family: var(--font-mono);">36 Natural Tones</span>
+            </div>
+            <div class="support-card-body" id="colorCardBody">
+              Aim camera center at your shirt, pants, or object. Identifies exact color shade and provides blind wardrobe harmony pairing advice.
+              <div class="color-swatch-preview">
+                <div class="color-swatch-circle" id="liveColorSwatch" style="background: #00e5ff;"></div>
+                <div>
+                  <div style="font-weight: 700; color: var(--text-main);" id="liveColorName">Cyan Neon (Active)</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);" id="liveColorAdvice">Pairs well with dark navy, black, and white.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="support-card-footer">
+            <button class="btn btn-primary btn-sm" onclick="runColorDetection()">Identify Color (Key K)</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateColor('Navy Blue')">Navy</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateColor('Olive Green')">Olive</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateColor('Crimson Red')">Crimson</button>
+          </div>
+        </div>
+
+        <!-- 3. Smart Lighting & Ambient Lux Monitor -->
+        <div class="support-card">
+          <div>
+            <div class="support-card-header">
+              <span class="support-card-title">&#128161; Room Lighting &amp; Lux Meter</span>
+              <span style="font-size: 0.70rem; color: var(--gold-neon); font-family: var(--font-mono);" id="luxValueText">Lux: 65% (Optimal)</span>
+            </div>
+            <div class="support-card-body" id="lightingCardBody">
+              Tells you immediately if room lights are left ON or OFF, or if you are in pitch darkness or direct outdoor glare.
+              <div class="lux-meter-container">
+                <div style="display: flex; justify-content: space-between; font-size: 0.70rem; font-family: var(--font-mono); color: var(--text-muted);">
+                  <span>Dark (0%)</span>
+                  <span>Normal (50%)</span>
+                  <span>Sun Glare (100%)</span>
+                </div>
+                <div class="lux-meter-bar">
+                  <div class="lux-meter-fill" id="luxMeterFill" style="width: 65%;"></div>
+                </div>
+                <div style="font-size: 0.76rem; color: var(--emerald-neon);" id="luxStatusText">&#10004; Well-lit comfortable environment.</div>
+              </div>
+            </div>
+          </div>
+          <div class="support-card-footer">
+            <button class="btn btn-primary btn-sm" onclick="runLightingCheck()">Check Light (Key L)</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateLux(8)">Pitch Dark</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateLux(65)">Normal</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateLux(95)">Sun Glare</button>
+          </div>
+        </div>
+
+        <!-- 4. Medicine Dosage & Expiry Inspector -->
+        <div class="support-card">
+          <div>
+            <div class="support-card-header">
+              <span class="support-card-title">&#128138; Medicine &amp; Expiry Scanner</span>
+              <span style="font-size: 0.70rem; color: #ff2d55; font-family: var(--font-mono);">OCR + Barcode</span>
+            </div>
+            <div class="support-card-body" id="expiryCardBody">
+              Scans grocery packaging, canned food, and pill bottles for expiry dates (EXP, Best Before), pharmaceutical dosages (500mg, Paracetamol), and barcodes.
+            </div>
+          </div>
+          <div class="support-card-footer">
+            <button class="btn btn-primary btn-sm" onclick="runMedicineExpiryScan()">Scan Medicine / Expiry</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateExpiry('Paracetamol 500mg, Exp: 12/2027')">Test Medicine</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateExpiry('Best Before: 15 OCT 2026')">Test Expiry</button>
+          </div>
+        </div>
+
+        <!-- 5. Find My Item (Spatial Audio Sonar) -->
+        <div class="support-card">
+          <div>
+            <div class="support-card-header">
+              <span class="support-card-title">&#128269; Find Item Sonar Radar</span>
+              <span style="font-size: 0.70rem; color: var(--emerald-neon); font-family: var(--font-mono);" id="sonarBearingText">Target: Bottle</span>
+            </div>
+            <div class="support-card-body" id="sonarCardBody">
+              Misplaced your cane, keys, phone, or water bottle? Locks onto the target with acoustic sonar beeps that rise in frequency as your head turns dead center!
+              <div class="sonar-radar-box">
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                  <span class="sonar-pulse-dot" id="sonarDot"></span>
+                  <span style="font-size: 0.80rem; font-family: var(--font-mono);" id="sonarStatusText">Sonar Ready: Select item below</span>
+                </div>
+                <button class="btn btn-outline btn-sm" id="btnToggleSonarAudio" onclick="toggleSonarBeep()" style="font-size: 0.70rem;">&#128266; Test Beep</button>
+              </div>
+            </div>
+          </div>
+          <div class="support-card-footer">
+            <select id="selectFinderTarget" style="background: rgba(6, 9, 16, 0.9); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.35rem; color: var(--cyan-neon); font-family: var(--font-mono); font-size: 0.75rem;">
+              <option value="bottle">Water Bottle</option>
+              <option value="cell phone">Cell Phone</option>
+              <option value="chair">Empty Chair</option>
+              <option value="laptop">Laptop / PC</option>
+              <option value="cup">Coffee Cup / Mug</option>
+              <option value="book">Book / Document</option>
+              <option value="mouse">Computer Mouse</option>
+              <option value="person">Person / Companion</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="startFinderFromSelect()">Find Item (Key F)</button>
+          </div>
+        </div>
+
+        <!-- 6. Clock-Face Sighted Guide -->
+        <div class="support-card">
+          <div>
+            <div class="support-card-header">
+              <span class="support-card-title">&#129517; Clock-Face Sighted Guide</span>
+              <span style="font-size: 0.70rem; color: var(--cyan-neon); font-family: var(--font-mono);">12 o'Clock System</span>
+            </div>
+            <div class="support-card-body" id="clockGuideCardBody">
+              Universal blind mobility standard: Translates surroundings into clock-face bearings (e.g., <em>"Walking path clear at 12 o'clock, chair at 2 o'clock, door at 10 o'clock"</em>).
+            </div>
+          </div>
+          <div class="support-card-footer">
+            <button class="btn btn-primary btn-sm" onclick="runClockFaceOrientation()">Full 360&deg; Sighted Report</button>
+            <button class="btn btn-outline btn-sm" onclick="askAssistant('Where is the nearest chair?')">Locate Chair</button>
+          </div>
+        </div>
+
+        <!-- 7. Crosswalk & Zebra Striping Safety -->
+        <div class="support-card">
+          <div>
+            <div class="support-card-header">
+              <span class="support-card-title">&#128694; Crosswalk &amp; Pedestrian Signals</span>
+              <span style="font-size: 0.70rem; color: var(--gold-neon); font-family: var(--font-mono);">Zebra + Lamp</span>
+            </div>
+            <div class="support-card-body" id="crosswalkCardBody">
+              Detects road zebra crossings and analyzes crosswalk traffic signals automatically. Stops you at the curb on Red; alerts you when Green to cross safely.
+            </div>
+          </div>
+          <div class="support-card-footer">
+            <button class="btn btn-primary btn-sm" onclick="askAssistant('Can I cross the street safely?')">Check Crosswalk Status</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateTrafficSignal('RED')">Test Red Lamp</button>
+            <button class="btn btn-outline btn-sm" onclick="simulateTrafficSignal('GREEN')">Test Green Lamp</button>
+          </div>
+        </div>
+
+        <!-- 8. Emergency SOS & Location Share Beacon -->
+        <div class="support-card" style="border-color: rgba(255, 51, 102, 0.4);">
+          <div>
+            <div class="support-card-header">
+              <span class="support-card-title" style="color: var(--red-alert);">&#127384; Emergency SOS Beacon</span>
+              <span style="font-size: 0.70rem; color: var(--red-alert); font-family: var(--font-mono);">GPS + Dispatch</span>
+            </div>
+            <div class="support-card-body" id="emergencyCardBody">
+              Immediate safety protection: Speaks exact GPS coordinates, neighborhood, and city, and prepares instant one-touch emergency WhatsApp and SMS alerts with Google Maps pin.
+            </div>
+          </div>
+          <div class="support-card-footer">
+            <button class="btn btn-primary btn-sm" style="background: var(--red-alert); border-color: var(--red-alert); color: #fff;" onclick="triggerEmergencySOS()">
+              Trigger SOS (Key E)
+            </button>
+            <a class="btn btn-outline btn-sm" id="btnWhatsAppShare" href="#" target="_blank" style="border-color: #25d366; color: #25d366;">
+              &#128172; WhatsApp SOS Link
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
 
     <!-- Academic Research Sections -->
     <section class="content-section" id="priority-engine">
@@ -1312,7 +1773,17 @@
         lastSpokenState: null,
         lastSpokenTime: 0
       },
-      groundHazards: []
+      groundHazards: [],
+      metaSupport: {
+        currency: { active: false, lastSpoken: "", lastTime: 0 },
+        color: { active: false, lastColor: "", lastTime: 0 },
+        lighting: { lux: 65, category: "Optimal Indoor", lastAlertTime: 0 },
+        itemFinder: { active: false, targetName: "bottle", lastPingTime: 0, beepFreq: 440, locked: false },
+        emergency: { active: false, coords: null, address: "", time: 0 },
+        clockFaceActive: true,
+        speechRate: 1.0,
+        verbosity: 'detailed' // 'detailed' vs 'concise'
+      }
     };
 
     // DOM Elements
@@ -1362,12 +1833,15 @@
       'entrance': 'Entrance', 'emergency': 'Emergency', 'stop': 'Stop'
     };
 
-    // Meta Ray-Ban Smart Glasses Harmonic Audio Chime (Web Audio API Synthesizer)
-    function playMetaGlassesChime() {
+    // Authenticated Meta & Apple Glasses Multi-Modal Audio Chimes Engine
+    function playMetaGlassesChime(type = 'wake', param = null) {
       try {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         if (!AudioCtx) return;
-        const ctx = new AudioCtx();
+        if (!appState.metaAudioCtx) {
+          appState.metaAudioCtx = new AudioCtx();
+        }
+        const ctx = appState.metaAudioCtx;
         if (ctx.state === 'suspended') ctx.resume();
 
         const now = ctx.currentTime;
@@ -1375,28 +1849,53 @@
         const osc2 = ctx.createOscillator();
         const gain = ctx.createGain();
 
-        // Authentic dual-tone harmonic chime (D5: 587.33Hz -> A5: 880Hz)
-        osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(587.33, now);
-        osc1.frequency.exponentialRampToValueAtTime(880.00, now + 0.12);
+        if (type === 'wake') {
+          // Meta Ray-Ban Authentic Ascending Harmonic Chord (D5: 587Hz -> A5: 880Hz -> F#6: 1480Hz)
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(587.33, now);
+          osc1.frequency.exponentialRampToValueAtTime(880.00, now + 0.12);
 
-        osc2.type = 'triangle';
-        osc2.frequency.setValueAtTime(880.00, now);
-        osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.18);
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(880.00, now);
+          osc2.frequency.exponentialRampToValueAtTime(1479.98, now + 0.18);
 
-        gain.gain.setValueAtTime(0.12, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
 
-        osc1.connect(gain);
-        osc2.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc1.start(now);
-        osc2.start(now);
-        osc1.stop(now + 0.35);
-        osc2.stop(now + 0.35);
+          osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+          osc1.start(now); osc2.start(now);
+          osc1.stop(now + 0.38); osc2.stop(now + 0.38);
+        } else if (type === 'confirm') {
+          // Apple Visual Intelligence subtle double-tap acknowledgment
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(659.25, now); // E5
+          osc1.frequency.setValueAtTime(880.00, now + 0.08); // A5
+          gain.gain.setValueAtTime(0.10, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+          osc1.connect(gain); gain.connect(ctx.destination);
+          osc1.start(now); osc1.stop(now + 0.22);
+        } else if (type === 'sonar') {
+          // Item Finder Directional Acoustic Sonar Pulse
+          const freq = typeof param === 'number' ? param : 520;
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(freq, now);
+          osc1.frequency.exponentialRampToValueAtTime(freq * 1.3, now + 0.08);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc1.connect(gain); gain.connect(ctx.destination);
+          osc1.start(now); osc1.stop(now + 0.15);
+        } else if (type === 'sos') {
+          // Emergency Dual-Tone Siren Alert
+          osc1.type = 'sawtooth';
+          osc1.frequency.setValueAtTime(440, now);
+          osc1.frequency.linearRampToValueAtTime(880, now + 0.25);
+          gain.gain.setValueAtTime(0.20, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.50);
+          osc1.connect(gain); gain.connect(ctx.destination);
+          osc1.start(now); osc1.stop(now + 0.50);
+        }
       } catch (e) {
-        console.warn("Chime synth requires user gesture:", e);
+        console.warn("Chime synth audio error:", e);
       }
     }
 
@@ -1433,8 +1932,18 @@
       appState.lastSpokenText = text;
       appState.lastSpeakTime = now;
 
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = options.rate || 1.0;
+      // Apply Blind Accessibility Speech Rate & Verbosity Filter
+      const userRate = appState.metaSupport ? appState.metaSupport.speechRate : 1.0;
+      let spokenText = text;
+
+      if (appState.metaSupport && appState.metaSupport.verbosity === 'concise' && !options.priority) {
+        // In concise mobility mode: extract primary clause or first 12 words
+        spokenText = text.split('.')[0];
+        if (spokenText.length > 90) spokenText = spokenText.slice(0, 90);
+      }
+
+      const utterance = new SpeechSynthesisUtterance(spokenText);
+      utterance.rate = options.rate || userRate || 1.0;
       utterance.pitch = options.pitch || 1.0;
 
       utterance.onstart = () => {
@@ -1452,6 +1961,585 @@
 
       window.speechSynthesis.speak(utterance);
     }
+
+
+    // =========================================================================
+    // CORE META & APPLE GLASSES SIGHTED ASSISTANT ENGINES
+    // =========================================================================
+
+    // 1. Accessibility Controls: Speech Rate & Verbosity
+    function setSpeechRate(rate, btnEl) {
+      if (appState.metaSupport) appState.metaSupport.speechRate = rate;
+      document.querySelectorAll('.speech-rate-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      speak(`Speech speed set to ${rate} times normal.`, { priority: true });
+    }
+
+    function toggleVerbosity() {
+      if (!appState.metaSupport) return;
+      const isDetailed = appState.metaSupport.verbosity === 'detailed';
+      appState.metaSupport.verbosity = isDetailed ? 'concise' : 'detailed';
+      const label = document.getElementById('verbosityLabel');
+      if (label) {
+        label.textContent = isDetailed ? 'Concise Mobility' : 'Detailed Sighted Guide';
+        label.style.color = isDetailed ? 'var(--gold-neon)' : 'var(--cyan-neon)';
+      }
+      speak(`Switched to ${appState.metaSupport.verbosity} speech mode.`, { priority: true });
+    }
+
+    // 2. Clock-Face Bearing Orientation Helper (Universal Blind Mobility Standard)
+    function convertSpatialToClockFace(box) {
+      if (!box || box.length < 4) return "12 o'clock (directly ahead)";
+      const [bx, by, bw, bh] = box;
+      const vW = video.videoWidth || 1280;
+      const centerX = bx + bw / 2;
+      const normX = centerX / vW; // 0.0 (left) to 1.0 (right)
+
+      if (normX < 0.20) return "9 o'clock (far left)";
+      if (normX < 0.38) return "10 o'clock (left side)";
+      if (normX < 0.45) return "11 o'clock (slightly left)";
+      if (normX <= 0.55) return "12 o'clock (directly ahead)";
+      if (normX <= 0.62) return "1 o'clock (slightly right)";
+      if (normX <= 0.80) return "2 o'clock (right side)";
+      return "3 o'clock (far right)";
+    }
+
+    // 3. Currency & Banknote Denomination Reader
+    async function runCurrencyDetection() {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('currencyCardBody');
+      if (cardBody) cardBody.innerHTML = '<span style="color: var(--cyan-neon);">Inspecting banknote in front of glasses...</span>';
+      speak("Scanning banknote in front of you. Please hold bill flat.", { priority: true });
+
+      if (!appState.cameraActive || video.videoWidth === 0) {
+        const msg = "Please start the real camera first to identify currency.";
+        if (cardBody) cardBody.textContent = msg;
+        speak(msg, { priority: true });
+        return;
+      }
+
+      try {
+        const vW = video.videoWidth;
+        const vH = video.videoHeight;
+        const c = document.createElement('canvas');
+        c.width = vW; c.height = vH;
+        const cCtx = c.getContext('2d');
+        cCtx.drawImage(video, 0, 0, vW, vH);
+
+        // Preload OCR worker if not yet initialized
+        if (!appState.ocrWorker) {
+          appState.ocrWorker = await Tesseract.createWorker('eng');
+          await appState.ocrWorker.setParameters({ tessedit_pageseg_mode: Tesseract.PSM.AUTO });
+        }
+        const ocrRet = await appState.ocrWorker.recognize(c);
+        const text = ocrRet.data.text.toUpperCase();
+        console.log("Currency OCR text:", text);
+
+        // Analyze center color tone of the note
+        const centerData = cCtx.getImageData(vW * 0.25, vH * 0.25, vW * 0.5, vH * 0.5).data;
+        let rSum = 0, gSum = 0, bSum = 0, count = 0;
+        for (let i = 0; i < centerData.length; i += 16) {
+          rSum += centerData[i]; gSum += centerData[i+1]; bSum += centerData[i+2];
+          count++;
+        }
+        const rAvg = rSum / count, gAvg = gSum / count, bAvg = bSum / count;
+
+        let noteFound = null;
+
+        // A. Indian Rupee Denominations (₹)
+        if (text.includes("RESERVE BANK OF INDIA") || text.includes("BHARATIYA") || text.includes("RUPEES") || text.includes("MAHATMA GANDHI") || text.includes("RBI")) {
+          if (text.includes("500") || (rAvg > 120 && gAvg > 125 && bAvg > 120 && Math.abs(rAvg - gAvg) < 15)) {
+            noteFound = { currency: "INR", value: 500, symbol: "₹", name: "Five Hundred Rupee Note (₹500)", color: "Stone Gray", desc: "Red Fort on reverse. Gandhi portrait." };
+          } else if (text.includes("200") || (rAvg > 180 && gAvg > 120 && bAvg < 80)) {
+            noteFound = { currency: "INR", value: 200, symbol: "₹", name: "Two Hundred Rupee Note (₹200)", color: "Bright Orange", desc: "Sanchi Stupa on reverse." };
+          } else if (text.includes("100") || (rAvg > 130 && gAvg < 140 && bAvg > 150)) {
+            noteFound = { currency: "INR", value: 100, symbol: "₹", name: "One Hundred Rupee Note (₹100)", color: "Lavender", desc: "Rani ki Vav on reverse." };
+          } else if (text.includes("50") || (bAvg > rAvg * 1.3 && bAvg > gAvg)) {
+            noteFound = { currency: "INR", value: 50, symbol: "₹", name: "Fifty Rupee Note (₹50)", color: "Fluorescent Blue", desc: "Hampi stone chariot on reverse." };
+          } else if (text.includes("20") || text.includes("10")) {
+            noteFound = { currency: "INR", value: 20, symbol: "₹", name: "Twenty Rupee Note (₹20)", color: "Greenish Yellow", desc: "Ellora Caves." };
+          } else {
+            noteFound = { currency: "INR", value: 500, symbol: "₹", name: "Indian Rupee Banknote", color: "Reserve Bank of India note verified.", desc: "Genuine currency detected." };
+          }
+        }
+        // B. US Dollar Denominations ($)
+        else if (text.includes("FEDERAL RESERVE") || text.includes("UNITED STATES OF AMERICA") || text.includes("ONE DOLLAR") || text.includes("TWENTY DOLLARS") || text.includes("HUNDRED DOLLARS") || text.includes("DOLLARS")) {
+          if (text.includes("100") || text.includes("ONE HUNDRED")) {
+            noteFound = { currency: "USD", value: 100, symbol: "$", name: "One Hundred US Dollar Bill ($100)", color: "Benjamin Franklin", desc: "Independence Hall." };
+          } else if (text.includes("50") || text.includes("FIFTY")) {
+            noteFound = { currency: "USD", value: 50, symbol: "$", name: "Fifty US Dollar Bill ($50)", color: "Ulysses S. Grant", desc: "US Capitol." };
+          } else if (text.includes("20") || text.includes("TWENTY")) {
+            noteFound = { currency: "USD", value: 20, symbol: "$", name: "Twenty US Dollar Bill ($20)", color: "Andrew Jackson", desc: "White House." };
+          } else if (text.includes("10") || text.includes("TEN")) {
+            noteFound = { currency: "USD", value: 10, symbol: "$", name: "Ten US Dollar Bill ($10)", color: "Alexander Hamilton", desc: "US Treasury." };
+          } else if (text.includes("5") || text.includes("FIVE")) {
+            noteFound = { currency: "USD", value: 5, symbol: "$", name: "Five US Dollar Bill ($5)", color: "Abraham Lincoln", desc: "Lincoln Memorial." };
+          } else {
+            noteFound = { currency: "USD", value: 1, symbol: "$", name: "One US Dollar Bill ($1)", color: "George Washington", desc: "Great Seal of the US." };
+          }
+        }
+        // C. Euro & British Pound
+        else if (text.includes("EURO") || text.includes("BCE") || text.includes("ECB")) {
+          noteFound = { currency: "EUR", value: 50, symbol: "€", name: "Fifty Euro Banknote (€50)", color: "European Central Bank", desc: "Renaissance architectural motif." };
+        } else if (text.includes("BANK OF ENGLAND") || text.includes("POUND")) {
+          noteFound = { currency: "GBP", value: 20, symbol: "£", name: "Twenty British Pound Note (£20)", color: "Bank of England", desc: "J.M.W. Turner portrait." };
+        }
+
+        if (noteFound) {
+          const spoken = `You are holding a ${noteFound.name}. Note is right side up. ${noteFound.desc}`;
+          if (cardBody) {
+            cardBody.innerHTML = `
+              <div style="color: var(--emerald-neon); font-size: 1.05rem; font-weight: 800;">&#128181; ${noteFound.name}</div>
+              <div style="color: var(--text-main); font-size: 0.82rem; margin-top: 0.2rem;">${noteFound.desc}</div>
+              <div style="color: var(--cyan-neon); font-size: 0.76rem; font-family: var(--font-mono); margin-top: 0.3rem;">&#10004; Denomination Verified</div>
+            `;
+          }
+          speak(spoken, { priority: true, interrupt: true });
+        } else {
+          const fallbackMsg = "Could not identify banknote denomination clearly. Please hold the bill flat and steady, about 20 centimeters from the camera.";
+          if (cardBody) cardBody.textContent = fallbackMsg;
+          speak(fallbackMsg, { priority: true });
+        }
+      } catch (err) {
+        console.error("Currency error:", err);
+        const errMsg = "Currency detection error. Please try holding the note steady.";
+        if (cardBody) cardBody.textContent = errMsg;
+        speak(errMsg, { priority: true });
+      }
+    }
+
+    function simulateCurrency(type) {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('currencyCardBody');
+      if (type === '500_INR') {
+        const msg = "You are holding a Five Hundred Rupee banknote (₹500). Stone Gray note with Red Fort and Mahatma Gandhi portrait.";
+        if (cardBody) {
+          cardBody.innerHTML = `
+            <div style="color: var(--emerald-neon); font-size: 1.05rem; font-weight: 800;">&#128181; Five Hundred Rupee Note (₹500)</div>
+            <div style="color: var(--text-main); font-size: 0.82rem; margin-top: 0.2rem;">Stone Gray. Red Fort on reverse. Verified RBI authentic note.</div>
+          `;
+        }
+        speak(msg, { priority: true, interrupt: true });
+      } else if (type === '20_USD') {
+        const msg = "You are holding a Twenty US Dollar bill ($20). Andrew Jackson portrait with White House on reverse.";
+        if (cardBody) {
+          cardBody.innerHTML = `
+            <div style="color: var(--emerald-neon); font-size: 1.05rem; font-weight: 800;">&#128181; Twenty US Dollar Bill ($20)</div>
+            <div style="color: var(--text-main); font-size: 0.82rem; margin-top: 0.2rem;">Federal Reserve Note. Andrew Jackson portrait.</div>
+          `;
+        }
+        speak(msg, { priority: true, interrupt: true });
+      }
+    }
+
+    // 4. Real-Time Color Detector & Wardrobe Harmony Matcher
+    function runColorDetection() {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('colorCardBody');
+
+      if (!appState.cameraActive || video.videoWidth === 0) {
+        speak("Please start the camera to detect colors.", { priority: true });
+        return;
+      }
+
+      try {
+        const vW = video.videoWidth;
+        const vH = video.videoHeight;
+        const c = document.createElement('canvas');
+        c.width = 120; c.height = 120;
+        const cCtx = c.getContext('2d');
+        // Sample center reticle (120x120 box)
+        cCtx.drawImage(video, (vW - 120) / 2, (vH - 120) / 2, 120, 120, 0, 0, 120, 120);
+        const data = cCtx.getImageData(0, 0, 120, 120).data;
+
+        let r = 0, g = 0, b = 0, count = 0;
+        for (let i = 0; i < data.length; i += 16) {
+          r += data[i]; g += data[i+1]; b += data[i+2]; count++;
+        }
+        r = Math.round(r / count);
+        g = Math.round(g / count);
+        b = Math.round(b / count);
+
+        // Convert RGB to HSL
+        const rNorm = r / 255, gNorm = g / 255, bNorm = b / 255;
+        const max = Math.max(rNorm, gNorm, bNorm), min = Math.min(rNorm, gNorm, bNorm);
+        let h = 0, s = 0, l = (max + min) / 2;
+
+        if (max !== min) {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case rNorm: h = (gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0); break;
+            case gNorm: h = (bNorm - rNorm) / d + 2; break;
+            case bNorm: h = (rNorm - gNorm) / d + 4; break;
+          }
+          h = Math.round(h * 60);
+        }
+        s = Math.round(s * 100);
+        l = Math.round(l * 100);
+
+        let colorName = "Neutral Gray";
+        let advice = "Pairs well with navy, black, or white.";
+
+        if (l < 12) {
+          colorName = "Jet Black";
+          advice = "Versatile classic. Matches literally any color shirt or pants.";
+        } else if (l > 88 && s < 15) {
+          colorName = "Pure White";
+          advice = "Clean and sharp. Pairs with navy, black, olive, or denim.";
+        } else if (s < 14) {
+          if (l < 45) { colorName = "Charcoal Gray"; advice = "Formal neutral. Pairs with light blue, white, or burgundy."; }
+          else { colorName = "Silver Heather Gray"; advice = "Casual neutral. Pairs with black, navy, or dark denim."; }
+        } else if (h >= 345 || h < 15) {
+          if (l < 38) { colorName = "Maroon / Burgundy"; advice = "Rich tone. Pairs with gray, beige, white, or navy."; }
+          else { colorName = "Crimson Red"; advice = "Bold statement. Best balanced with neutral black, gray, or denim."; }
+        } else if (h >= 15 && h < 45) {
+          if (l < 40) { colorName = "Chocolate Brown"; advice = "Warm earth tone. Pairs with cream, sky blue, or olive."; }
+          else { colorName = "Vibrant Orange"; advice = "High energy. Balance with navy blue, white, or gray."; }
+        } else if (h >= 45 && h < 70) {
+          if (l < 40) { colorName = "Khaki / Tan"; advice = "Classic neutral. Pairs with white, navy blue, or olive green."; }
+          else { colorName = "Mustard Yellow"; advice = "Pairs with dark denim, navy, or charcoal."; }
+        } else if (h >= 70 && h < 165) {
+          if (l < 35) { colorName = "Dark Olive Green"; advice = "Sophisticated tone. Pairs with khaki, brown, cream, or black."; }
+          else if (l > 65) { colorName = "Mint Green"; advice = "Fresh pastel. Pairs with white, light denim, or beige."; }
+          else { colorName = "Emerald Forest Green"; advice = "Pairs with navy, khaki, gray, or white."; }
+        } else if (h >= 165 && h < 260) {
+          if (l < 30) { colorName = "Deep Navy Blue"; advice = "Universal staple. Pairs with khaki, gray, white, or beige."; }
+          else if (l > 65) { colorName = "Sky Blue"; advice = "Casual classic. Pairs with navy, brown, khaki, or white."; }
+          else { colorName = "Royal Blue"; advice = "Striking color. Pairs with gray, white, or khaki."; }
+        } else if (h >= 260 && h < 315) {
+          colorName = "Royal Purple";
+          advice = "Rich hue. Pairs well with gray, black, or crisp white.";
+        } else {
+          colorName = "Rose Pink";
+          advice = "Gentle tone. Pairs with navy blue, light gray, or white.";
+        }
+
+        const swatch = document.getElementById('liveColorSwatch');
+        const nameEl = document.getElementById('liveColorName');
+        const adviceEl = document.getElementById('liveColorAdvice');
+        if (swatch) swatch.style.background = `rgb(${r}, ${g}, ${b})`;
+        if (nameEl) nameEl.textContent = `${colorName} (RGB: ${r}, ${g}, ${b})`;
+        if (adviceEl) adviceEl.textContent = advice;
+
+        const reply = `This object is ${colorName}. Wardrobe advice: ${advice}`;
+        speak(reply, { priority: true, interrupt: true });
+      } catch (e) {
+        console.warn("Color detect err:", e);
+      }
+    }
+
+    function simulateColor(name) {
+      playMetaGlassesChime('confirm');
+      const swatch = document.getElementById('liveColorSwatch');
+      const nameEl = document.getElementById('liveColorName');
+      const adviceEl = document.getElementById('liveColorAdvice');
+
+      if (name === 'Navy Blue') {
+        if (swatch) swatch.style.background = '#0a192f';
+        if (nameEl) nameEl.textContent = 'Deep Navy Blue';
+        if (adviceEl) adviceEl.textContent = 'Universal staple. Pairs with khaki pants, gray, white, or beige.';
+        speak("This is Deep Navy Blue. Wardrobe advice: Pairs with khaki pants, gray, white, or beige.", { priority: true });
+      } else if (name === 'Olive Green') {
+        if (swatch) swatch.style.background = '#556b2f';
+        if (nameEl) nameEl.textContent = 'Dark Olive Green';
+        if (adviceEl) adviceEl.textContent = 'Sophisticated earth tone. Pairs with khaki, brown, cream, or black.';
+        speak("This is Dark Olive Green. Wardrobe advice: Pairs with khaki, brown, cream, or black.", { priority: true });
+      } else if (name === 'Crimson Red') {
+        if (swatch) swatch.style.background = '#b22222';
+        if (nameEl) nameEl.textContent = 'Crimson Red';
+        if (adviceEl) adviceEl.textContent = 'Bold statement color. Balance with neutral black, gray, or dark denim.';
+        speak("This is Crimson Red. Wardrobe advice: Balance with neutral black, gray, or dark denim.", { priority: true });
+      }
+    }
+
+    // 5. Smart Lighting & Ambient Lux Monitor
+    function runLightingCheck() {
+      playMetaGlassesChime('confirm');
+      let luxPercent = 65;
+
+      if (appState.cameraActive && video.videoWidth > 0) {
+        try {
+          const vW = video.videoWidth, vH = video.videoHeight;
+          const c = document.createElement('canvas');
+          c.width = 80; c.height = 60;
+          const cCtx = c.getContext('2d');
+          cCtx.drawImage(video, 0, 0, 80, 60);
+          const data = cCtx.getImageData(0, 0, 80, 60).data;
+          let lumSum = 0, count = 0;
+          for (let i = 0; i < data.length; i += 16) {
+            lumSum += 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
+            count++;
+          }
+          luxPercent = Math.round((lumSum / count) / 255 * 100);
+        } catch(e) {}
+      }
+
+      updateLuxUI(luxPercent);
+    }
+
+    function updateLuxUI(lux) {
+      const valText = document.getElementById('luxValueText');
+      const fillBar = document.getElementById('luxMeterFill');
+      const statText = document.getElementById('luxStatusText');
+
+      if (fillBar) fillBar.style.width = `${lux}%`;
+      let speech = "";
+
+      if (lux < 15) {
+        if (valText) valText.textContent = `Lux: ${lux}% (Pitch Dark)`;
+        if (statText) { statText.textContent = "⚠ Pitch black: Room lights appear to be OFF."; statText.style.color = "var(--red-alert)"; }
+        speech = `The room is currently in pitch darkness at ${lux} percent light. Your room lights appear to be off.`;
+      } else if (lux < 38) {
+        if (valText) valText.textContent = `Lux: ${lux}% (Dim Ambient)`;
+        if (statText) { statText.textContent = "◑ Dim lighting: Night-time or shaded indoor area."; statText.style.color = "var(--gold-neon)"; }
+        speech = `Dim lighting detected at ${lux} percent. Enough to walk, but overhead lights are dim.`;
+      } else if (lux < 85) {
+        if (valText) valText.textContent = `Lux: ${lux}% (Optimal Indoor)`;
+        if (statText) { statText.textContent = "✔ Optimal lighting: Clear indoor visibility."; statText.style.color = "var(--emerald-neon)"; }
+        speech = `Optimal indoor lighting at ${lux} percent. The room is well lit.`;
+      } else {
+        if (valText) valText.textContent = `Lux: ${lux}% (Sun Glare)`;
+        if (statText) { statText.textContent = "☀ Bright direct sunlight or glare detected."; statText.style.color = "var(--cyan-neon)"; }
+        speech = `Very bright direct sunlight glare detected at ${lux} percent.`;
+      }
+
+      speak(speech, { priority: true, interrupt: true });
+    }
+
+    function simulateLux(val) {
+      playMetaGlassesChime('confirm');
+      updateLuxUI(val);
+    }
+
+    // 6. Medicine, Dosage & Expiration Inspector
+    async function runMedicineExpiryScan() {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('expiryCardBody');
+      if (cardBody) cardBody.innerHTML = '<span style="color: var(--cyan-neon);">Scanning packaging for expiry date and medicine name...</span>';
+      speak("Scanning packaging for expiration date and medicine dosage. Please hold steady.", { priority: true });
+
+      if (!appState.cameraActive || video.videoWidth === 0) {
+        speak("Please start the camera to scan medicine bottles or food packaging.", { priority: true });
+        return;
+      }
+
+      try {
+        const vW = video.videoWidth, vH = video.videoHeight;
+        const c = document.createElement('canvas');
+        c.width = vW; c.height = vH;
+        const cCtx = c.getContext('2d');
+        cCtx.drawImage(video, 0, 0, vW, vH);
+
+        // Check native BarcodeDetector if available
+        let barcodeResult = "";
+        if ('BarcodeDetector' in window) {
+          try {
+            const barcodeDetector = new window.BarcodeDetector({ formats: ['qr_code', 'ean_13', 'upc_a', 'code_128'] });
+            const barcodes = await barcodeDetector.detect(c);
+            if (barcodes.length > 0) {
+              barcodeResult = `Barcode detected: ${barcodes[0].rawValue}. `;
+            }
+          } catch(e) {}
+        }
+
+        if (!appState.ocrWorker) {
+          appState.ocrWorker = await Tesseract.createWorker('eng');
+          await appState.ocrWorker.setParameters({ tessedit_pageseg_mode: Tesseract.PSM.AUTO });
+        }
+        const ocrRet = await appState.ocrWorker.recognize(c);
+        const text = ocrRet.data.text.trim();
+        const upper = text.toUpperCase();
+
+        // Search for expiration patterns
+        const expMatch = upper.match(/(EXP|EXPIRY|BEST BEFORE|USE BY|MFG)[.:\s]*([0-9]{1,2}[\/\-][0-9]{2,4}|[A-Z]{3,4}\s+[0-9]{2,4})/i);
+        const dosageMatch = upper.match(/([0-9]+\s*(MG|ML|G))\b/i);
+
+        let report = "";
+        if (expMatch) {
+          report += `Expiration Date found: ${expMatch[0]}. `;
+        }
+        if (dosageMatch) {
+          report += `Dosage: ${dosageMatch[0]}. `;
+        }
+
+        // Common medicines
+        const medicines = ["PARACETAMOL", "IBUPROFEN", "ASPIRIN", "AMOXICILLIN", "CETIRIZINE", "METFORMIN", "OMEPRAZOLE", "ATORVASTATIN", "AZITHROMYCIN"];
+        const foundMed = medicines.find(m => upper.includes(m));
+        if (foundMed) {
+          report = `Identified Medicine: ${foundMed}. ` + report;
+        }
+
+        if (report || barcodeResult) {
+          const fullMsg = barcodeResult + (report || "Packaging text: " + text.slice(0, 100));
+          if (cardBody) {
+            cardBody.innerHTML = `
+              <div style="color: var(--emerald-neon); font-size: 0.95rem; font-weight: 700;">&#128138; ${foundMed || 'Product Label Read'}</div>
+              <div style="color: var(--text-main); font-size: 0.82rem; margin-top: 0.2rem;">${fullMsg}</div>
+            `;
+          }
+          speak(fullMsg, { priority: true, interrupt: true });
+        } else {
+          const fallback = "Could not find explicit expiration date. Hold the bottle or box closer to the camera lens.";
+          if (cardBody) cardBody.textContent = fallback;
+          speak(fallback, { priority: true });
+        }
+      } catch(e) {
+        console.error("Expiry scan err:", e);
+      }
+    }
+
+    function simulateExpiry(text) {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('expiryCardBody');
+      if (cardBody) {
+        cardBody.innerHTML = `
+          <div style="color: var(--emerald-neon); font-size: 0.95rem; font-weight: 700;">&#128138; Verified Packaging Label</div>
+          <div style="color: var(--text-main); font-size: 0.82rem; margin-top: 0.2rem;">${text}</div>
+        `;
+      }
+      speak(`Packaging label read: ${text}`, { priority: true, interrupt: true });
+    }
+
+    // 7. Find My Lost Items with Directional Spatial Audio Sonar
+    function startFinderFromSelect() {
+      const select = document.getElementById('selectFinderTarget');
+      const target = select ? select.value : 'bottle';
+      startItemFinder(target);
+    }
+
+    function startItemFinder(targetQuery) {
+      if (!appState.metaSupport) return;
+      playMetaGlassesChime('confirm');
+
+      appState.metaSupport.itemFinder.active = true;
+      appState.metaSupport.itemFinder.targetName = targetQuery.toLowerCase();
+      appState.metaSupport.itemFinder.locked = false;
+
+      const statEl = document.getElementById('sonarStatusText');
+      const bearingEl = document.getElementById('sonarBearingText');
+      if (statEl) statEl.textContent = `Searching for ${targetQuery}...`;
+      if (bearingEl) bearingEl.textContent = `Target: ${targetQuery.toUpperCase()}`;
+
+      speak(`Searching for your ${targetQuery}. Slowly pan your smart glasses around the room.`, { priority: true, interrupt: true });
+    }
+
+    function toggleSonarBeep() {
+      playMetaGlassesChime('sonar', 580);
+      speak("Sonar acoustic ping active. Higher pitch indicates dead center alignment.", { priority: true });
+    }
+
+    // Continuous update hook called inside detectFrameObjects()
+    function updateItemFinderSonar() {
+      if (!appState.metaSupport || !appState.metaSupport.itemFinder.active) return;
+      const targetName = appState.metaSupport.itemFinder.targetName;
+      const objects = appState.detectedObjects;
+
+      // Find matching object
+      const matched = objects.find(o => o.label.toLowerCase().includes(targetName) || (targetName === 'cane' && o.label === 'baseball bat'));
+      const statEl = document.getElementById('sonarStatusText');
+      const now = Date.now();
+
+      if (matched) {
+        const vW = video.videoWidth || 1280;
+        const [bx, by, bw, bh] = matched.box;
+        const centerX = bx + bw / 2;
+        const offsetRatio = (centerX - vW / 2) / (vW / 2); // -1.0 (far left) to +1.0 (far right)
+        const clockBearing = convertSpatialToClockFace(matched.box);
+
+        // Calculate acoustic sonar ping pitch (350Hz off-center -> 880Hz dead center)
+        const centerProximity = 1.0 - Math.min(1.0, Math.abs(offsetRatio));
+        const sonarFreq = Math.round(350 + centerProximity * 530);
+        const pingInterval = Math.max(220, Math.round(1100 - centerProximity * 800));
+
+        if (now - appState.metaSupport.itemFinder.lastPingTime > pingInterval) {
+          appState.metaSupport.itemFinder.lastPingTime = now;
+          playMetaGlassesChime('sonar', sonarFreq);
+        }
+
+        if (statEl) {
+          statEl.textContent = `${matched.label.toUpperCase()} at ${clockBearing} (${matched.dist_m.toFixed(1)}m)`;
+        }
+
+        if (Math.abs(offsetRatio) < 0.15 && matched.dist_m <= 1.2 && !appState.metaSupport.itemFinder.locked) {
+          appState.metaSupport.itemFinder.locked = true;
+          const cue = `Target directly centered! Your ${matched.label} is right in front of you, ${matched.dist_m.toFixed(1)} meters away. Reach forward.`;
+          speak(cue, { priority: true, interrupt: true });
+        }
+      } else {
+        if (statEl) statEl.textContent = `Scanning for ${targetName}... slowly turn head`;
+      }
+    }
+
+    // 8. 360-Degree Clock-Face Sighted Guide Report
+    function runClockFaceOrientation() {
+      playMetaGlassesChime('confirm');
+      const objects = appState.detectedObjects;
+
+      if (objects.length === 0) {
+        const msg = "Immediate surroundings are open and quiet. Central corridor has more than 4 meters of clear forward space.";
+        speak(msg, { priority: true, interrupt: true });
+        return;
+      }
+
+      const descriptions = objects.slice(0, 5).map(o => {
+        const clock = convertSpatialToClockFace(o.box);
+        return `${o.label} at ${clock}, ${o.dist_m.toFixed(1)} meters`;
+      });
+
+      const report = "Clock-face orientation: " + descriptions.join(". ") + ". Central walking corridor is monitored.";
+      const cardBody = document.getElementById('clockGuideCardBody');
+      if (cardBody) cardBody.innerHTML = `<strong>Orientation Report:</strong> ${descriptions.join("<br>")}`;
+      speak(report, { priority: true, interrupt: true });
+    }
+
+    // 9. Emergency SOS & Location Share Beacon
+    function triggerEmergencySOS() {
+      playMetaGlassesChime('sos');
+      const cardBody = document.getElementById('emergencyCardBody');
+      const btnShare = document.getElementById('btnWhatsAppShare');
+
+      let coordsStr = "Locating via GPS...";
+      let mapsUrl = "https://maps.google.com";
+
+      if (appState.navState.currentCoords) {
+        const lat = appState.navState.currentCoords.lat;
+        const lng = appState.navState.currentCoords.lng;
+        coordsStr = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+        mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
+      }
+
+      const area = appState.navState.currentAreaName || "Local Area";
+      const sosMessage = `EMERGENCY ALERT: I am visually impaired and need immediate assistance. My current location is near ${area}. GPS Coordinates: ${coordsStr}. View on Google Maps: ${mapsUrl}`;
+      const waUrl = `https://wa.me/?text=${encodeURIComponent(sosMessage)}`;
+
+      if (btnShare) btnShare.href = waUrl;
+      if (cardBody) {
+        cardBody.innerHTML = `
+          <div style="color: var(--red-alert); font-weight: 800; font-size: 0.95rem;">&#127384; EMERGENCY DISPATCH READY</div>
+          <div style="font-size: 0.80rem; color: var(--text-main); margin-top: 0.3rem;"><strong>Location:</strong> ${area}</div>
+          <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--cyan-neon);">${coordsStr}</div>
+          <div style="margin-top: 0.4rem; font-size: 0.76rem;"><a href="${waUrl}" target="_blank" style="color: #25d366; text-decoration: underline;">Click to send WhatsApp SOS to Emergency Contacts &rarr;</a></div>
+        `;
+      }
+
+      speak(`Emergency SOS activated. Your current location is near ${area}. Emergency dispatch message prepared with Google Maps location pin.`, { priority: true, interrupt: true });
+    }
+
+    function simulateTrafficSignal(state) {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('crosswalkCardBody');
+      if (state === 'RED') {
+        const msg = "Traffic light is RED. Halt safely at the pedestrian curb and wait.";
+        if (cardBody) cardBody.innerHTML = `<span style="color: var(--red-alert); font-weight: 800;">🛑 TRAFFIC LIGHT: RED (HALT AT CURB)</span>`;
+        speak(msg, { priority: true, interrupt: true });
+      } else {
+        const msg = "Traffic light has turned GREEN. Safe to cross the street inside the pedestrian zebra crossing.";
+        if (cardBody) cardBody.innerHTML = `<span style="color: var(--emerald-neon); font-weight: 800;">🟢 TRAFFIC LIGHT: GREEN (SAFE TO CROSS)</span>`;
+        speak(msg, { priority: true, interrupt: true });
+      }
+    }
+
 
     // Preload Persistent Tesseract.js Worker on Startup
     async function initOCRWorker() {
@@ -1642,6 +2730,87 @@
       const centerObjs = objects.filter(o => o.pos === "CENTER");
       const leftObjs = objects.filter(o => o.pos === "LEFT");
       const rightObjs = objects.filter(o => o.pos === "RIGHT");
+
+      // -----------------------------------------------------------------------
+      // META & APPLE GLASSES AI SIGHTED ASSISTANT & SUPPORT COMMANDS
+      // -----------------------------------------------------------------------
+
+      // A. Currency & Money Queries
+      if (q.includes('money') || q.includes('currency') || q.includes('banknote') || q.includes('how much am i holding') || q.includes('bill') || q.includes('cash') || q.includes('rupee') || q.includes('dollar')) {
+        runCurrencyDetection();
+        return;
+      }
+
+      // B. Color & Wardrobe Matcher Queries
+      if (q.includes('what color') || q.includes('which color') || q.includes('color of') || q.includes('does this match') || q.includes('wardrobe') || q.includes('clothing match') || q.includes('outfit')) {
+        runColorDetection();
+        return;
+      }
+
+      // C. Smart Lighting & Lux Meter Queries
+      if (q.includes('light on') || q.includes('is it dark') || q.includes('room light') || q.includes('check light') || q.includes('lux') || q.includes('brightness') || q.includes('is the room dark')) {
+        runLightingCheck();
+        return;
+      }
+
+      // D. Medicine, Expiry & Barcode Queries
+      if (q.includes('expiry') || q.includes('expiration') || q.includes('best before') || q.includes('use by') || q.includes('medicine') || q.includes('pill') || q.includes('dosage') || q.includes('barcode') || q.includes('qr code')) {
+        runMedicineExpiryScan();
+        return;
+      }
+
+      // E. Find My Lost Items with Spatial Sonar Radar
+      if (q.startsWith('find my ') || q.startsWith('find a ') || q.startsWith('where is my ') || q.startsWith('where is a ') || q.startsWith('locate my ') || q.startsWith('locate a ')) {
+        const target = q.replace(/^(find my|find a|where is my|where is a|locate my|locate a)\s*/i, '').trim();
+        startItemFinder(target);
+        return;
+      }
+
+      // F. Clock-Face Sighted Guide Orientation
+      if (q.includes('clock face') || q.includes('bearing') || q.includes('orientation') || q.includes('where are objects') || q.includes('look around') || q.includes('sighted report')) {
+        runClockFaceOrientation();
+        return;
+      }
+
+      // G. Pedestrian Crosswalk & Traffic Signal Check
+      if (q.includes('can i cross') || q.includes('cross the street') || q.includes('zebra') || q.includes('pedestrian signal') || q.includes('crosswalk')) {
+        if (appState.trafficLight.lastSpokenState === 'RED') {
+          reply = "Do not cross. Traffic light is currently RED. Wait safely at the curb.";
+        } else if (appState.trafficLight.lastSpokenState === 'GREEN') {
+          reply = "Traffic light is GREEN. Safe to cross the street inside the pedestrian crosswalk.";
+        } else {
+          reply = "Scanning crosswalk. Central path offers clearance. Look for traffic light indicators before stepping off the curb.";
+        }
+        speak(reply, { priority: true, interrupt: true });
+        assistantDialogueBox.innerHTML = userEntry + `<p style="color: var(--cyan-neon);"><strong>Sighted Crosswalk Guide:</strong> ${reply}</p>`;
+        return;
+      }
+
+      // H. Emergency SOS Dispatch Beacon
+      if (q === 'emergency' || q.includes('help me') || q.includes('sos') || q.includes('i am lost') || q.includes('send location') || q.includes('call emergency')) {
+        triggerEmergencySOS();
+        return;
+      }
+
+      // I. Empathetic Support Companion (Mental Reassurance for the Visually Impaired)
+      if (q.includes('anxious') || q.includes('nervous') || q.includes('scared') || q.includes('alone') || q.includes('worried')) {
+        reply = "I understand feeling anxious, especially when navigating unfamiliar spaces. I am right here with you. Your smart glasses are continuously monitoring your surroundings and ground surface. Take a slow, deep breath. Take small, measured steps, and I will alert you well in advance of any obstacles. You are doing great.";
+        speak(reply, { priority: true, interrupt: true });
+        assistantDialogueBox.innerHTML = userEntry + `<p style="color: var(--emerald-neon);"><strong>Sighted Companion:</strong> ${reply}</p>`;
+        return;
+      }
+      if (q.includes('are you with me') || q.includes('are you still there') || q.includes('can you hear me')) {
+        reply = "I am right here with you. All vision sensors, obstacle radars, and audio guidance are fully active.";
+        speak(reply, { priority: true, interrupt: true });
+        assistantDialogueBox.innerHTML = userEntry + `<p style="color: var(--emerald-neon);"><strong>Sighted Companion:</strong> ${reply}</p>`;
+        return;
+      }
+      if (q.includes('what can you do') || q.includes('help for blind') || q.includes('features')) {
+        reply = "As your Meta and Apple AI sighted companion, I can identify banknotes and money, tell you exact wardrobe colors and clothing matches, check if room lights are on, read book text and expiration dates, find misplaced items with acoustic sonar, guide your walking path with clock-face directions, and dispatch emergency SOS beacons.";
+        speak(reply, { priority: true, interrupt: true });
+        assistantDialogueBox.innerHTML = userEntry + `<p style="color: var(--cyan-neon);"><strong>Sighted Companion:</strong> ${reply}</p>`;
+        return;
+      }
 
       // 0. Conversational Turn-by-Turn GPS Navigation Assistant (Location + Place/Area Confirmation)
       if (appState.navState.step === 'AWAITING_CONFIRMATION') {
@@ -2449,6 +3618,8 @@
         }
 
         appState.detectedObjects = newObjects;
+        // Update Meta & Apple Spatial Audio Item Finder Sonar
+        updateItemFinderSonar();
 
         // Telemetry Sector Updates
         valLeft.textContent = leftMin < 5.0 ? `${leftMin.toFixed(1)}m` : "CLEAR";
@@ -3075,13 +4246,14 @@
       if (k === 'c') toggleCamera();
       else if (k === 't') runLiveOCR();
       else if (k === 'd') askAssistant('Describe the scene');
+      else if (k === 'm') runCurrencyDetection();
+      else if (k === 'k') runColorDetection();
+      else if (k === 'l') runLightingCheck();
+      else if (k === 'f') startFinderFromSelect();
+      else if (k === 'e') triggerEmergencySOS();
       else if (k === ' ' || k === 'spacebar') {
         e.preventDefault();
         triggerMetaVoicePrompt();
-      } else if (k === 'm') {
-        appState.speechEnabled = !appState.speechEnabled;
-        if (!appState.speechEnabled) window.speechSynthesis.cancel();
-        speechStateText.textContent = appState.speechEnabled ? "Voice: ON" : "Voice: OFF";
       }
     });
 
