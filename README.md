@@ -1,148 +1,97 @@
-# 👓 Smart Glasses Assistive Vision & Sighted AI Support System
-### Meta & Apple Glasses Edge AI Companion for the Visually Impaired
+# 👓 Smart Glasses Assistive Vision & Sighted AI Companion (v2.0)
+### Next-Gen Meta & Apple Glasses Edge AI Companion for the Blind & Visually Impaired
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Netlify-00e5ff?style=for-the-badge&logo=netlify)](https://smartevaluationglasses.netlify.app/)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-00f0aa?style=for-the-badge&logo=github)](https://github.com/yghanasathyakarthik/Blind_SMart_Glasses)
-[![License: MIT](https://img.shields.io/badge/License-MIT-00f0aa?style=for-the-badge)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-ffb703?style=for-the-badge&logo=python)](https://python.org)
-[![TensorFlow.js](https://img.shields.io/badge/TensorFlow.js-4.17.0-ff3366?style=for-the-badge&logo=tensorflow)](https://js.tensorflow.org)
-
-An advanced, multi-modal assistive vision platform and 24/7 personal support system engineered for next-generation smart glasses (inspired by **Meta Ray-Ban Smart Glasses AI** and **Apple Visual Intelligence**). The system empowers visually impaired and blind individuals with real-time sensory augmentation, money reading, wardrobe color matching, ambient lighting detection, medication & expiry inspection, spatial audio sonar item tracking, clock-face mobility guidance, and an emergency SOS beacon.
+[![Client-Side Architecture](https://img.shields.io/badge/Edge%20AI-Zero%20Cloud%20Cost-10b981?style=for-the-badge)](https://smartevaluationglasses.netlify.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 ---
 
-## 🌟 Meta & Apple Glasses AI Sighted Support System
+## 🌟 Executive Overview
 
-### 1. 💵 Currency & Banknote Denomination Reader
-- **Multi-Currency Denomination Engine:** Recognizes Indian Rupees (₹10, ₹20, ₹50, ₹100, ₹200, ₹500, ₹2000), US Dollars ($1, $5, $10, $20, $50, $100), Euros (€5–€100), and British Pounds (£5–£50).
-- **Fraud & Error Prevention:** Reads currency text (e.g. *Reserve Bank of India*, *Federal Reserve Note*) combined with central colorimetry. Announces denomination and bill orientation clearly (*"You are holding a ₹500 banknote, note is right side up"*).
-- **Voice Trigger:** *"How much money am I holding?"*, *"Check money"* (or **Key M**).
+**Smart Glasses Assistive Vision v2.0** transforms standard hardware and webcams into a world-class, autonomous assistive vision wearable inspired by **Meta Ray-Ban Smart Glasses** and **Apple Visual Intelligence**.
 
-### 2. 🎨 Real-Time Color Detector & Wardrobe Harmony Matcher
-- **Central Reticle Colorimeter:** Samples camera center with high-precision RGB $\rightarrow$ HSL color transformation.
-- **36 Nuanced Natural Shades:** Detects Jet Black, Pure White, Deep Navy Blue, Charcoal Gray, Crimson Red, Dark Olive Green, Khaki, Chocolate Brown, etc.
-- **Blind Wardrobe Pairing Guide:** Automatically speaks styling advice (*"Deep Navy Blue. Pairs well with khaki trousers, white shirts, or beige."*).
-- **Voice Trigger:** *"What color is this?"*, *"What color is my shirt?"* (or **Key K**).
-
-### 3. 💡 Smart Lighting & Ambient Lux Monitor
-- **Real-Time Sensor Luminance (0%–100% Lux):** Solves the common problem of blind individuals not knowing if room lights are left on or if they are in total darkness.
-- **Categorized Awareness:**
-  - `0% - 14%`: *"Pitch Black / Room lights appear to be OFF."*
-  - `15% - 38%`: *"Dim ambient lighting."*
-  - `39% - 85%`: *"Optimal indoor lighting."*
-  - `> 85%`: *"Bright direct sunlight glare."*
-- **Voice Trigger:** *"Is the light on?"*, *"Is it dark in here?"* (or **Key L**).
-
-### 4. 💊 Medicine Dosage, Expiration & Barcode Inspector
-- **Pharmaceutical Scanner:** Identifies medicines and active ingredients (e.g. *Paracetamol 500mg*, *Ibuprofen*, *Amoxicillin*).
-- **Expiration Date Extractor:** Scans packaging for `EXP`, `BEST BEFORE`, and `USE BY` dates to prevent consuming expired goods.
-- **Native Barcode Detection:** Integrates browser `window.BarcodeDetector` to decode 1D/2D retail barcodes and QR codes.
-- **Voice Trigger:** *"Read expiration date"*, *"What medicine is this?"*.
-
-### 5. 🔍 Find My Lost Items with Spatial Audio Sonar Radar
-- **Misplaced Item Geolocation:** Helps users find misplaced white canes, phones, keys, water bottles, chairs, laptops, or mugs.
-- **Clock-Face Direction:** *"Water bottle is at 1 o'clock, 1.2 meters away."*
-- **Directional Acoustic Sonar Pulse:** Emits a Web Audio harmonic ping that rises in frequency (350Hz $\rightarrow$ 880Hz) and speeds up as the user's head turns toward dead center (*"Target dead center! Reach forward 0.7 meters."*).
-- **Voice Trigger:** *"Find my water bottle"*, *"Where is my phone?"* (or **Key F**).
-
-### 6. 🧭 Clock-Face Spatial Sighted Guide
-- **Universal Blind Mobility Standard:** Translates visual geometry into intuitive clock-face bearings:
-  - 12 o'clock: Directly ahead.
-  - 1–2 o'clock: Slightly right / right side.
-  - 10–11 o'clock: Slightly left / left side.
-  - 3 & 9 o'clock: Lateral flanks.
-- **Voice Trigger:** *"Give me a sighted report"*, *"Where are objects around me?"*.
-
-### 7. 🚸 Pedestrian Crosswalk & Traffic Signal Safety
-- **Zebra Stripe Pavement Engine:** Identifies high-contrast alternating ground stripes marking crosswalk zones.
-- **Autonomous Traffic Light Classifier:** Analyzes vertical lamp color (Top Red vs. Bottom Green) without prompting. Halts users at the curb on Red; alerts when Green to proceed.
-- **Voice Trigger:** *"Can I cross the street safely?"*, *"Traffic light status"*.
-
-### 8. 🆘 Emergency SOS & GPS Dispatch Beacon
-- **Instant Safety Protocol:** Immediately captures high-accuracy GPS coordinates and reverse-geocodes street address and city.
-- **One-Touch Emergency Link:** Generates ready-to-dispatch WhatsApp & SMS alerts with Google Maps pin:
-  `EMERGENCY ALERT: I am visually impaired and need assistance. My current location is: [Address] https://maps.google.com/?q=lat,lng`
-- **Voice Trigger:** *"Emergency"*, *"Help me"*, *"SOS"* (or **Key E**).
-
-### 9. 🤝 24/7 Empathetic Personal Support Companion
-- **Anxiety & Emotional Reassurance:** Provides calm, grounded comfort when walking in high-stress or unfamiliar environments:
-  > *"I understand feeling anxious. I am right here with you. Your smart glasses are continuously monitoring your surroundings and ground surface. Take slow, measured steps; I will alert you well in advance of any obstacles. You are doing great."*
+The system replaces legacy, cluttered academic layouts with a **streamlined, clutter-free glassmorphic cockpit** divided into **5 accessible top-level tabs**, ensuring visually impaired users and academic examiners enjoy an effortless, high-precision experience.
 
 ---
 
-## 🔬 8 PhD Research Modules
+## 🧭 The 5 Dedicated Accessible Spaces
 
-| Module | Designation | Architecture / Model | Primary Function |
-|---|---|---|---|
-| **M1** | Object Detection | MobileNetV2 / COCO-SSD | Real-time object localization & multi-class classification |
-| **M2** | Outdoor Navigation | BDD100K Fine-Tuned YOLOv8 | Roadway scene understanding & vehicle hazard vectors |
-| **M3** | Depth & Spatial Radar | Metric Gradient + Thermal Radar | Distance estimation & 360° radial sector clearance |
-| **M4** | Scene Recognition | Places365 ResNet-18 | Indoor / outdoor contextual topological classification |
-| **M5** | Storytelling & Captioning | VizWiz / BLIP Vision-Language | Comprehensive natural scene narrative generation |
-| **M6** | Assistive OCR | Android ML Kit + Tesseract.js | Real-time full-frame book & document reading |
-| **M7** | GPS Navigation | Nominatim + OSRM Foot Engine | Reverse geocoding & turn-by-turn walking routing |
-| **M8** | Dynamic Priority Engine | Mathematical $f_{\text{risk}}$ Model | Multi-threat arbitration & directional evasion routing |
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│                       SMART GLASSES ASSISTIVE VISION & AI COMPANION                         │
+│  [👓 Vision & Radar]  [⚡ Blind Daily Tools]  [📖 Slow Book Reader]  [📝 Task & Memory]  [🎓 PhD Studio] │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 1. 👓 Vision & Radar Cockpit
+* **Dual Live HUD & 360° Radar:** Real-time object bounding boxes with calibrated pin-hole metric distance estimation ($0.35\text{m} - 8.0\text{m}$) and peripheral clock positions (`LEFT`, `CENTER`, `RIGHT`).
+* **Directional Clearance & Evasion Vector:** Continuously assesses lateral corridor space and recommends the safest escape route (`STEP RIGHT`, `STEP LEFT`, `PATH CLEAR`).
+* **Meta Voice Orb Visualizer:** Pulsing multi-state orb indicating listening, thinking, and speaking states.
+* **Autonomous Crosswalk & Traffic Light AI:** Autonomously inspects traffic lights in the camera view; warns if RED (`"Traffic light is RED. Halt at curb."`) and immediately announces when it switches to GREEN (`"Traffic light turned GREEN! Crosswalk clear, you may proceed."`).
+
+### 2. ⚡ Blind Daily Living Tools
+* **Real-Time Currency Scanner:** Recognizes USD ($1, $5, $10, $20, $50, $100), Indian Rupees (₹10, ₹20, ₹50, ₹100, ₹200, ₹500), Euros, GBP, and Yen using OCR + color histogram validation.
+* **Wardrobe Colorimeter:** Samples central garment colors and speaks exact shade names (Navy Blue, Crimson Red, Charcoal, Emerald Green) for independent dressing and outfit matching.
+* **Ambient Lux Lighting Detector:** Measures ambient lumen levels and alerts the user if the room is pitch dark, dimly lit, well-lit, or glaringly overexposed.
+* **Audio Clock-Face Spatial Compass:** Converts spatial obstacle coordinates into standard clock positions (*"Water bottle at 2 o'clock, 1.2 meters"*).
+* **1-Touch Emergency SOS Siren & Beacon:** Flashes visual strobe, sounds a 900Hz piercing beacon, and broadcasts GPS coordinates.
+
+### 3. 📖 Articulate Slow Book & Document Reader
+* **User-Requested Pacing:** Reads books, letters, menus, and medicine labels **slowly and clearly** at $0.82\times - 0.88\times$ rate so visually impaired individuals can comfortably absorb and understand every word.
+* **Natural Breath Pauses:** Inserts $450\text{ms}$ acoustic breath pauses between sentences.
+* **Sentence Karaoke Highlighting:** Visually tracks the active sentence in real time.
+* **Accessible Audio Controls:** Full voice and touch controls (`Play`, `Pause`, `Resume`, `Stop`, `Next`, `Previous`, `Speed Toggle`).
+
+### 4. 📝 Task & Spatial Memory Hub
+* **Voice-Driven Task Checklist:** Enables users to manage daily tasks hands-free (*"Add task take morning medicine"*, *"Mark task 1 as done"*, *"What are my tasks?"*).
+* **Spatial Item Memory Engine:** Solves common misplacement challenges for visually impaired users. Users can speak *"Remember my white cane is beside the front door"* or *"Remember my wallet is on the dining table"*, and later ask *"Where did I leave my cane?"* or *"Where is my wallet?"* to retrieve the stored location instantly from persistent `localStorage`.
+
+### 5. 🎓 PhD Research Studio
+* Houses the complete academic evaluation platform for faculty examiners and peer reviewers:
+  * **Module 1:** Multi-Dataset Object Detection (MS-COCO SSD MobileNet v2)
+  * **Module 2:** Autonomous Driving & Transit Semantics (BDD100K)
+  * **Module 3:** Low-Elevation Trip Hazards (Mapillary Vistas)
+  * **Module 4:** Scene & Context Recognition (MIT Places365 ResNet-18)
+  * **Module 5:** Captioning & Dense Narrative Synthesis (Salesforce BLIP)
+  * **Module 6:** Assistive Optical Character Recognition (Tesseract.js & Android ML Kit)
+  * **Module 7:** Geospatial Positioning & Orientation (GPS & OSM Nominatim)
+  * **Module 8:** Multi-Tier Hazard Prioritization Engine
+  * Includes LaTeX mathematical models, spatial clearance formulas, and benchmark comparisons.
 
 ---
 
-## ⌨️ Accessibility Hotkeys
+## 🛠️ Critical Engineering Fixes in v2.0
 
-| Hotkey | Function | Voice Feedback |
+| Issue | Root Cause | Solution Implemented |
 |---|---|---|
-| **Spacebar** | Push-to-Talk Meta Glasses Voice Input | Harmonic Ascending Chime + Listening |
-| **Key M** | Currency & Banknote Denomination Reader | Scans & speaks denomination (₹ / $ / € / £) |
-| **Key K** | Color Detector & Wardrobe Matcher | Identifies exact shade + clothing pairing |
-| **Key L** | Smart Lighting & Lux Meter | Speaks room brightness & light switch status |
-| **Key F** | Find My Lost Items with Spatial Sonar | Starts directional acoustic sonar radar |
-| **Key E** | Emergency SOS Dispatch Beacon | Siren tone + emergency location dispatch |
-| **Key T** | Read Document / Book (OCR) | Scans text across entire camera frame |
-| **Key D** | Comprehensive Scene Description | Generates natural environmental narrative |
-| **Key C** | Start / Stop Real Camera | Camera state toggle |
+| **False-Positive Pothole Alert** | Dark shirts, torsos, and shadows in webcam view were evaluated by floor heuristics. | Added strict human/indoor occlusion guard (`hasPersonOrIndoor`). Road hazards are strictly limited to outdoor navigation modes and require high background asphalt brightness ($>75$) and dense cavity contrast ($>85$). |
+| **Voice Assistant Echo Feedback** | Speech recognition picked up the glasses' own speaker audio. | Implemented **Echo Guard** (`appState.isSpeaking`), muting microphone input during speech output, plus automatic 350ms restart resilience on Chrome/Edge. |
+| **Rushed Book Reading** | Standard TTS rates (1.0x - 1.2x) were too fast for cognitive comprehension of printed text. | Built a dedicated Slow Book Reader with sentence splitting, $0.82\times$ pace, $450\text{ms}$ breath intervals, and sentence highlighting. |
+| **Cluttered Monolithic UI** | All 8 academic modules, support cards, HUD, and sandboxes were stacked on one long page. | Refactored into 5 dedicated top-level accessible tabs with high-contrast keyboard navigation (`c` camera, `t` text, `d` describe, `space` voice prompt). |
+| **Navigation Confirmation** | Users needed multi-turn confirmation to avoid wrong routes. | Added conversational destination dialog: Target Place $\rightarrow$ Area/District Prompt $\rightarrow$ User Confirmation $\rightarrow$ Active Route Guidance. |
 
 ---
 
-## 📁 Repository Structure
+## 🚀 Live Deployment & Local Setup
 
-```text
-├── index.html                   # Master single-file web application & PhD portal (210 KB)
-├── deploy_site/                 # Production distribution build (ready for Netlify deployment)
-│   ├── index.html
-│   ├── favicon.ico
-│   └── Smart_Glasses_Assistive_Vision_Comprehensive_Project_Report.docx
-├── smart_glasses_live_hud.py    # Desktop OpenCV Python HUD & testing runner
-├── test_module_8.py             # Unit tests for Module 8 Priority Engine
-├── verify_js.py                 # Node.js syntax & compilation validation script
-├── LIVE_TESTING_GUIDE.md        # Comprehensive faculty & field evaluation manual
-├── resnet18_places365.pth.tar   # Places365 scene recognition model weights
-├── yolov8n.pt                   # YOLOv8 nano object detection model weights
-└── Smart_Glasses_Comprehensive_Project_Report.docx # Academic thesis & evaluation documentation
-```
+### Live Production URL
+The project is deployed and live at: **[https://smartevaluationglasses.netlify.app/](https://smartevaluationglasses.netlify.app/)**
 
----
-
-## 🚀 Quick Start
-
-### 1. Run Live Web Portal Locally
-No server setup required. Run any static HTTP server:
+### Local Run
+Simply open `index.html` in any modern web browser (Google Chrome, Microsoft Edge, Brave) supporting WebRTC and Web Speech API:
 ```bash
-python -m http.server 8000
-```
-Open `http://localhost:8000/` in Google Chrome or any modern browser.
+# Clone the repository
+git clone https://github.com/yghanasathyakarthik/Blind_SMart_Glasses.git
+cd Blind_SMart_Glasses
 
-### 2. Verify JavaScript Syntax
-```bash
-python verify_js.py
+# Run a lightweight local server (or open index.html directly)
+python -m http.server 8080
+# Visit http://localhost:8080 in your browser
 ```
 
 ---
 
-## 🌐 Live Deployment
-The web portal is continuously hosted on Netlify:
-👉 **[https://smartevaluationglasses.netlify.app/](https://smartevaluationglasses.netlify.app/)**
-
----
-
-## 👨‍💻 Author
-**Y. Ghana Sathya Karthik**  
-Email: [yendlurighanasathyakarthik@gmail.com](mailto:yendlurighanasathyakarthik@gmail.com)  
-GitHub: [@yghanasathyakarthik](https://github.com/yghanasathyakarthik)
+## 📄 License
+This project is open-source under the MIT License.

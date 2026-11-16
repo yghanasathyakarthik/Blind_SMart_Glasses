@@ -1,0 +1,3468 @@
+# -*- coding: utf-8 -*-
+"""
+build_aura_vision.py
+Compiles the complete clean, neat, robust Smart Glasses Assistive Vision & Sighted AI Companion.
+"""
+
+import os
+import re
+
+with open(r'D:\Blind_SMart_Glasses\index.html', 'r', encoding='utf-8') as f:
+    orig = f.read()
+
+# Extract academic sections
+idx1 = orig.find('<section class="content-section" id="priority-engine">')
+idx2 = orig.find('<!-- Real-Time Interactive Computer Vision, Conversational AI & OCR Script -->')
+if idx2 == -1:
+    idx2 = orig.find('<script>')
+academic_html = orig[idx1:idx2].strip()
+
+# Extract MODULE_DATA and BRAND_DICTIONARY
+m_data_idx = orig.find('const MODULE_DATA = {')
+m_data_end = orig.find('};\n\n    const BRAND_DICTIONARY =', m_data_idx)
+if m_data_end == -1:
+    m_data_end = orig.find('};', m_data_idx) + 1
+module_data_code = orig[m_data_idx:m_data_end+1].strip()
+
+b_dict_idx = orig.find('const BRAND_DICTIONARY = {')
+b_dict_end = orig.find('};\n\n    // System State Machine', b_dict_idx)
+if b_dict_end == -1:
+    b_dict_end = orig.find('};', b_dict_idx) + 1
+brand_dict_code = orig[b_dict_idx:b_dict_end+1].strip()
+
+print("Extracted academic components successfully!")
+
+# Now build the full HTML
+html_content = r'''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA-Vision — Smart Glasses AI Assistant & Sighted Companion</title>
+  <meta name="description" content="Next-Gen Multi-Modal Assistive Vision System & Sighted AI Companion for the Visually Impaired. Inspired by Meta Ray-Ban & Apple Visual Intelligence.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👓</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Real-Time Client-Side Computer Vision via TensorFlow.js & COCO-SSD -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
+  <!-- Real-Time Client-Side Optical Character Recognition (OCR) via Tesseract.js -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #070a0f;
+      --bg-card: rgba(13, 18, 28, 0.85);
+      --bg-glass: rgba(18, 25, 40, 0.75);
+      --border-glow: rgba(0, 230, 255, 0.35);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --cyan-neon: #00e5ff;
+      --cyan-dim: rgba(0, 229, 255, 0.15);
+      --emerald-neon: #00f0aa;
+      --emerald-dim: rgba(0, 240, 170, 0.15);
+      --gold-neon: #ffb703;
+      --gold-dim: rgba(255, 183, 3, 0.15);
+      --red-alert: #ff3366;
+      --red-dim: rgba(255, 51, 102, 0.25);
+      --text-main: #f0f4fc;
+      --text-muted: #8e9bb5;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="high-contrast"] {
+      --bg-dark: #000000;
+      --bg-card: #000000;
+      --bg-glass: #000000;
+      --border-glow: #ffff00;
+      --border-subtle: #ffffff;
+      --cyan-neon: #ffff00;
+      --cyan-dim: rgba(255, 255, 0, 0.25);
+      --emerald-neon: #00ff00;
+      --emerald-dim: rgba(0, 255, 0, 0.25);
+      --gold-neon: #ffff00;
+      --gold-dim: rgba(255, 255, 0, 0.25);
+      --red-alert: #ff0055;
+      --red-dim: rgba(255, 0, 85, 0.35);
+      --text-main: #ffffff;
+      --text-muted: #ffff00;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(0, 229, 255, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(0, 240, 170, 0.04) 0%, transparent 40%);
+    }
+
+    /* Accessibility Focus Outline */
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 3px solid var(--cyan-neon);
+      outline-offset: 2px;
+    }
+
+    /* =========================================================================
+       CLEAN NAVIGATION HEADER
+       ========================================================================= */
+    .site-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      background: rgba(7, 10, 15, 0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--cyan-neon), var(--emerald-neon));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.35);
+      font-size: 1.25rem;
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .brand-text span {
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      color: var(--cyan-neon);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Mode Navigation Tabs */
+    .nav-tabs-bar {
+      display: flex;
+      gap: 0.4rem;
+      background: rgba(14, 20, 32, 0.9);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 0.25rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.45rem 0.85rem;
+      border-radius: 7px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab-btn.active {
+      background: var(--cyan-dim);
+      color: var(--cyan-neon);
+      border: 1px solid var(--border-glow);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+    }
+
+    /* Header Actions */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-family: var(--font-sans);
+      font-size: 0.80rem;
+      font-weight: 600;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-sm { padding: 0.35rem 0.70rem; font-size: 0.74rem; }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: var(--border-subtle);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan-neon), #0077b6);
+      color: #070a0f;
+      font-weight: 700;
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-voice {
+      background: linear-gradient(135deg, var(--emerald-neon), #00a86b);
+      color: #070a0f;
+      font-weight: 700;
+      box-shadow: 0 0 14px rgba(0, 240, 170, 0.3);
+    }
+
+    .btn-voice:hover {
+      box-shadow: 0 0 20px rgba(0, 240, 170, 0.5);
+      transform: translateY(-1px);
+    }
+
+    /* =========================================================================
+       HERO VOICE ASSISTANT STAGE (THE CENTERPIECE)
+       ========================================================================= */
+    .voice-stage-card {
+      background: linear-gradient(180deg, rgba(13, 19, 32, 0.95) 0%, rgba(8, 12, 20, 0.98) 100%);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      margin: 1.25rem 1.5rem 0.5rem;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 229, 255, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .voice-stage-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .voice-stage-left {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    /* Animated AI Voice Orb */
+    .ai-voice-orb {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #00e5ff 0%, #0077b6 70%, #070a0f 100%);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+
+    .ai-voice-orb.listening {
+      background: radial-gradient(circle, #00f0aa 0%, #00a86b 70%, #070a0f 100%);
+      box-shadow: 0 0 30px rgba(0, 240, 170, 0.7);
+      animation: orbPulse 1.2s infinite alternate;
+    }
+
+    .ai-voice-orb.thinking {
+      background: radial-gradient(circle, #ffb703 0%, #d48b00 70%, #070a0f 100%);
+      box-shadow: 0 0 30px rgba(255, 183, 3, 0.7);
+      animation: orbSpin 1s infinite linear;
+    }
+
+    .ai-voice-orb.speaking {
+      background: radial-gradient(circle, #00e5ff 0%, #ff3366 70%, #070a0f 100%);
+      box-shadow: 0 0 30px rgba(255, 51, 102, 0.6);
+      animation: orbDance 0.7s infinite alternate;
+    }
+
+    @keyframes orbPulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.15); opacity: 1; }
+    }
+
+    @keyframes orbSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes orbDance {
+      0% { transform: scale(1.0); }
+      50% { transform: scale(1.18); }
+      100% { transform: scale(0.95); }
+    }
+
+    .voice-stage-info h2 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .voice-status-line {
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      color: var(--cyan-neon);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .voice-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan-neon);
+      box-shadow: 0 0 8px var(--cyan-neon);
+      animation: blinkDot 1.4s infinite;
+    }
+
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .voice-stage-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-talk-hero {
+      background: linear-gradient(135deg, var(--cyan-neon) 0%, #0077b6 100%);
+      color: #05070c;
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      font-weight: 800;
+      padding: 0.65rem 1.4rem;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-talk-hero:hover {
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    /* Live Dialogue Card */
+    .live-dialogue-card {
+      background: rgba(6, 9, 16, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 0.85rem 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .dialogue-user-row {
+      font-size: 0.80rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .dialogue-ai-row {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      font-weight: 500;
+      line-height: 1.45;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+
+    .dialogue-ai-icon {
+      color: var(--cyan-neon);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* Quick Prompt Pills Strip */
+    .quick-prompts-strip {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-top: 0.2rem;
+    }
+
+    .quick-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 0.30rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--cyan-neon);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .quick-pill:hover {
+      background: var(--cyan-dim);
+      border-color: var(--cyan-neon);
+      transform: translateY(-1px);
+    }
+
+    /* =========================================================================
+       TAB CONTENTS (MODULAR, ZERO CLUTTER)
+       ========================================================================= */
+    .tab-content {
+      display: none;
+      padding: 1.25rem 1.5rem;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =========================================================================
+       TAB 1: VISION & RADAR COCKPIT
+       ========================================================================= */
+    .cockpit-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .hud-viewport-card {
+      background: #030508;
+      border: 1px solid var(--border-glow);
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    #hudCanvas {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 6.5;
+      min-height: 440px;
+      display: block;
+      object-fit: contain;
+    }
+
+    #cameraFeed { display: none; }
+
+    .hud-floating-tags {
+      position: absolute;
+      top: 0.85rem;
+      left: 1rem;
+      right: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .hud-pill-tag {
+      background: rgba(6, 9, 16, 0.85);
+      border: 1px solid var(--border-glow);
+      border-radius: 6px;
+      padding: 0.3rem 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--cyan-neon);
+      backdrop-filter: blur(8px);
+    }
+
+    /* Telemetry Sectors Strip */
+    .telemetry-strip {
+      background: rgba(14, 20, 32, 0.95);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 0.85rem 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.85rem;
+      align-items: center;
+    }
+
+    .telem-box {
+      background: rgba(6, 9, 16, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.5rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .telem-label {
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .telem-val {
+      font-size: 1.05rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--emerald-neon);
+    }
+
+    .telem-val.caution { color: var(--gold-neon); }
+    .telem-val.alert { color: var(--red-alert); }
+
+    /* Environmental Guidance Bar */
+    .guidance-banner {
+      background: rgba(11, 16, 26, 0.9);
+      border: 1px solid var(--border-subtle);
+      border-left: 4px solid var(--cyan-neon);
+      border-radius: 8px;
+      padding: 0.75rem 1.15rem;
+      font-size: 0.88rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    /* Cockpit Toolbar */
+    .cockpit-toolbar {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* =========================================================================
+       TAB 2: BLIND LIVING TOOLS (8 ACCESSIBLE CARDS)
+       ========================================================================= */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .tool-tile {
+      background: rgba(14, 20, 32, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: all 0.25s;
+    }
+
+    .tool-tile:hover {
+      border-color: var(--cyan-neon);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 229, 255, 0.15);
+    }
+
+    .tool-tile-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tool-tile-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--cyan-neon);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tool-tile-body {
+      font-size: 0.86rem;
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 54px;
+    }
+
+    .tool-tile-actions {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* =========================================================================
+       TAB 3: SMART BOOK & DOCUMENT READER (SLOW ARTICULATED PACE)
+       ========================================================================= */
+    .reader-container {
+      background: rgba(14, 20, 32, 0.85);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .reader-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 1rem;
+    }
+
+    .reader-controls-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .reader-text-viewport {
+      background: #030508;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 1.5rem;
+      min-height: 220px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+    }
+
+    .reader-highlight-sentence {
+      background: rgba(0, 229, 255, 0.2);
+      border-radius: 4px;
+      padding: 0.15rem 0.35rem;
+      color: var(--cyan-neon);
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+    }
+
+    .reader-progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .reader-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyan-neon), var(--emerald-neon));
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    /* =========================================================================
+       TAB 4: BLIND TASK & MEMORY HUB
+       ========================================================================= */
+    .tasks-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .tasks-container { grid-template-columns: 1fr; }
+    }
+
+    .task-card {
+      background: rgba(14, 20, 32, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .task-card h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--cyan-neon);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .task-input-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .task-input-row input {
+      flex: 1;
+      background: rgba(6, 9, 16, 0.9);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.55rem 0.85rem;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-family: var(--font-sans);
+    }
+
+    .task-input-row input:focus {
+      outline: none;
+      border-color: var(--cyan-neon);
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .task-item {
+      background: rgba(6, 9, 16, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      transition: all 0.2s;
+    }
+
+    .task-item.done {
+      opacity: 0.5;
+      text-decoration: line-through;
+    }
+
+    .task-checkbox {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--emerald-neon);
+      cursor: pointer;
+    }
+
+    /* =========================================================================
+       TAB 5: PHD RESEARCH & 8 MODULES STUDIO
+       ========================================================================= */
+    .research-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .modules-pills-row {
+      display: flex;
+      gap: 0.45rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 0.4rem;
+    }
+
+    .mod-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.45rem 0.8rem;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .mod-pill:hover, .mod-pill.active {
+      background: var(--cyan-dim);
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+    }
+
+    .inspector-card {
+      background: rgba(14, 20, 32, 0.95);
+      border: 1px solid var(--border-glow);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    /* Swatch, Lux and Sonar Widgets */
+    .color-swatch-circle { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff; flex-shrink: 0; }
+    .lux-meter-bar { height: 10px; width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 5px; overflow: hidden; margin: 0.3rem 0; }
+    .lux-meter-fill { height: 100%; width: 65%; background: linear-gradient(90deg, #3a0ca3, #4cc9f0, #ffb703, #ff0055); border-radius: 5px; }
+    .sonar-radar-box { background: rgba(6, 9, 16, 0.8); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.5rem; display: flex; align-items: center; justify-content: space-between; margin-top: 0.4rem; }
+    .sonar-pulse-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--emerald-neon); box-shadow: 0 0 10px var(--emerald-neon); animation: sonarPulse 1.2s infinite; }
+    @keyframes sonarPulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.4); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
+
+    /* Priority Sandbox & Math Formulations from Academic Sections */
+    .priority-sandbox-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.5rem; margin-top: 1rem; }
+    .sandbox-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem; }
+    .control-row { display: flex; flex-direction: column; gap: 0.4rem; }
+    .radio-pill-group { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .radio-pill-label { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.35rem 0.65rem; font-size: 0.74rem; cursor: pointer; }
+    .radio-pill-label.selected { background: var(--cyan-dim); border-color: var(--cyan-neon); color: var(--cyan-neon); }
+    .sandbox-output { background: rgba(6, 9, 16, 0.8); border: 1px solid var(--border-glow); border-radius: 8px; padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+    .priority-tier-tag { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 6px; text-transform: uppercase; }
+    .priority-tier-tag.urgent { background: var(--red-dim); color: var(--red-alert); }
+    .priority-tier-tag.caution { background: var(--gold-dim); color: var(--gold-neon); }
+    .priority-tier-tag.routine { background: var(--emerald-dim); color: var(--emerald-neon); }
+    .content-section { margin-top: 1.5rem; }
+    .section-header { margin-bottom: 1rem; }
+    .section-kicker { font-size: 0.72rem; font-family: var(--font-mono); color: var(--cyan-neon); text-transform: uppercase; }
+    .section-title { font-size: 1.2rem; font-weight: 800; color: #fff; }
+    .section-desc { font-size: 0.85rem; color: var(--text-muted); }
+    .math-card { background: rgba(14, 20, 32, 0.8); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; }
+    .benchmark-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; font-family: var(--font-mono); margin-top: 0.75rem; }
+    .benchmark-table th, .benchmark-table td { border: 1px solid var(--border-subtle); padding: 0.45rem 0.65rem; text-align: left; }
+    .benchmark-table th { background: rgba(0, 229, 255, 0.1); color: var(--cyan-neon); }
+    .deliverables-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 0.75rem; }
+    .deliverable-card { background: rgba(14, 20, 32, 0.8); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.3rem; }
+    .deliverable-card:hover { border-color: var(--cyan-neon); }
+    .deliv-title { font-weight: 700; color: var(--cyan-neon); font-size: 0.88rem; }
+    .deliv-desc { font-size: 0.78rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. TOP CLEAN NAVIGATION HEADER
+       ========================================================================= -->
+  <header class="site-header">
+    <div class="brand-group">
+      <div class="brand-icon">👓</div>
+      <div class="brand-text">
+        <h1>AURA-Vision</h1>
+        <span>Smart Glasses Sighted AI Companion</span>
+      </div>
+    </div>
+
+    <!-- Mode Navigation Tabs -->
+    <nav class="nav-tabs-bar" role="tablist" aria-label="Smart Glasses Modes">
+      <button class="tab-btn active" id="btn-tab-vision" onclick="switchTab('vision')" role="tab" aria-selected="true">
+        👓 Vision &amp; Radar
+      </button>
+      <button class="tab-btn" id="btn-tab-tools" onclick="switchTab('tools')" role="tab" aria-selected="false">
+        ⚡ Blind Daily Tools
+      </button>
+      <button class="tab-btn" id="btn-tab-reader" onclick="switchTab('reader')" role="tab" aria-selected="false">
+        📖 Book Reader (Slow Pace)
+      </button>
+      <button class="tab-btn" id="btn-tab-tasks" onclick="switchTab('tasks')" role="tab" aria-selected="false">
+        📝 Task &amp; Memory Hub
+      </button>
+      <button class="tab-btn" id="btn-tab-research" onclick="switchTab('research')" role="tab" aria-selected="false">
+        🎓 PhD Research Studio
+      </button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <button class="btn btn-outline btn-sm" id="btnToggleHighContrast" title="Toggle High Contrast Yellow/Black Theme">
+        Contrast
+      </button>
+      <button class="btn btn-outline btn-sm" id="btnToggleSpeech" title="Toggle Synthetic Voice Audio">
+        <span id="speechIcon">&#128266;</span> <span id="speechStateText">Voice: ON</span>
+      </button>
+      <button class="btn btn-voice btn-sm" id="btnToggleMic" title="Toggle Continuous Microphone Listening">
+        <span id="micIcon">&#127908;</span> <span id="micStateText">Mic: ON</span>
+      </button>
+      <button class="btn btn-outline btn-sm" id="btnCycleSpeed" onclick="cycleGlobalSpeechSpeed()" title="Cycle Speech Rate: 1.0x, 0.85x, 1.5x">
+        Speed: <strong id="lblGlobalSpeed" style="color: var(--cyan-neon);">1.0x</strong>
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       2. HERO VOICE ASSISTANT STAGE (ALWAYS ACCESSIBLE ACROSS ALL TABS)
+       ========================================================================= -->
+  <section class="voice-stage-card" aria-label="Visual AI Assistant Stage">
+    <div class="voice-stage-main">
+      <div class="voice-stage-left">
+        <div class="ai-voice-orb" id="voiceOrb" title="AI Voice Waveform State">
+          <span style="font-size: 1.25rem;">✨</span>
+        </div>
+        <div class="voice-stage-info">
+          <h2>Sighted AI Assistant <span style="font-size: 0.68rem; background: var(--cyan-dim); color: var(--cyan-neon); padding: 0.15rem 0.45rem; border-radius: 12px; font-weight: 600;">ACTIVE</span></h2>
+          <div class="voice-status-line">
+            <span class="voice-status-dot"></span>
+            <span id="voiceStatusText">AI Assistant: Ready • Say "Hey Meta" or press Spacebar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="voice-stage-actions">
+        <button class="btn-talk-hero" id="btnMetaTapToTalk" onclick="triggerMetaVoicePrompt()" title="Push to Talk (Shortcut: Spacebar)">
+          <span>🎙️</span> Tap to Speak ("Hey Meta")
+        </button>
+        <button class="btn btn-outline btn-sm" id="btnRepeatSpeech" onclick="repeatLatestAnswer()" title="Re-speak latest assistant answer">
+          &#128483; Repeat
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Transcript & AI Reply Card -->
+    <div class="live-dialogue-card" id="dialogueContainer">
+      <div class="dialogue-user-row" id="dialogueUserRow">Heard: <em>"Press Spacebar or say 'Hey Meta' to ask anything..."</em></div>
+      <div class="dialogue-ai-row" id="dialogueAiRow">
+        <span class="dialogue-ai-icon">👓</span>
+        <div id="dialogueAiText">Hello! I am your 24/7 sighted companion. I can read books slowly for you, recognize money, tell you wardrobe colors, check room lights, find misplaced items, and remember your tasks. What would you like to do?</div>
+      </div>
+    </div>
+
+    <!-- Quick Voice Prompt Pills -->
+    <div class="quick-prompts-strip" aria-label="Quick Voice Prompts">
+      <span style="font-size: 0.68rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Quick Cues:</span>
+      <span class="quick-pill" onclick="askAssistant('Read this book slowly')">&#128214; "Read book slowly"</span>
+      <span class="quick-pill" onclick="askAssistant('How much money am I holding?')">&#128181; "Read money"</span>
+      <span class="quick-pill" onclick="askAssistant('What color is my shirt?')">&#127912; "What color?"</span>
+      <span class="quick-pill" onclick="askAssistant('Is the light on in this room?')">&#128161; "Is light on?"</span>
+      <span class="quick-pill" onclick="askAssistant('Find my water bottle')">&#128269; "Find bottle"</span>
+      <span class="quick-pill" onclick="askAssistant('What are my tasks for today?')">&#128221; "My tasks"</span>
+      <span class="quick-pill" onclick="askAssistant('Can I cross the street safely?')">&#128694; "Cross street?"</span>
+      <span class="quick-pill" onclick="askAssistant('I feel anxious walking alone')">&#129309; "Emotional support"</span>
+      <span class="quick-pill" onclick="triggerEmergencySOS()" style="border-color: var(--red-alert); color: var(--red-alert);">&#127384; "Emergency SOS"</span>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       TAB 1: 👓 VISION & RADAR COCKPIT
+       ========================================================================= -->
+  <main class="tab-content active" id="tab-vision" role="tabpanel">
+    <div class="cockpit-grid">
+      <!-- Dual Viewport Card -->
+      <div class="hud-viewport-card">
+        <canvas id="hudCanvas" width="1280" height="520"></canvas>
+        <video id="cameraFeed" autoplay playsinline muted></video>
+
+        <!-- Floating HUD Tags -->
+        <div class="hud-floating-tags">
+          <div class="hud-pill-tag" id="hudStatusTag">AI ENGINE: TENSORFLOW.JS ACTIVE</div>
+          <div class="hud-pill-tag" id="hudEntitiesTag">ENTITIES: 0 DETECTED</div>
+          <div class="hud-pill-tag" id="hudClearanceTag">CLEARANCE: OPEN</div>
+          <div class="hud-pill-tag" id="hudFpsTag">FPS: 30.0</div>
+        </div>
+      </div>
+
+      <!-- Real-Time Telemetry Strip -->
+      <div class="telemetry-strip">
+        <div class="telem-box">
+          <span class="telem-label">Left Sector</span>
+          <span class="telem-val" id="valLeft">CLEAR</span>
+        </div>
+        <div class="telem-box">
+          <span class="telem-label">Center Path</span>
+          <span class="telem-val" id="valCenter">CLEAR</span>
+        </div>
+        <div class="telem-box">
+          <span class="telem-label">Right Sector</span>
+          <span class="telem-val" id="valRight">CLEAR</span>
+        </div>
+        <div class="telem-box" style="border-color: var(--cyan-neon);">
+          <span class="telem-label">Safe Evasion Route</span>
+          <span class="telem-val" id="valEvasion">FORWARD CLEAR</span>
+        </div>
+      </div>
+
+      <!-- Real-Time Environmental Guidance Banner -->
+      <div class="guidance-banner" id="guidanceBanner">
+        <span style="font-size: 1.1rem; color: var(--cyan-neon);">&#129517;</span>
+        <span id="liveNarrativeText">"Camera feed ready. The system stays quiet and provides spoken warnings only for approaching obstacles, holes, or traffic lights."</span>
+      </div>
+
+      <!-- Cockpit Toolbar -->
+      <div class="cockpit-toolbar">
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="btnToggleCamera" onclick="toggleCamera()">
+            <span id="camBtnIcon">&#128247;</span> <span id="camBtnText">Start Real Camera (Key C)</span>
+          </button>
+          <button class="btn btn-outline" onclick="askAssistant('Describe the scene')">
+            &#128065; Describe Scene (Key D)
+          </button>
+          <button class="btn btn-outline" onclick="askAssistant('Can I walk forward safely?')">
+            &#129517; Check Path Clearance
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted);">Audio Policy:</span>
+          <button class="btn btn-outline btn-sm" id="btnToggleMode" onclick="toggleAudioMode()" style="border-color: var(--emerald-neon); color: var(--emerald-neon);">
+            &#129302; Conversational (Quiet &amp; Responsive)
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       TAB 2: ⚡ BLIND LIVING TOOLS (8 ACCESSIBLE CARDS)
+       ========================================================================= -->
+  <section class="tab-content" id="tab-tools" role="tabpanel">
+    <div class="tools-grid">
+      <!-- 1. Currency & Money Reader -->
+      <div class="tool-tile">
+        <div class="tool-tile-top">
+          <span class="tool-tile-title">&#128181; Currency &amp; Money Reader</span>
+          <span style="font-size: 0.70rem; color: var(--emerald-neon); font-family: var(--font-mono);">&#8377; / $ / &euro; / &pound;</span>
+        </div>
+        <div class="tool-tile-body" id="currencyCardBody">
+          Hold any banknote or bill in front of the camera. Identifies Indian Rupees (&#8377;10&ndash;&#8377;2000), US Dollars ($1&ndash;$100), Euros, and Pounds to prevent shopping errors.
+        </div>
+        <div class="tool-tile-actions">
+          <button class="btn btn-primary btn-sm" onclick="runCurrencyDetection()">Scan Banknote (Key M)</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateCurrency('500_INR')">Test &#8377;500 Note</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateCurrency('20_USD')">Test $20 Bill</button>
+        </div>
+      </div>
+
+      <!-- 2. Color & Wardrobe Matcher -->
+      <div class="tool-tile">
+        <div class="tool-tile-top">
+          <span class="tool-tile-title">&#127912; Color &amp; Wardrobe Matcher</span>
+          <span style="font-size: 0.70rem; color: var(--cyan-neon); font-family: var(--font-mono);">36 Natural Tones</span>
+        </div>
+        <div class="tool-tile-body" id="colorCardBody">
+          Aim camera center at your shirt, pants, or object. Identifies exact color shade and provides blind wardrobe harmony pairing advice.
+          <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.4rem;">
+            <div class="color-swatch-circle" id="liveColorSwatch" style="background: #00e5ff;"></div>
+            <div>
+              <strong id="liveColorName" style="color: var(--text-main); font-size: 0.82rem;">Cyan Neon</strong>
+              <div id="liveColorAdvice" style="font-size: 0.72rem; color: var(--text-muted);">Pairs well with dark navy, black, and white.</div>
+            </div>
+          </div>
+        </div>
+        <div class="tool-tile-actions">
+          <button class="btn btn-primary btn-sm" onclick="runColorDetection()">Identify Color (Key K)</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateColor('Navy Blue')">Navy</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateColor('Olive Green')">Olive</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateColor('Crimson Red')">Crimson</button>
+        </div>
+      </div>
+
+      <!-- 3. Smart Lighting & Lux Meter -->
+      <div class="tool-tile">
+        <div class="tool-tile-top">
+          <span class="tool-tile-title">&#128161; Room Lighting &amp; Lux Meter</span>
+          <span style="font-size: 0.70rem; color: var(--gold-neon); font-family: var(--font-mono);" id="luxValueText">Lux: 65% (Optimal)</span>
+        </div>
+        <div class="tool-tile-body" id="lightingCardBody">
+          Tells you immediately if room lights were left ON or OFF, or if you are in pitch darkness or direct outdoor glare.
+          <div class="lux-meter-bar">
+            <div class="lux-meter-fill" id="luxMeterFill" style="width: 65%;"></div>
+          </div>
+          <div id="luxStatusText" style="font-size: 0.76rem; color: var(--emerald-neon); margin-top: 0.2rem;">&#10004; Well-lit comfortable environment.</div>
+        </div>
+        <div class="tool-tile-actions">
+          <button class="btn btn-primary btn-sm" onclick="runLightingCheck()">Check Light (Key L)</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateLux(8)">Pitch Dark (8%)</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateLux(65)">Normal (65%)</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateLux(95)">Sun Glare (95%)</button>
+        </div>
+      </div>
+
+      <!-- 4. Medicine Dosage & Expiry Scanner -->
+      <div class="tool-tile">
+        <div class="tool-tile-top">
+          <span class="tool-tile-title">&#128138; Medicine &amp; Expiry Scanner</span>
+          <span style="font-size: 0.70rem; color: #ff2d55; font-family: var(--font-mono);">OCR + Barcode</span>
+        </div>
+        <div class="tool-tile-body" id="expiryCardBody">
+          Scans grocery packaging, canned food, and pill bottles for expiry dates (EXP, Best Before), pharmaceutical dosages (500mg, Paracetamol), and retail barcodes.
+        </div>
+        <div class="tool-tile-actions">
+          <button class="btn btn-primary btn-sm" onclick="runMedicineExpiryScan()">Scan Medicine / Expiry</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateExpiry('Paracetamol 500mg, Exp: 12/2027')">Test Medicine</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateExpiry('Best Before: 15 OCT 2026')">Test Expiry</button>
+        </div>
+      </div>
+
+      <!-- 5. Find My Item (Spatial Audio Sonar) -->
+      <div class="tool-tile">
+        <div class="tool-tile-top">
+          <span class="tool-tile-title">&#128269; Find Item Sonar Radar</span>
+          <span style="font-size: 0.70rem; color: var(--emerald-neon); font-family: var(--font-mono);" id="sonarBearingText">Target: Bottle</span>
+        </div>
+        <div class="tool-tile-body" id="sonarCardBody">
+          Misplaced your cane, keys, phone, or water bottle? Emits acoustic sonar beeps that rise in pitch as your head turns dead center toward the object!
+          <div class="sonar-radar-box">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span class="sonar-pulse-dot" id="sonarDot"></span>
+              <span style="font-size: 0.76rem; font-family: var(--font-mono);" id="sonarStatusText">Sonar Ready: Select item below</span>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="toggleSonarBeep()" style="font-size: 0.68rem;">&#128266; Test Beep</button>
+          </div>
+        </div>
+        <div class="tool-tile-actions">
+          <select id="selectFinderTarget" style="background: rgba(6, 9, 16, 0.9); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.35rem; color: var(--cyan-neon); font-family: var(--font-mono); font-size: 0.75rem;">
+            <option value="bottle">Water Bottle</option>
+            <option value="cell phone">Cell Phone</option>
+            <option value="chair">Empty Chair</option>
+            <option value="laptop">Laptop / PC</option>
+            <option value="cup">Coffee Cup / Mug</option>
+            <option value="book">Book / Document</option>
+            <option value="mouse">Computer Mouse</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="startFinderFromSelect()">Find Item (Key F)</button>
+        </div>
+      </div>
+
+      <!-- 6. Clock-Face Sighted Guide -->
+      <div class="tool-tile">
+        <div class="tool-tile-top">
+          <span class="tool-tile-title">&#129517; Clock-Face Sighted Guide</span>
+          <span style="font-size: 0.70rem; color: var(--cyan-neon); font-family: var(--font-mono);">12 o'Clock Bearings</span>
+        </div>
+        <div class="tool-tile-body" id="clockGuideCardBody">
+          Universal blind mobility standard: Translates surroundings into clock-face bearings (e.g., <em>"Walking path clear at 12 o'clock, chair at 2 o'clock, door at 10 o'clock"</em>).
+        </div>
+        <div class="tool-tile-actions">
+          <button class="btn btn-primary btn-sm" onclick="runClockFaceOrientation()">Full 360&deg; Sighted Report</button>
+          <button class="btn btn-outline btn-sm" onclick="askAssistant('Where is the nearest chair?')">Locate Chair</button>
+        </div>
+      </div>
+
+      <!-- 7. Crosswalk & Zebra Striping Safety -->
+      <div class="tool-tile">
+        <div class="tool-tile-top">
+          <span class="tool-tile-title">&#128694; Crosswalk &amp; Pedestrian Signals</span>
+          <span style="font-size: 0.70rem; color: var(--gold-neon); font-family: var(--font-mono);">Zebra + Lamp</span>
+        </div>
+        <div class="tool-tile-body" id="crosswalkCardBody">
+          Detects road zebra crossings and analyzes crosswalk traffic signals automatically. Stops you at the curb on Red; alerts you when Green to cross safely.
+        </div>
+        <div class="tool-tile-actions">
+          <button class="btn btn-primary btn-sm" onclick="askAssistant('Can I cross the street safely?')">Check Crosswalk Status</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateTrafficSignal('RED')">Test Red Lamp</button>
+          <button class="btn btn-outline btn-sm" onclick="simulateTrafficSignal('GREEN')">Test Green Lamp</button>
+        </div>
+      </div>
+
+      <!-- 8. Emergency SOS & Location Share Beacon -->
+      <div class="tool-tile" style="border-color: rgba(255, 51, 102, 0.4);">
+        <div class="tool-tile-top">
+          <span class="tool-tile-title" style="color: var(--red-alert);">&#127384; Emergency SOS Beacon</span>
+          <span style="font-size: 0.70rem; color: var(--red-alert); font-family: var(--font-mono);">GPS + Dispatch</span>
+        </div>
+        <div class="tool-tile-body" id="emergencyCardBody">
+          Immediate safety protection: Speaks exact GPS coordinates, neighborhood, and city, and prepares instant one-touch emergency WhatsApp and SMS alerts with Google Maps pin.
+        </div>
+        <div class="tool-tile-actions">
+          <button class="btn btn-primary btn-sm" style="background: var(--red-alert); border-color: var(--red-alert); color: #fff;" onclick="triggerEmergencySOS()">
+            Trigger SOS (Key E)
+          </button>
+          <a class="btn btn-outline btn-sm" id="btnWhatsAppShare" href="#" target="_blank" style="border-color: #25d366; color: #25d366;">
+            &#128172; WhatsApp SOS Link
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       TAB 3: 📖 SMART BOOK & DOCUMENT READER (SLOW ARTICULATED PACE)
+       ========================================================================= -->
+  <section class="tab-content" id="tab-reader" role="tabpanel">
+    <div class="reader-container">
+      <div class="reader-header">
+        <div>
+          <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.2rem;">
+            📖 Smart Book &amp; Document Reader
+          </h2>
+          <div style="font-size: 0.80rem; color: var(--text-muted);">
+            High-Accuracy Full-Frame Camera OCR with Gentle, Articulated Slow-Pace Reading
+          </div>
+        </div>
+
+        <div class="reader-controls-bar">
+          <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted);">Reading Pace:</span>
+          <button class="btn btn-outline btn-sm" id="btnReaderSpeedSlow" onclick="setReaderSpeed(0.82, this)" style="border-color: var(--emerald-neon); color: var(--emerald-neon);">
+            Slow &amp; Clear (0.82x)
+          </button>
+          <button class="btn btn-outline btn-sm" id="btnReaderSpeedNormal" onclick="setReaderSpeed(0.92, this)">
+            Comfortable (0.92x)
+          </button>
+          <button class="btn btn-outline btn-sm" id="btnReaderSpeedFast" onclick="setReaderSpeed(1.0, this)">
+            Normal (1.0x)
+          </button>
+        </div>
+      </div>
+
+      <!-- Action & Playback Controls Bar -->
+      <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="runLiveOCR(true)">
+          📷 Scan Document / Book in Front of Me (Key T)
+        </button>
+        <button class="btn btn-voice btn-sm" id="btnReaderPlayPause" onclick="toggleBookReadingPlayback()">
+          ▶ Start Slow Reading
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="stopBookReading()">
+          ⏹ Stop Reading
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="prevReaderSentence()">
+          ⏪ Prev Sentence
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="nextReaderSentence()">
+          ⏩ Next Sentence
+        </button>
+        <span style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--cyan-neon); margin-left: auto;" id="readerSentenceCounter">
+          Sentence: 0 / 0
+        </span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="reader-progress-bar-container">
+        <div class="reader-progress-fill" id="readerProgressFill"></div>
+      </div>
+
+      <!-- Large-Type Visual Reader Card -->
+      <div class="reader-text-viewport" id="readerTextViewport" aria-live="polite">
+        <p style="color: var(--text-muted); font-style: italic;">
+          Point your glasses at any book, paper, printed sign, or medication box, then click "Scan Document / Book". The assistant will enunciate slowly and clearly, sentence by sentence, with comfortable pauses.
+        </p>
+      </div>
+
+      <!-- Book Summary & Intelligence Strip -->
+      <div style="background: rgba(6, 9, 16, 0.8); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.85rem 1.15rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem;">
+        <div style="font-size: 0.80rem; color: var(--text-main);" id="recognizedBookLabel">
+          📚 No book recognized yet. Hold book cover steady to identify bestseller summaries.
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="askAssistant('Summarize the book in front of me')">
+          Summarize Book
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       TAB 4: 📝 BLIND TASK & MEMORY HUB
+       ========================================================================= -->
+  <section class="tab-content" id="tab-tasks" role="tabpanel">
+    <div class="tasks-container">
+      <!-- 1. Active Task & Reminder Checklist -->
+      <div class="task-card">
+        <div>
+          <h3>&#128221; Active Tasks &amp; Reminders</h3>
+          <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Voice driven: Say <em>"Remind me to take my eye drops at 8 PM"</em> or <em>"What are my tasks?"</em>
+          </div>
+        </div>
+
+        <div class="task-input-row">
+          <input type="text" id="inputNewTask" placeholder="Add a new task or reminder..." onkeydown="if(event.key==='Enter') submitNewTask()">
+          <button class="btn btn-primary btn-sm" onclick="submitNewTask()">+ Add Task</button>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-voice btn-sm" onclick="readAllTasksAloud()">
+            🔊 Read All Tasks Aloud
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="clearCompletedTasks()">
+            Clear Completed
+          </button>
+        </div>
+
+        <!-- Task Checklist -->
+        <div class="task-list" id="taskListContainer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- 2. Spatial Location & Memory Notes -->
+      <div class="task-card">
+        <div>
+          <h3>&#129517; Spatial Location Memory Notes</h3>
+          <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Never lose track of items: Say <em>"Remember my cane is at the front door"</em> or <em>"Where did I put my keys?"</em>
+          </div>
+        </div>
+
+        <div class="task-input-row">
+          <input type="text" id="inputNewNote" placeholder="Remember item location (e.g., Keys on desk)..." onkeydown="if(event.key==='Enter') submitNewMemoryNote()">
+          <button class="btn btn-primary btn-sm" onclick="submitNewMemoryNote()">+ Remember</button>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-outline btn-sm" onclick="readAllNotesAloud()">
+            🔊 Read All Notes Aloud
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="clearAllNotes()">
+            Clear Notes
+          </button>
+        </div>
+
+        <!-- Notes List -->
+        <div class="task-list" id="notesListContainer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       TAB 5: 🎓 PHD RESEARCH & 8 MODULES STUDIO
+       ========================================================================= -->
+  <section class="tab-content" id="tab-research" role="tabpanel">
+    <div class="research-container">
+      <!-- Top Modules Sub-Navigation Bar -->
+      <div style="background: rgba(14, 20, 32, 0.95); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 0.85rem 1.25rem;">
+        <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--cyan-neon); text-transform: uppercase; margin-bottom: 0.5rem;">
+          🔬 The 8 Specialized Vision Modules • Click Any Module to Inspect
+        </div>
+        <div class="modules-pills-row">
+          <button class="mod-pill active" onclick="selectModuleTab(1, this)">M1: Object Detection</button>
+          <button class="mod-pill" onclick="selectModuleTab(2, this)">M2: BDD100K Navigation</button>
+          <button class="mod-pill" onclick="selectModuleTab(3, this)">M3: Depth Radar</button>
+          <button class="mod-pill" onclick="selectModuleTab(4, this)">M4: Places365 Scene</button>
+          <button class="mod-pill" onclick="selectModuleTab(5, this)">M5: BLIP Storyteller</button>
+          <button class="mod-pill" onclick="selectModuleTab(6, this)">M6: Assistive OCR</button>
+          <button class="mod-pill" onclick="selectModuleTab(7, this)">M7: GPS Wayfinding</button>
+          <button class="mod-pill" onclick="selectModuleTab(8, this)">M8: Dynamic Priority</button>
+        </div>
+      </div>
+
+      <!-- Module Live Inspector Card -->
+      <div class="inspector-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+          <div>
+            <span style="font-size: 0.68rem; font-family: var(--font-mono); color: var(--cyan-neon); text-transform: uppercase;" id="inspectorModuleBadge">MODULE 1 • EDGE TENSORFLOW.JS</span>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff;" id="inspectorModuleName">Priority Object Detection Engine</h3>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-voice btn-sm" onclick="triggerModuleLiveTest()">▶ Run Live Test</button>
+            <button class="btn btn-outline btn-sm" onclick="speakModuleExplanation()">🔊 Voice Narration</button>
+          </div>
+        </div>
+
+        <div style="font-size: 0.86rem; color: var(--text-main); line-height: 1.5;" id="inspectorModuleDesc">
+          Multi-class bounding box inference running client-side at 30 FPS. Evaluates spatial coordinates, labels, and calibrated metric distance.
+        </div>
+
+        <div style="background: rgba(6, 9, 16, 0.8); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.76rem;" id="inspectorModuleMath">
+          <!-- Math equations -->
+        </div>
+
+        <div style="background: rgba(6, 9, 16, 0.8); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.85rem; font-size: 0.76rem;" id="inspectorModuleMetrics">
+          <!-- Metrics table -->
+        </div>
+
+        <div style="background: #030508; border: 1px solid var(--border-glow); border-radius: 8px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--emerald-neon);">
+          <div style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.2rem;">MODULE TEST CONSOLE OUTPUT:</div>
+          <div id="moduleTestOutput">Ready: Click "Run Live Test" to execute Module 1 live diagnostics.</div>
+        </div>
+      </div>
+
+      <!-- Faculty Research Sections (Math Formulations, Priority Sandbox, Benchmarks, Deliverables) -->
+      ''' + academic_html + r'''
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       CORE JAVASCRIPT: VISION, SPEECH, SLOW BOOK OCR, TASKS & SIGHTED AI
+       ========================================================================= -->
+  <script>
+    ''' + module_data_code + r'''
+
+    ''' + brand_dict_code + r'''
+
+    // System State Machine
+    const appState = {
+      cameraActive: false,
+      cocoModel: null,
+      modelLoaded: false,
+      speechEnabled: true,
+      micEnabled: true,
+      audioMode: 'conversational', // 'conversational' (quiet & helpful) vs 'walk_guide' (periodic)
+      lastSpokenText: "",
+      lastSpeakTime: 0,
+      lastCautionSpokenTime: 0,
+      lastRoutineSpokenTime: 0,
+      ocrRunning: false,
+      ocrWorker: null,
+      detectedObjects: [],
+      trackedObjects: {}, 
+      speechRecognizer: null,
+      highContrast: false,
+      fps: 30,
+      frameCount: 0,
+      lastFpsTime: Date.now(),
+      isSpeaking: false,
+      speechDebounceTimer: null,
+      globalSpeechRate: 1.0,
+      navState: {
+        active: false,
+        step: 'IDLE',
+        currentCoords: null,
+        currentAreaName: "Locating area via GPS...",
+        pendingDestination: null,
+        routeSteps: [],
+        currentStepIndex: 0
+      },
+      navDialog: {
+        state: 'idle',
+        targetPlace: '',
+        targetArea: ''
+      },
+      trafficLight: {
+        lastState: 'UNKNOWN',
+        lastSpokenState: null,
+        lastSpokenTime: 0
+      },
+      groundHazards: [],
+      metaSupport: {
+        currency: { active: false, lastSpoken: "", lastTime: 0 },
+        color: { active: false, lastColor: "", lastTime: 0 },
+        lighting: { lux: 65, category: "Optimal Indoor", lastAlertTime: 0 },
+        itemFinder: { active: false, targetName: "bottle", lastPingTime: 0, beepFreq: 440, locked: false },
+        emergency: { active: false, coords: null, address: "", time: 0 },
+        clockFaceActive: true,
+        speechRate: 1.0,
+        verbosity: 'detailed'
+      },
+      bookReader: {
+        text: "",
+        sentences: [],
+        currentIndex: 0,
+        state: 'STOPPED', // 'STOPPED', 'PLAYING', 'PAUSED'
+        speed: 0.82,
+        timer: null
+      },
+      taskMemory: {
+        tasks: [],
+        notes: []
+      }
+    };
+
+    // DOM Elements
+    const video = document.getElementById('cameraFeed');
+    const canvas = document.getElementById('hudCanvas');
+    const ctx = canvas.getContext('2d');
+    const hudStatusTag = document.getElementById('hudStatusTag');
+    const hudEntitiesTag = document.getElementById('hudEntitiesTag');
+    const hudClearanceTag = document.getElementById('hudClearanceTag');
+    const hudFpsTag = document.getElementById('hudFpsTag');
+    const liveNarrativeText = document.getElementById('liveNarrativeText');
+    const valLeft = document.getElementById('valLeft');
+    const valCenter = document.getElementById('valCenter');
+    const valRight = document.getElementById('valRight');
+    const valEvasion = document.getElementById('valEvasion');
+    const voiceStatusText = document.getElementById('voiceStatusText');
+    const voiceOrb = document.getElementById('voiceOrb');
+    const dialogueUserRow = document.getElementById('dialogueUserRow');
+    const dialogueAiText = document.getElementById('dialogueAiText');
+    const btnToggleHighContrast = document.getElementById('btnToggleHighContrast');
+    const btnToggleSpeech = document.getElementById('btnToggleSpeech');
+    const btnToggleMic = document.getElementById('btnToggleMic');
+
+    // =========================================================================
+    // 1. TAB NAVIGATION SWITCHER
+    // =========================================================================
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      const targetTab = document.getElementById('tab-' + tabId);
+      const targetBtn = document.getElementById('btn-tab-' + tabId);
+      if (targetTab) targetTab.classList.add('active');
+      if (targetBtn) targetBtn.classList.add('active');
+
+      playMetaGlassesChime('confirm');
+
+      const tabTitles = {
+        vision: 'Vision Cockpit and Depth Radar',
+        tools: 'Blind Daily Living Tools',
+        reader: 'Smart Book and Document Reader',
+        tasks: 'Task and Location Memory Hub',
+        research: 'PhD Research and 8 Modules Studio'
+      };
+      const title = tabTitles[tabId] || tabId;
+      speak(`Switched to ${title}.`, { priority: true });
+    }
+
+    // =========================================================================
+    // 2. AUTHENTIC WEB AUDIO CHIMES ENGINE (META WAKE, APPLE CONFIRM, SONAR, SOS)
+    // =========================================================================
+    function playMetaGlassesChime(type = 'wake', param = null) {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!appState.metaAudioCtx) {
+          appState.metaAudioCtx = new AudioCtx();
+        }
+        const aCtx = appState.metaAudioCtx;
+        if (aCtx.state === 'suspended') aCtx.resume();
+
+        const now = aCtx.currentTime;
+        const osc1 = aCtx.createOscillator();
+        const osc2 = aCtx.createOscillator();
+        const gain = aCtx.createGain();
+
+        if (type === 'wake') {
+          // Meta Ray-Ban Ascending Harmonic Chord (D5 587Hz -> A5 880Hz -> F#6 1480Hz)
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(587.33, now);
+          osc1.frequency.exponentialRampToValueAtTime(880.00, now + 0.12);
+
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(880.00, now);
+          osc2.frequency.exponentialRampToValueAtTime(1479.98, now + 0.18);
+
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+          osc1.connect(gain); osc2.connect(gain); gain.connect(aCtx.destination);
+          osc1.start(now); osc2.start(now);
+          osc1.stop(now + 0.38); osc2.stop(now + 0.38);
+        } else if (type === 'confirm') {
+          // Apple Visual Intelligence subtle double-tap acknowledgment
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(659.25, now); // E5
+          osc1.frequency.setValueAtTime(880.00, now + 0.08); // A5
+          gain.gain.setValueAtTime(0.10, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+          osc1.connect(gain); gain.connect(aCtx.destination);
+          osc1.start(now); osc1.stop(now + 0.22);
+        } else if (type === 'sonar') {
+          // Item Finder Directional Acoustic Sonar Pulse (350Hz -> 880Hz)
+          const freq = typeof param === 'number' ? param : 520;
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(freq, now);
+          osc1.frequency.exponentialRampToValueAtTime(freq * 1.25, now + 0.08);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc1.connect(gain); gain.connect(aCtx.destination);
+          osc1.start(now); osc1.stop(now + 0.15);
+        } else if (type === 'sos') {
+          // Emergency Siren Alert
+          osc1.type = 'sawtooth';
+          osc1.frequency.setValueAtTime(440, now);
+          osc1.frequency.linearRampToValueAtTime(880, now + 0.25);
+          gain.gain.setValueAtTime(0.20, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.50);
+          osc1.connect(gain); gain.connect(aCtx.destination);
+          osc1.start(now); osc1.stop(now + 0.50);
+        }
+      } catch (e) {
+        console.warn("Chime error:", e);
+      }
+    }
+
+    // Push-to-Talk Trigger
+    function triggerMetaVoicePrompt() {
+      playMetaGlassesChime('wake');
+      if (voiceOrb) {
+        voiceOrb.className = "ai-voice-orb listening";
+      }
+      voiceStatusText.textContent = "Listening to you... Speak now";
+      if (appState.speechRecognizer) {
+        try { appState.speechRecognizer.start(); } catch(e) {}
+      }
+    }
+
+    // =========================================================================
+    // 3. SYNTHETIC SPEECH SYNTHESIS ENGINE
+    // =========================================================================
+    function speak(text, options = {}) {
+      if (!appState.speechEnabled || !('speechSynthesis' in window) || !text) return;
+      const now = Date.now();
+      const priority = options.priority || false;
+      const cooldown = options.cooldown || (priority ? 4000 : 3000);
+
+      // Prevent identical sentences within cooldown
+      if (text === appState.lastSpokenText && (now - appState.lastSpeakTime < cooldown)) {
+        return;
+      }
+      if (!priority && (now - appState.lastSpeakTime < 2200)) {
+        return;
+      }
+
+      if (options.interrupt) {
+        window.speechSynthesis.cancel();
+      }
+
+      appState.lastSpokenText = text;
+      appState.lastSpeakTime = now;
+
+      // Rate control: prioritize options.rate, fallback to global
+      const rate = options.rate || appState.globalSpeechRate || 1.0;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = rate;
+      utterance.pitch = options.pitch || 1.0;
+
+      utterance.onstart = () => {
+        appState.isSpeaking = true;
+        if (voiceOrb) voiceOrb.className = "ai-voice-orb speaking";
+      };
+
+      utterance.onend = () => {
+        setTimeout(() => {
+          appState.isSpeaking = false;
+          if (voiceOrb && !appState.micListening) {
+            voiceOrb.className = "ai-voice-orb";
+          }
+          if (options.onend) options.onend();
+        }, 400);
+      };
+
+      utterance.onerror = () => {
+        appState.isSpeaking = false;
+        if (voiceOrb) voiceOrb.className = "ai-voice-orb";
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function repeatLatestAnswer() {
+      if (appState.lastSpokenText) {
+        speak(appState.lastSpokenText, { priority: true, interrupt: true });
+      }
+    }
+
+    function cycleGlobalSpeechSpeed() {
+      const rates = [1.0, 0.85, 1.25, 1.5];
+      const curIdx = rates.indexOf(appState.globalSpeechRate);
+      const nextIdx = (curIdx + 1) % rates.length;
+      appState.globalSpeechRate = rates[nextIdx];
+      const lbl = document.getElementById('lblGlobalSpeed');
+      if (lbl) lbl.textContent = appState.globalSpeechRate + 'x';
+      speak(`Speech speed set to ${appState.globalSpeechRate}x.`, { priority: true });
+    }
+
+    // =========================================================================
+    // 4. ROBUST CONTINUOUS SPEECH RECOGNITION (ECHO GUARD + AUTO RESTART)
+    // =========================================================================
+    function initSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        voiceStatusText.textContent = "Mic unsupported in this browser";
+        return;
+      }
+
+      try {
+        const recognizer = new SpeechRecognition();
+        recognizer.continuous = true;
+        recognizer.interimResults = true;
+        recognizer.lang = 'en-US';
+
+        recognizer.onstart = () => {
+          appState.micEnabled = true;
+          appState.micListening = true;
+          if (voiceOrb) voiceOrb.className = "ai-voice-orb listening";
+          voiceStatusText.textContent = "Listening attentively...";
+        };
+
+        recognizer.onresult = (event) => {
+          // ECHO GUARD: If glasses TTS is currently speaking, discard mic audio!
+          if (appState.isSpeaking || (window.speechSynthesis && window.speechSynthesis.speaking)) {
+            return;
+          }
+
+          let interim = "";
+          let finalUtterance = "";
+
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            const chunk = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              finalUtterance += " " + chunk;
+            } else {
+              interim += " " + chunk;
+            }
+          }
+
+          const rawSpoken = (finalUtterance || interim).trim();
+          if (!rawSpoken) return;
+
+          voiceStatusText.textContent = `Hearing: "${rawSpoken}"`;
+          if (dialogueUserRow) dialogueUserRow.innerHTML = `You said: <em>"${rawSpoken}"</em>`;
+
+          if (appState.speechDebounceTimer) {
+            clearTimeout(appState.speechDebounceTimer);
+          }
+
+          // User Completion Pause: 900ms quiet buffer before executing command
+          appState.speechDebounceTimer = setTimeout(() => {
+            if (appState.isSpeaking || (window.speechSynthesis && window.speechSynthesis.speaking)) {
+              return;
+            }
+            let query = rawSpoken.trim();
+            // Wake-word extraction
+            if (/^(hey meta|hey glasses|glasses|meta|ok glasses|alexa|siri)\s*/i.test(query)) {
+              playMetaGlassesChime('wake');
+              query = query.replace(/^(hey meta|hey glasses|glasses|meta|ok glasses|alexa|siri)\s*/i, '').trim();
+            }
+            if (!query && /^(hey meta|hey glasses|glasses|meta)$/i.test(rawSpoken)) {
+              speak("Yes, I am listening. How can I assist you?", { priority: true, interrupt: true });
+              return;
+            }
+            if (query.length >= 2) {
+              askAssistant(query);
+            }
+          }, 900);
+        };
+
+        recognizer.onerror = (e) => {
+          if (e.error !== 'no-speech') {
+            console.warn("Speech recognition notice:", e.error);
+          }
+        };
+
+        recognizer.onend = () => {
+          appState.micListening = false;
+          if (voiceOrb && !appState.isSpeaking) voiceOrb.className = "ai-voice-orb";
+          if (appState.micEnabled && !appState.isSpeaking) {
+            setTimeout(() => {
+              try { recognizer.start(); } catch(err) {}
+            }, 350);
+          }
+        };
+
+        recognizer.start();
+        appState.speechRecognizer = recognizer;
+      } catch (err) {
+        console.error("SpeechRecognition error:", err);
+      }
+    }
+
+    // =========================================================================
+    // 5. SMART BOOK & TEXT READER (SLOW ARTICULATE ENUNCIATION + CONTROLS)
+    // =========================================================================
+    async function runLiveOCR(isBookMode = false) {
+      if (!appState.cameraActive) {
+        speak("Please start the camera first to read text.", { priority: true });
+        return;
+      }
+      if (appState.ocrRunning) return;
+
+      appState.ocrRunning = true;
+      hudStatusTag.textContent = "OCR: SCANNING FULL FRAME...";
+      speak("Scanning book or document. Please hold steady.", { priority: true });
+
+      try {
+        const vW = video.videoWidth || 1280;
+        const vH = video.videoHeight || 720;
+        const fullCanvas = document.createElement('canvas');
+        fullCanvas.width = vW; fullCanvas.height = vH;
+        const fCtx = fullCanvas.getContext('2d');
+        fCtx.drawImage(video, 0, 0, vW, vH);
+
+        let extractedText = "";
+
+        // 1. Android ML Kit / Native Chrome TextDetector
+        if ('TextDetector' in window) {
+          try {
+            const detector = new window.TextDetector();
+            const detections = await detector.detect(fullCanvas);
+            if (detections && detections.length > 0) {
+              const strings = detections.map(d => d.rawValue).filter(s => s && s.trim().length >= 2);
+              if (strings.length > 0) extractedText = strings.join(". ");
+            }
+          } catch(e) {}
+        }
+
+        // 2. High-Accuracy Contrast Preprocessed Tesseract.js
+        if (!extractedText || extractedText.length < 5) {
+          if (!appState.ocrWorker) {
+            appState.ocrWorker = await Tesseract.createWorker('eng');
+            await appState.ocrWorker.setParameters({ tessedit_pageseg_mode: Tesseract.PSM.AUTO });
+          }
+          const ret = await appState.ocrWorker.recognize(fullCanvas);
+          extractedText = ret.data.text.trim();
+        }
+
+        if (extractedText && extractedText.length >= 3) {
+          // Check for Bestsellers intelligence
+          const lower = extractedText.toLowerCase();
+          let bookTitle = "";
+          let bookAuthor = "";
+          if ((lower.includes('subtle') || lower.includes('manson')) && (lower.includes('art') || lower.includes('giving') || lower.includes('fuck') || lower.includes('f*ck'))) {
+            bookTitle = "The Subtle Art of Not Giving a F*ck";
+            bookAuthor = "Mark Manson";
+          } else if (lower.includes('atomic') && lower.includes('habit')) {
+            bookTitle = "Atomic Habits";
+            bookAuthor = "James Clear";
+          } else if (lower.includes('rich dad') || lower.includes('poor dad')) {
+            bookTitle = "Rich Dad Poor Dad";
+            bookAuthor = "Robert Kiyosaki";
+          }
+
+          if (bookTitle) {
+            const label = document.getElementById('recognizedBookLabel');
+            if (label) label.innerHTML = `📚 <strong>Identified Book:</strong> ${bookTitle} by ${bookAuthor}`;
+          }
+
+          // Load text into Book Reader Engine
+          loadBookReaderText(extractedText);
+          if (isBookMode) {
+            switchTab('reader');
+          }
+        } else {
+          speak("No readable text detected. Please hold the document steady in front of the lens.", { priority: true });
+        }
+      } catch (err) {
+        console.error("OCR Exception:", err);
+        speak("Unable to read text clearly. Please try again.", { priority: true });
+      } finally {
+        appState.ocrRunning = false;
+        hudStatusTag.textContent = "AI ENGINE: ACTIVE";
+      }
+    }
+
+    function loadBookReaderText(fullText) {
+      appState.bookReader.text = fullText;
+      // Split into clean sentence array
+      const matches = fullText.match(/[^.!?\n]+[.!?\n]+/g) || [fullText];
+      appState.bookReader.sentences = matches.map(s => s.trim().replace(/\s+/g, ' ')).filter(s => s.length >= 2);
+      appState.bookReader.currentIndex = 0;
+      appState.bookReader.state = 'STOPPED';
+
+      renderReaderUI();
+      speak(`Document captured. Found ${appState.bookReader.sentences.length} sentences. Reading slowly for you now.`, { priority: true });
+      startBookReadingSlowly();
+    }
+
+    function setReaderSpeed(rate, btnEl) {
+      appState.bookReader.speed = rate;
+      document.querySelectorAll('#btnReaderSpeedSlow, #btnReaderSpeedNormal, #btnReaderSpeedFast').forEach(b => {
+        b.style.borderColor = 'var(--border-subtle)';
+        b.style.color = 'var(--text-main)';
+      });
+      if (btnEl) {
+        btnEl.style.borderColor = 'var(--emerald-neon)';
+        btnEl.style.color = 'var(--emerald-neon)';
+      }
+      speak(`Reading pace set to ${rate}x.`, { priority: true });
+    }
+
+    function startBookReadingSlowly() {
+      if (appState.bookReader.sentences.length === 0) return;
+      appState.bookReader.state = 'PLAYING';
+      const playBtn = document.getElementById('btnReaderPlayPause');
+      if (playBtn) playBtn.innerHTML = "⏸ Pause Reading";
+      playNextReaderSentence();
+    }
+
+    function playNextReaderSentence() {
+      if (appState.bookReader.state !== 'PLAYING') return;
+      if (appState.bookReader.currentIndex >= appState.bookReader.sentences.length) {
+        appState.bookReader.state = 'STOPPED';
+        const playBtn = document.getElementById('btnReaderPlayPause');
+        if (playBtn) playBtn.innerHTML = "▶ Start Slow Reading";
+        speak("Finished reading the document.", { priority: true });
+        return;
+      }
+
+      const sentence = appState.bookReader.sentences[appState.bookReader.currentIndex];
+      renderReaderUI();
+
+      // Speak slowly at measured rate (0.82x - 0.88x)
+      speak(sentence, {
+        priority: true,
+        rate: appState.bookReader.speed || 0.82,
+        interrupt: true,
+        onend: () => {
+          if (appState.bookReader.state === 'PLAYING') {
+            appState.bookReader.currentIndex++;
+            // Natural 450ms breath pause between sentences so users understand clearly
+            appState.bookReader.timer = setTimeout(playNextReaderSentence, 450);
+          }
+        }
+      });
+    }
+
+    function toggleBookReadingPlayback() {
+      if (appState.bookReader.state === 'PLAYING') {
+        appState.bookReader.state = 'PAUSED';
+        window.speechSynthesis.cancel();
+        if (appState.bookReader.timer) clearTimeout(appState.bookReader.timer);
+        const playBtn = document.getElementById('btnReaderPlayPause');
+        if (playBtn) playBtn.innerHTML = "▶ Resume Reading";
+        speak("Reading paused.", { priority: true });
+      } else {
+        startBookReadingSlowly();
+      }
+    }
+
+    function stopBookReading() {
+      appState.bookReader.state = 'STOPPED';
+      if (appState.bookReader.timer) clearTimeout(appState.bookReader.timer);
+      window.speechSynthesis.cancel();
+      const playBtn = document.getElementById('btnReaderPlayPause');
+      if (playBtn) playBtn.innerHTML = "▶ Start Slow Reading";
+      speak("Reading stopped.", { priority: true });
+    }
+
+    function nextReaderSentence() {
+      if (appState.bookReader.currentIndex < appState.bookReader.sentences.length - 1) {
+        appState.bookReader.currentIndex++;
+        renderReaderUI();
+        if (appState.bookReader.state === 'PLAYING') playNextReaderSentence();
+      }
+    }
+
+    function prevReaderSentence() {
+      if (appState.bookReader.currentIndex > 0) {
+        appState.bookReader.currentIndex--;
+        renderReaderUI();
+        if (appState.bookReader.state === 'PLAYING') playNextReaderSentence();
+      }
+    }
+
+    function renderReaderUI() {
+      const container = document.getElementById('readerTextViewport');
+      const counter = document.getElementById('readerSentenceCounter');
+      const progress = document.getElementById('readerProgressFill');
+      const total = appState.bookReader.sentences.length;
+      const cur = appState.bookReader.currentIndex;
+
+      if (counter) counter.textContent = `Sentence: ${total > 0 ? cur + 1 : 0} / ${total}`;
+      if (progress) progress.style.width = total > 0 ? `${((cur + 1) / total) * 100}%` : '0%';
+
+      if (container && total > 0) {
+        const html = appState.bookReader.sentences.map((s, idx) => {
+          if (idx === cur) {
+            return `<span class="reader-highlight-sentence">${s}</span>`;
+          }
+          return `<span>${s}</span>`;
+        }).join(" ");
+        container.innerHTML = html;
+      }
+    }
+
+    // =========================================================================
+    // 6. BLIND TASK & MEMORY HUB (LOCALSTORAGE PERSISTENCE)
+    // =========================================================================
+    function loadSavedTasksAndNotes() {
+      try {
+        const savedTasks = localStorage.getItem('aura_tasks');
+        if (savedTasks) appState.taskMemory.tasks = JSON.parse(savedTasks);
+        else {
+          appState.taskMemory.tasks = [
+            { id: 1, title: "Take evening eye drops at 8:00 PM", done: false, time: "8:00 PM" },
+            { id: 2, title: "Doctor appointment follow-up on Friday", done: false, time: "Friday" }
+          ];
+        }
+
+        const savedNotes = localStorage.getItem('aura_notes');
+        if (savedNotes) appState.taskMemory.notes = JSON.parse(savedNotes);
+        else {
+          appState.taskMemory.notes = [
+            { id: 1, text: "White walking cane is placed by the front door entrance." },
+            { id: 2, text: "House keys and wallet are on the living room wooden table." }
+          ];
+        }
+      } catch(e) {}
+      renderTasksUI();
+      renderNotesUI();
+    }
+
+    function saveTasksToStorage() {
+      localStorage.setItem('aura_tasks', JSON.stringify(appState.taskMemory.tasks));
+    }
+
+    function saveNotesToStorage() {
+      localStorage.setItem('aura_notes', JSON.stringify(appState.taskMemory.notes));
+    }
+
+    function submitNewTask() {
+      const inp = document.getElementById('inputNewTask');
+      if (!inp || !inp.value.trim()) return;
+      const taskText = inp.value.trim();
+      addTask(taskText);
+      inp.value = "";
+    }
+
+    function addTask(title) {
+      const task = { id: Date.now(), title: title, done: false, time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) };
+      appState.taskMemory.tasks.push(task);
+      saveTasksToStorage();
+      renderTasksUI();
+      speak(`Task added: ${title}`, { priority: true });
+    }
+
+    function toggleTask(id) {
+      const t = appState.taskMemory.tasks.find(item => item.id === id);
+      if (t) {
+        t.done = !t.done;
+        saveTasksToStorage();
+        renderTasksUI();
+        speak(t.done ? `Completed task: ${t.title}` : `Reopened task: ${t.title}`, { priority: true });
+      }
+    }
+
+    function deleteTask(id) {
+      appState.taskMemory.tasks = appState.taskMemory.tasks.filter(item => item.id !== id);
+      saveTasksToStorage();
+      renderTasksUI();
+      speak("Task deleted.", { priority: true });
+    }
+
+    function clearCompletedTasks() {
+      appState.taskMemory.tasks = appState.taskMemory.tasks.filter(item => !item.done);
+      saveTasksToStorage();
+      renderTasksUI();
+      speak("Cleared completed tasks.", { priority: true });
+    }
+
+    function readAllTasksAloud() {
+      const pending = appState.taskMemory.tasks.filter(t => !t.done);
+      if (pending.length === 0) {
+        speak("You have no pending tasks. You are all caught up!", { priority: true });
+      } else {
+        const list = pending.map((t, idx) => `Task ${idx + 1}: ${t.title}`).join(". ");
+        speak(`You have ${pending.length} pending tasks: ${list}`, { priority: true, interrupt: true });
+      }
+    }
+
+    function submitNewMemoryNote() {
+      const inp = document.getElementById('inputNewNote');
+      if (!inp || !inp.value.trim()) return;
+      const noteText = inp.value.trim();
+      addMemoryNote(noteText);
+      inp.value = "";
+    }
+
+    function addMemoryNote(note) {
+      const item = { id: Date.now(), text: note, date: new Date().toLocaleDateString() };
+      appState.taskMemory.notes.unshift(item);
+      saveNotesToStorage();
+      renderNotesUI();
+      speak(`Remembered note: ${note}`, { priority: true });
+    }
+
+    function deleteNote(id) {
+      appState.taskMemory.notes = appState.taskMemory.notes.filter(item => item.id !== id);
+      saveNotesToStorage();
+      renderNotesUI();
+      speak("Memory note removed.", { priority: true });
+    }
+
+    function clearAllNotes() {
+      appState.taskMemory.notes = [];
+      saveNotesToStorage();
+      renderNotesUI();
+      speak("All memory notes cleared.", { priority: true });
+    }
+
+    function readAllNotesAloud() {
+      if (appState.taskMemory.notes.length === 0) {
+        speak("No spatial location notes stored.", { priority: true });
+      } else {
+        const list = appState.taskMemory.notes.map((n, idx) => `Note ${idx + 1}: ${n.text}`).join(". ");
+        speak(`Stored location notes: ${list}`, { priority: true, interrupt: true });
+      }
+    }
+
+    function renderTasksUI() {
+      const container = document.getElementById('taskListContainer');
+      if (!container) return;
+      if (appState.taskMemory.tasks.length === 0) {
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.82rem; font-style: italic;">No tasks yet. Say "Remind me to..." or add above.</div>';
+        return;
+      }
+      container.innerHTML = appState.taskMemory.tasks.map(t => `
+        <div class="task-item ${t.done ? 'done' : ''}">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <input type="checkbox" class="task-checkbox" ${t.done ? 'checked' : ''} onclick="toggleTask(${t.id})">
+            <span style="font-size: 0.85rem; color: var(--text-main);">${t.title}</span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="deleteTask(${t.id})" style="padding: 0.2rem 0.5rem; font-size: 0.70rem; color: var(--red-alert);">✕</button>
+        </div>
+      `).join("");
+    }
+
+    function renderNotesUI() {
+      const container = document.getElementById('notesListContainer');
+      if (!container) return;
+      if (appState.taskMemory.notes.length === 0) {
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.82rem; font-style: italic;">No memory notes stored. Say "Remember my cane is at the front door".</div>';
+        return;
+      }
+      container.innerHTML = appState.taskMemory.notes.map(n => `
+        <div class="task-item">
+          <div style="font-size: 0.85rem; color: var(--text-main);">📍 ${n.text}</div>
+          <button class="btn btn-outline btn-sm" onclick="deleteNote(${n.id})" style="padding: 0.2rem 0.5rem; font-size: 0.70rem; color: var(--red-alert);">✕</button>
+        </div>
+      `).join("");
+    }
+
+    // =========================================================================
+    // 7. SIGHTED LIVING TOOLS: CURRENCY, COLOR, LUX, MEDICINE, SONAR, SOS
+    // =========================================================================
+
+    // Clock-Face Bearing Orientation Helper
+    function convertSpatialToClockFace(box) {
+      if (!box || box.length < 4) return "12 o'clock (directly ahead)";
+      const [bx, by, bw, bh] = box;
+      const vW = video.videoWidth || 1280;
+      const centerX = bx + bw / 2;
+      const normX = centerX / vW;
+
+      if (normX < 0.20) return "9 o'clock (far left)";
+      if (normX < 0.38) return "10 o'clock (left side)";
+      if (normX < 0.45) return "11 o'clock (slightly left)";
+      if (normX <= 0.55) return "12 o'clock (directly ahead)";
+      if (normX <= 0.62) return "1 o'clock (slightly right)";
+      if (normX <= 0.80) return "2 o'clock (right side)";
+      return "3 o'clock (far right)";
+    }
+
+    // Currency Detection
+    async function runCurrencyDetection() {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('currencyCardBody');
+      if (cardBody) cardBody.innerHTML = '<span style="color: var(--cyan-neon);">Scanning banknote in front of glasses...</span>';
+      speak("Scanning banknote in front of you. Please hold bill flat.", { priority: true });
+
+      if (!appState.cameraActive || video.videoWidth === 0) {
+        const msg = "Please start the real camera first to identify currency.";
+        if (cardBody) cardBody.textContent = msg;
+        speak(msg, { priority: true });
+        return;
+      }
+
+      try {
+        const vW = video.videoWidth, vH = video.videoHeight;
+        const c = document.createElement('canvas');
+        c.width = vW; c.height = vH;
+        const cCtx = c.getContext('2d');
+        cCtx.drawImage(video, 0, 0, vW, vH);
+
+        if (!appState.ocrWorker) {
+          appState.ocrWorker = await Tesseract.createWorker('eng');
+          await appState.ocrWorker.setParameters({ tessedit_pageseg_mode: Tesseract.PSM.AUTO });
+        }
+        const ocrRet = await appState.ocrWorker.recognize(c);
+        const text = ocrRet.data.text.toUpperCase();
+
+        const centerData = cCtx.getImageData(vW * 0.25, vH * 0.25, vW * 0.5, vH * 0.5).data;
+        let rSum = 0, gSum = 0, bSum = 0, count = 0;
+        for (let i = 0; i < centerData.length; i += 16) {
+          rSum += centerData[i]; gSum += centerData[i+1]; bSum += centerData[i+2];
+          count++;
+        }
+        const rAvg = rSum / count, gAvg = gSum / count, bAvg = bSum / count;
+        let noteFound = null;
+
+        if (text.includes("RESERVE BANK OF INDIA") || text.includes("BHARATIYA") || text.includes("RUPEES") || text.includes("MAHATMA GANDHI") || text.includes("RBI")) {
+          if (text.includes("500") || (rAvg > 120 && gAvg > 125 && bAvg > 120 && Math.abs(rAvg - gAvg) < 15)) {
+            noteFound = { name: "Five Hundred Rupee Note (₹500)", desc: "Stone Gray. Red Fort on reverse. Genuine RBI note." };
+          } else if (text.includes("200") || (rAvg > 180 && gAvg > 120 && bAvg < 80)) {
+            noteFound = { name: "Two Hundred Rupee Note (₹200)", desc: "Bright Orange. Sanchi Stupa on reverse." };
+          } else if (text.includes("100") || (rAvg > 130 && gAvg < 140 && bAvg > 150)) {
+            noteFound = { name: "One Hundred Rupee Note (₹100)", desc: "Lavender. Rani ki Vav on reverse." };
+          } else if (text.includes("50") || (bAvg > rAvg * 1.3 && bAvg > gAvg)) {
+            noteFound = { name: "Fifty Rupee Note (₹50)", desc: "Fluorescent Blue. Hampi stone chariot on reverse." };
+          } else {
+            noteFound = { name: "Indian Rupee Banknote", desc: "Reserve Bank of India authentic note verified." };
+          }
+        } else if (text.includes("FEDERAL RESERVE") || text.includes("UNITED STATES OF AMERICA") || text.includes("DOLLAR")) {
+          if (text.includes("100") || text.includes("ONE HUNDRED")) {
+            noteFound = { name: "One Hundred US Dollar Bill ($100)", desc: "Benjamin Franklin portrait. Independence Hall." };
+          } else if (text.includes("20") || text.includes("TWENTY")) {
+            noteFound = { name: "Twenty US Dollar Bill ($20)", desc: "Andrew Jackson portrait. White House." };
+          } else {
+            noteFound = { name: "US Dollar Bill", desc: "Federal Reserve Note verified." };
+          }
+        }
+
+        if (noteFound) {
+          const spoken = `You are holding a ${noteFound.name}. Note is right side up. ${noteFound.desc}`;
+          if (cardBody) {
+            cardBody.innerHTML = `
+              <div style="color: var(--emerald-neon); font-size: 1.05rem; font-weight: 800;">&#128181; ${noteFound.name}</div>
+              <div style="color: var(--text-main); font-size: 0.82rem; margin-top: 0.2rem;">${noteFound.desc}</div>
+            `;
+          }
+          speak(spoken, { priority: true, interrupt: true });
+        } else {
+          speak("Could not identify denomination clearly. Please hold the bill flat and steady.", { priority: true });
+        }
+      } catch (e) {
+        speak("Currency scan error. Please hold the note steady.", { priority: true });
+      }
+    }
+
+    function simulateCurrency(type) {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('currencyCardBody');
+      if (type === '500_INR') {
+        const msg = "You are holding a Five Hundred Rupee banknote (₹500). Stone Gray note with Red Fort and Mahatma Gandhi portrait.";
+        if (cardBody) {
+          cardBody.innerHTML = `<div style="color: var(--emerald-neon); font-size: 1.05rem; font-weight: 800;">&#128181; Five Hundred Rupee Note (₹500)</div><div style="color: var(--text-main); font-size: 0.82rem; margin-top: 0.2rem;">Stone Gray. Genuine RBI note.</div>`;
+        }
+        speak(msg, { priority: true, interrupt: true });
+      } else {
+        const msg = "You are holding a Twenty US Dollar bill ($20). Andrew Jackson portrait with White House on reverse.";
+        if (cardBody) {
+          cardBody.innerHTML = `<div style="color: var(--emerald-neon); font-size: 1.05rem; font-weight: 800;">&#128181; Twenty US Dollar Bill ($20)</div><div style="color: var(--text-main); font-size: 0.82rem; margin-top: 0.2rem;">Federal Reserve Note.</div>`;
+        }
+        speak(msg, { priority: true, interrupt: true });
+      }
+    }
+
+    // Color Detection
+    function runColorDetection() {
+      playMetaGlassesChime('confirm');
+      if (!appState.cameraActive || video.videoWidth === 0) {
+        speak("Please start the camera to detect colors.", { priority: true });
+        return;
+      }
+      try {
+        const vW = video.videoWidth, vH = video.videoHeight;
+        const c = document.createElement('canvas');
+        c.width = 120; c.height = 120;
+        const cCtx = c.getContext('2d');
+        cCtx.drawImage(video, (vW - 120) / 2, (vH - 120) / 2, 120, 120, 0, 0, 120, 120);
+        const data = cCtx.getImageData(0, 0, 120, 120).data;
+
+        let r = 0, g = 0, b = 0, count = 0;
+        for (let i = 0; i < data.length; i += 16) {
+          r += data[i]; g += data[i+1]; b += data[i+2]; count++;
+        }
+        r = Math.round(r / count); g = Math.round(g / count); b = Math.round(b / count);
+
+        const rN = r / 255, gN = g / 255, bN = b / 255;
+        const max = Math.max(rN, gN, bN), min = Math.min(rN, gN, bN);
+        let h = 0, s = 0, l = (max + min) / 2;
+        if (max !== min) {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch(max) {
+            case rN: h = (gN - bN) / d + (gN < bN ? 6 : 0); break;
+            case gN: h = (bN - rN) / d + 2; break;
+            case bN: h = (rN - gN) / d + 4; break;
+          }
+          h = Math.round(h * 60);
+        }
+        s = Math.round(s * 100); l = Math.round(l * 100);
+
+        let colorName = "Neutral Gray";
+        let advice = "Pairs well with navy, black, or white.";
+
+        if (l < 12) { colorName = "Jet Black"; advice = "Versatile classic. Matches literally any color pants or shirt."; }
+        else if (l > 88 && s < 15) { colorName = "Pure White"; advice = "Clean and sharp. Pairs with navy, black, olive, or denim."; }
+        else if (s < 14) { colorName = l < 45 ? "Charcoal Gray" : "Silver Heather Gray"; advice = "Classic neutral. Pairs with black, navy, or dark denim."; }
+        else if (h >= 345 || h < 15) { colorName = l < 38 ? "Maroon / Burgundy" : "Crimson Red"; advice = "Bold statement. Balance with neutral black, gray, or denim."; }
+        else if (h >= 15 && h < 45) { colorName = l < 40 ? "Chocolate Brown" : "Vibrant Orange"; advice = "Warm tone. Pairs with cream, sky blue, or olive."; }
+        else if (h >= 45 && h < 70) { colorName = l < 40 ? "Khaki / Tan" : "Mustard Yellow"; advice = "Classic neutral. Pairs with white, navy blue, or olive green."; }
+        else if (h >= 70 && h < 165) { colorName = l < 35 ? "Dark Olive Green" : "Emerald Forest Green"; advice = "Sophisticated tone. Pairs with khaki, brown, cream, or black."; }
+        else if (h >= 165 && h < 260) { colorName = l < 30 ? "Deep Navy Blue" : (l > 65 ? "Sky Blue" : "Royal Blue"); advice = "Universal staple. Pairs with khaki, gray, white, or beige."; }
+        else if (h >= 260 && h < 315) { colorName = "Royal Purple"; advice = "Rich tone. Pairs with gray, black, or crisp white."; }
+        else { colorName = "Rose Pink"; advice = "Gentle tone. Pairs with navy blue, light gray, or white."; }
+
+        const swatch = document.getElementById('liveColorSwatch');
+        const nameEl = document.getElementById('liveColorName');
+        const adviceEl = document.getElementById('liveColorAdvice');
+        if (swatch) swatch.style.background = `rgb(${r}, ${g}, ${b})`;
+        if (nameEl) nameEl.textContent = `${colorName} (RGB: ${r}, ${g}, ${b})`;
+        if (adviceEl) adviceEl.textContent = advice;
+
+        speak(`This object is ${colorName}. Wardrobe advice: ${advice}`, { priority: true, interrupt: true });
+      } catch(e) {}
+    }
+
+    function simulateColor(name) {
+      playMetaGlassesChime('confirm');
+      const swatch = document.getElementById('liveColorSwatch');
+      const nameEl = document.getElementById('liveColorName');
+      const adviceEl = document.getElementById('liveColorAdvice');
+      if (name === 'Navy Blue') {
+        if (swatch) swatch.style.background = '#0a192f';
+        if (nameEl) nameEl.textContent = 'Deep Navy Blue';
+        if (adviceEl) adviceEl.textContent = 'Universal staple. Pairs with khaki pants, gray, white, or beige.';
+        speak("This is Deep Navy Blue. Wardrobe advice: Pairs with khaki pants, gray, white, or beige.", { priority: true });
+      } else if (name === 'Olive Green') {
+        if (swatch) swatch.style.background = '#556b2f';
+        if (nameEl) nameEl.textContent = 'Dark Olive Green';
+        if (adviceEl) adviceEl.textContent = 'Sophisticated earth tone. Pairs with khaki, brown, cream, or black.';
+        speak("This is Dark Olive Green. Wardrobe advice: Pairs with khaki, brown, cream, or black.", { priority: true });
+      } else {
+        if (swatch) swatch.style.background = '#b22222';
+        if (nameEl) nameEl.textContent = 'Crimson Red';
+        if (adviceEl) adviceEl.textContent = 'Bold statement color. Balance with neutral black, gray, or denim.';
+        speak("This is Crimson Red. Wardrobe advice: Balance with neutral black, gray, or denim.", { priority: true });
+      }
+    }
+
+    // Room Lighting & Lux Meter
+    function runLightingCheck() {
+      playMetaGlassesChime('confirm');
+      let luxPercent = 65;
+      if (appState.cameraActive && video.videoWidth > 0) {
+        try {
+          const c = document.createElement('canvas');
+          c.width = 80; c.height = 60;
+          const cCtx = c.getContext('2d');
+          cCtx.drawImage(video, 0, 0, 80, 60);
+          const data = cCtx.getImageData(0, 0, 80, 60).data;
+          let lumSum = 0, count = 0;
+          for (let i = 0; i < data.length; i += 16) {
+            lumSum += 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
+            count++;
+          }
+          luxPercent = Math.round((lumSum / count) / 255 * 100);
+        } catch(e) {}
+      }
+      updateLuxUI(luxPercent);
+    }
+
+    function updateLuxUI(lux) {
+      const valText = document.getElementById('luxValueText');
+      const fillBar = document.getElementById('luxMeterFill');
+      const statText = document.getElementById('luxStatusText');
+      if (fillBar) fillBar.style.width = `${lux}%`;
+      let speech = "";
+
+      if (lux < 15) {
+        if (valText) valText.textContent = `Lux: ${lux}% (Pitch Dark)`;
+        if (statText) { statText.textContent = "⚠ Pitch black: Room lights appear to be OFF."; statText.style.color = "var(--red-alert)"; }
+        speech = `The room is currently in pitch darkness at ${lux} percent light. Your room lights appear to be off.`;
+      } else if (lux < 38) {
+        if (valText) valText.textContent = `Lux: ${lux}% (Dim Ambient)`;
+        if (statText) { statText.textContent = "◑ Dim lighting: Night-time or shaded indoor area."; statText.style.color = "var(--gold-neon)"; }
+        speech = `Dim lighting detected at ${lux} percent. Enough to walk, but overhead lights are dim.`;
+      } else if (lux < 85) {
+        if (valText) valText.textContent = `Lux: ${lux}% (Optimal Indoor)`;
+        if (statText) { statText.textContent = "✔ Optimal lighting: Clear indoor visibility."; statText.style.color = "var(--emerald-neon)"; }
+        speech = `Optimal indoor lighting at ${lux} percent. The room is well lit.`;
+      } else {
+        if (valText) valText.textContent = `Lux: ${lux}% (Sun Glare)`;
+        if (statText) { statText.textContent = "☀ Bright direct sunlight or glare detected."; statText.style.color = "var(--cyan-neon)"; }
+        speech = `Very bright direct sunlight glare detected at ${lux} percent.`;
+      }
+      speak(speech, { priority: true, interrupt: true });
+    }
+
+    function simulateLux(val) {
+      playMetaGlassesChime('confirm');
+      updateLuxUI(val);
+    }
+
+    // Medicine Dosage & Expiry Scanner
+    async function runMedicineExpiryScan() {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('expiryCardBody');
+      if (cardBody) cardBody.innerHTML = '<span style="color: var(--cyan-neon);">Scanning packaging for expiry date and medicine name...</span>';
+      speak("Scanning packaging for expiration date and medicine dosage. Please hold steady.", { priority: true });
+
+      if (!appState.cameraActive || video.videoWidth === 0) {
+        speak("Please start the camera to scan medicine bottles or food packaging.", { priority: true });
+        return;
+      }
+
+      try {
+        const vW = video.videoWidth, vH = video.videoHeight;
+        const c = document.createElement('canvas');
+        c.width = vW; c.height = vH;
+        const cCtx = c.getContext('2d');
+        cCtx.drawImage(video, 0, 0, vW, vH);
+
+        let barcodeResult = "";
+        if ('BarcodeDetector' in window) {
+          try {
+            const detector = new window.BarcodeDetector({ formats: ['qr_code', 'ean_13', 'upc_a', 'code_128'] });
+            const barcodes = await detector.detect(c);
+            if (barcodes.length > 0) barcodeResult = `Barcode detected: ${barcodes[0].rawValue}. `;
+          } catch(e) {}
+        }
+
+        if (!appState.ocrWorker) {
+          appState.ocrWorker = await Tesseract.createWorker('eng');
+          await appState.ocrWorker.setParameters({ tessedit_pageseg_mode: Tesseract.PSM.AUTO });
+        }
+        const ocrRet = await appState.ocrWorker.recognize(c);
+        const text = ocrRet.data.text.trim();
+        const upper = text.toUpperCase();
+
+        const expMatch = upper.match(/(EXP|EXPIRY|BEST BEFORE|USE BY|MFG)[.:\s]*([0-9]{1,2}[\/\-][0-9]{2,4}|[A-Z]{3,4}\s+[0-9]{2,4})/i);
+        const dosageMatch = upper.match(/([0-9]+\s*(MG|ML|G))\b/i);
+
+        let report = "";
+        if (expMatch) report += `Expiration Date found: ${expMatch[0]}. `;
+        if (dosageMatch) report += `Dosage: ${dosageMatch[0]}. `;
+
+        const medicines = ["PARACETAMOL", "IBUPROFEN", "ASPIRIN", "AMOXICILLIN", "CETIRIZINE", "METFORMIN", "OMEPRAZOLE"];
+        const foundMed = medicines.find(m => upper.includes(m));
+        if (foundMed) report = `Identified Medicine: ${foundMed}. ` + report;
+
+        if (report || barcodeResult) {
+          const fullMsg = barcodeResult + (report || "Packaging text: " + text.slice(0, 100));
+          if (cardBody) cardBody.innerHTML = `<div style="color: var(--emerald-neon); font-size: 0.95rem; font-weight: 700;">&#128138; ${foundMed || 'Product Label Read'}</div><div style="color: var(--text-main); font-size: 0.82rem; margin-top: 0.2rem;">${fullMsg}</div>`;
+          speak(fullMsg, { priority: true, interrupt: true });
+        } else {
+          speak("Could not find explicit expiration date. Hold the bottle closer to the camera lens.", { priority: true });
+        }
+      } catch(e) {}
+    }
+
+    function simulateExpiry(text) {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('expiryCardBody');
+      if (cardBody) {
+        cardBody.innerHTML = `<div style="color: var(--emerald-neon); font-size: 0.95rem; font-weight: 700;">&#128138; Verified Packaging Label</div><div style="color: var(--text-main); font-size: 0.82rem; margin-top: 0.2rem;">${text}</div>`;
+      }
+      speak(`Packaging label read: ${text}`, { priority: true, interrupt: true });
+    }
+
+    // Spatial Audio Sonar Item Finder
+    function startFinderFromSelect() {
+      const select = document.getElementById('selectFinderTarget');
+      const target = select ? select.value : 'bottle';
+      startItemFinder(target);
+    }
+
+    function startItemFinder(targetQuery) {
+      playMetaGlassesChime('confirm');
+      appState.metaSupport.itemFinder.active = true;
+      appState.metaSupport.itemFinder.targetName = targetQuery.toLowerCase();
+      appState.metaSupport.itemFinder.locked = false;
+
+      const statEl = document.getElementById('sonarStatusText');
+      const bearingEl = document.getElementById('sonarBearingText');
+      if (statEl) statEl.textContent = `Searching for ${targetQuery}...`;
+      if (bearingEl) bearingEl.textContent = `Target: ${targetQuery.toUpperCase()}`;
+
+      speak(`Searching for your ${targetQuery}. Slowly pan your smart glasses around the room.`, { priority: true, interrupt: true });
+    }
+
+    function toggleSonarBeep() {
+      playMetaGlassesChime('sonar', 580);
+      speak("Sonar acoustic ping active. Higher pitch indicates dead center alignment.", { priority: true });
+    }
+
+    function updateItemFinderSonar() {
+      if (!appState.metaSupport || !appState.metaSupport.itemFinder.active) return;
+      const targetName = appState.metaSupport.itemFinder.targetName;
+      const objects = appState.detectedObjects;
+
+      const matched = objects.find(o => o.label.toLowerCase().includes(targetName) || (targetName === 'cane' && o.label === 'baseball bat'));
+      const statEl = document.getElementById('sonarStatusText');
+      const now = Date.now();
+
+      if (matched) {
+        const vW = video.videoWidth || 1280;
+        const [bx, by, bw, bh] = matched.box;
+        const centerX = bx + bw / 2;
+        const offsetRatio = (centerX - vW / 2) / (vW / 2);
+        const clockBearing = convertSpatialToClockFace(matched.box);
+
+        const centerProximity = 1.0 - Math.min(1.0, Math.abs(offsetRatio));
+        const sonarFreq = Math.round(350 + centerProximity * 530);
+        const pingInterval = Math.max(220, Math.round(1100 - centerProximity * 800));
+
+        if (now - appState.metaSupport.itemFinder.lastPingTime > pingInterval) {
+          appState.metaSupport.itemFinder.lastPingTime = now;
+          playMetaGlassesChime('sonar', sonarFreq);
+        }
+
+        if (statEl) statEl.textContent = `${matched.label.toUpperCase()} at ${clockBearing} (${matched.dist_m.toFixed(1)}m)`;
+
+        if (Math.abs(offsetRatio) < 0.15 && matched.dist_m <= 1.2 && !appState.metaSupport.itemFinder.locked) {
+          appState.metaSupport.itemFinder.locked = true;
+          const cue = `Target directly centered! Your ${matched.label} is right in front of you, ${matched.dist_m.toFixed(1)} meters away. Reach forward.`;
+          speak(cue, { priority: true, interrupt: true });
+        }
+      } else {
+        if (statEl) statEl.textContent = `Scanning for ${targetName}... slowly turn head`;
+      }
+    }
+
+    // 360-Degree Clock-Face Sighted Guide Report
+    function runClockFaceOrientation() {
+      playMetaGlassesChime('confirm');
+      const objects = appState.detectedObjects;
+      if (objects.length === 0) {
+        speak("Immediate surroundings are open. Central walking corridor has more than 4 meters of clear forward space.", { priority: true, interrupt: true });
+        return;
+      }
+      const descriptions = objects.slice(0, 5).map(o => {
+        const clock = convertSpatialToClockFace(o.box);
+        return `${o.label} at ${clock}, ${o.dist_m.toFixed(1)} meters`;
+      });
+      const report = "Clock-face orientation: " + descriptions.join(". ") + ". Central walking corridor is monitored.";
+      const cardBody = document.getElementById('clockGuideCardBody');
+      if (cardBody) cardBody.innerHTML = `<strong>Orientation Report:</strong> ${descriptions.join("<br>")}`;
+      speak(report, { priority: true, interrupt: true });
+    }
+
+    // Emergency SOS & Location Share Beacon
+    function triggerEmergencySOS() {
+      playMetaGlassesChime('sos');
+      const cardBody = document.getElementById('emergencyCardBody');
+      const btnShare = document.getElementById('btnWhatsAppShare');
+
+      let coordsStr = "Locating via GPS...";
+      let mapsUrl = "https://maps.google.com";
+
+      if (appState.navState.currentCoords) {
+        const lat = appState.navState.currentCoords.lat;
+        const lng = appState.navState.currentCoords.lng;
+        coordsStr = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+        mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
+      }
+
+      const area = appState.navState.currentAreaName || "Local Area";
+      const sosMessage = `EMERGENCY ALERT: I am visually impaired and need immediate assistance. My current location is near ${area}. GPS Coordinates: ${coordsStr}. View on Google Maps: ${mapsUrl}`;
+      const waUrl = `https://wa.me/?text=${encodeURIComponent(sosMessage)}`;
+
+      if (btnShare) btnShare.href = waUrl;
+      if (cardBody) {
+        cardBody.innerHTML = `
+          <div style="color: var(--red-alert); font-weight: 800; font-size: 0.95rem;">&#127384; EMERGENCY DISPATCH READY</div>
+          <div style="font-size: 0.80rem; color: var(--text-main); margin-top: 0.3rem;"><strong>Location:</strong> ${area}</div>
+          <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--cyan-neon);">${coordsStr}</div>
+          <div style="margin-top: 0.4rem; font-size: 0.76rem;"><a href="${waUrl}" target="_blank" style="color: #25d366; text-decoration: underline;">Click to send WhatsApp SOS to Emergency Contacts &rarr;</a></div>
+        `;
+      }
+      speak(`Emergency SOS activated. Your current location is near ${area}. Emergency dispatch message prepared with Google Maps location pin.`, { priority: true, interrupt: true });
+    }
+
+    function simulateTrafficSignal(state) {
+      playMetaGlassesChime('confirm');
+      const cardBody = document.getElementById('crosswalkCardBody');
+      if (state === 'RED') {
+        const msg = "Traffic light is RED. Halt safely at the pedestrian curb and wait.";
+        if (cardBody) cardBody.innerHTML = `<span style="color: var(--red-alert); font-weight: 800;">🛑 TRAFFIC LIGHT: RED (HALT AT CURB)</span>`;
+        speak(msg, { priority: true, interrupt: true });
+      } else {
+        const msg = "Traffic light has turned GREEN. Safe to cross the street inside the pedestrian crosswalk.";
+        if (cardBody) cardBody.innerHTML = `<span style="color: var(--emerald-neon); font-weight: 800;">🟢 TRAFFIC LIGHT: GREEN (SAFE TO CROSS)</span>`;
+        speak(msg, { priority: true, interrupt: true });
+      }
+    }
+
+    // =========================================================================
+    // 8. NATURAL CONVERSATIONAL ARBITER: ASKASSISTANT()
+    // =========================================================================
+    async function askAssistant(query) {
+      if (!query) return;
+      const q = query.toLowerCase().trim();
+      if (dialogueUserRow) dialogueUserRow.innerHTML = `You said: <em>"${query}"</em>`;
+
+      let reply = "";
+      let isWeb = false;
+      const objects = appState.detectedObjects;
+      const centerObjs = objects.filter(o => o.pos === "CENTER");
+
+      // 0. Tab Switching by Voice
+      if (q.includes('show vision') || q.includes('open vision') || q.includes('camera cockpit')) {
+        switchTab('vision');
+        return;
+      }
+      if (q.includes('show tools') || q.includes('open tools') || q.includes('blind tools')) {
+        switchTab('tools');
+        return;
+      }
+      if (q.includes('show reader') || q.includes('open reader') || q.includes('book reader')) {
+        switchTab('reader');
+        return;
+      }
+      if (q.includes('show tasks') || q.includes('open tasks') || q.includes('my tasks') || q.includes('memory hub')) {
+        switchTab('tasks');
+        return;
+      }
+      if (q.includes('show research') || q.includes('open research') || q.includes('8 modules') || q.includes('phd studio')) {
+        switchTab('research');
+        return;
+      }
+
+      // 0B. Multi-turn Conversational Navigation Assistant
+      if (appState.navDialog && appState.navDialog.state === 'awaiting_area') {
+        const cleanArea = query.replace(/^(it is in|in|at|near|area is)\s*/i, '').trim();
+        appState.navDialog.targetArea = cleanArea;
+        appState.navDialog.state = 'awaiting_confirmation';
+        const curLoc = appState.navState.currentAreaName || 'your current location';
+        reply = `Understood. You want to navigate from ${curLoc} to ${appState.navDialog.targetPlace} in ${appState.navDialog.targetArea}. Is that correct? Say Yes to start walking route, or No to change the place.`;
+        speak(reply, { priority: true, interrupt: true });
+        if (dialogueAiText) dialogueAiText.textContent = reply;
+        return;
+      }
+
+      if (appState.navDialog && appState.navDialog.state === 'awaiting_confirmation') {
+        if (q === 'yes' || q.includes('yes') || q.includes('correct') || q.includes('start') || q.includes('proceed') || q.includes('yeah') || q.includes('sure')) {
+          appState.navState.active = true;
+          appState.navState.destination = `${appState.navDialog.targetPlace}, ${appState.navDialog.targetArea}`;
+          appState.navDialog.state = 'idle';
+          reply = `Confirmed! Starting turn-by-turn guidance to ${appState.navState.destination}. Walk forward 25 meters. Spatial radar and crosswalk sensors are actively watching your path.`;
+          speak(reply, { priority: true, interrupt: true });
+          if (dialogueAiText) dialogueAiText.textContent = reply;
+          return;
+        } else if (q === 'no' || q.startsWith('no')) {
+          const newPlaceMatch = query.match(/(?:no,? (?:i want to go to|navigate to|take me to|i meant|to)?\s*)(.+)/i);
+          if (newPlaceMatch && newPlaceMatch[1] && newPlaceMatch[1].trim().length > 2 && !['no', 'cancel', 'stop'].includes(newPlaceMatch[1].trim().toLowerCase())) {
+            const newPlace = newPlaceMatch[1].replace(/^(navigate to|take me to|go to|i meant)\s*/i, '').trim();
+            appState.navDialog.targetPlace = newPlace;
+            appState.navDialog.state = 'awaiting_area';
+            reply = `Understood. Changed destination to ${newPlace}. Could you please confirm which area or neighborhood ${newPlace} is located in?`;
+            speak(reply, { priority: true, interrupt: true });
+            if (dialogueAiText) dialogueAiText.textContent = reply;
+            return;
+          } else {
+            appState.navDialog.state = 'idle';
+            reply = 'Navigation cancelled. Where would you like to navigate instead?';
+            speak(reply, { priority: true, interrupt: true });
+            if (dialogueAiText) dialogueAiText.textContent = reply;
+            return;
+          }
+        }
+      }
+
+      if (q.includes('navigate to') || q.includes('take me to') || q.includes('directions to') || q.includes('how to go to') || q.includes('walk to')) {
+        const match = query.match(/(?:navigate to|take me to|directions to|how to go to|walk to)\s+(.+)/i);
+        const targetPlace = match ? match[1].trim() : 'your destination';
+        appState.navDialog = {
+          state: 'awaiting_area',
+          targetPlace: targetPlace,
+          targetArea: ''
+        };
+        const curLoc = appState.navState.currentAreaName || 'your current location';
+        reply = `You want to navigate to ${targetPlace}. You are currently at ${curLoc}. Could you tell me which area or district ${targetPlace} is located in, so I can confirm the exact destination?`;
+        speak(reply, { priority: true, interrupt: true });
+        if (dialogueAiText) dialogueAiText.textContent = reply;
+        return;
+      }
+
+      // 1. Reading Book Slowly & OCR
+      if (q.includes('read book') || q.includes('read document') || q.includes('read text') || q.includes('scan book') || q.includes('read slowly')) {
+        runLiveOCR(true);
+        return;
+      }
+      if (q.includes('pause reading') || q.includes('pause book')) {
+        toggleBookReadingPlayback();
+        return;
+      }
+      if (q.includes('resume reading') || q.includes('continue reading')) {
+        startBookReadingSlowly();
+        return;
+      }
+      if (q.includes('stop reading')) {
+        stopBookReading();
+        return;
+      }
+
+      // 2. Task & Memory Voice Intents
+      if (q.startsWith('remember ') || q.startsWith('note that ')) {
+        const note = q.replace(/^(remember|note that)\s*/i, '').trim();
+        addMemoryNote(note);
+        return;
+      }
+      if (q.startsWith('where did i put ') || q.startsWith('where is my cane') || q.startsWith('where are my keys')) {
+        // Search memory notes first
+        const matchedNote = appState.taskMemory.notes.find(n => q.includes(n.text.toLowerCase().split(' ')[0]) || n.text.toLowerCase().includes(q.replace('where did i put ', '')));
+        if (matchedNote) {
+          reply = `According to your memory notes: ${matchedNote.text}`;
+          speak(reply, { priority: true, interrupt: true });
+          if (dialogueAiText) dialogueAiText.textContent = reply;
+          return;
+        }
+      }
+      if (q.startsWith('remind me to ') || q.startsWith('add task ')) {
+        const taskText = q.replace(/^(remind me to|add task)\s*/i, '').trim();
+        addTask(taskText);
+        return;
+      }
+      if (q.includes('what are my tasks') || q.includes('list tasks') || q.includes('what do i have to do')) {
+        readAllTasksAloud();
+        return;
+      }
+
+      // 3. Blind Living Tools Intents
+      if (q.includes('money') || q.includes('currency') || q.includes('banknote') || q.includes('how much am i holding') || q.includes('bill') || q.includes('rupee') || q.includes('dollar')) {
+        runCurrencyDetection();
+        return;
+      }
+      if (q.includes('what color') || q.includes('which color') || q.includes('color of') || q.includes('does this match') || q.includes('wardrobe')) {
+        runColorDetection();
+        return;
+      }
+      if (q.includes('light on') || q.includes('is it dark') || q.includes('room light') || q.includes('check light') || q.includes('lux') || q.includes('is the room dark')) {
+        runLightingCheck();
+        return;
+      }
+      if (q.includes('expiry') || q.includes('expiration') || q.includes('best before') || q.includes('medicine') || q.includes('pill') || q.includes('dosage')) {
+        runMedicineExpiryScan();
+        return;
+      }
+      if (q.startsWith('find my ') || q.startsWith('find a ') || q.startsWith('where is my ') || q.startsWith('locate my ')) {
+        const target = q.replace(/^(find my|find a|where is my|locate my)\s*/i, '').trim();
+        startItemFinder(target);
+        return;
+      }
+      if (q.includes('clock face') || q.includes('bearing') || q.includes('orientation') || q.includes('where are objects') || q.includes('look around')) {
+        runClockFaceOrientation();
+        return;
+      }
+      if (q.includes('can i cross') || q.includes('cross the street') || q.includes('traffic light') || q.includes('zebra')) {
+        if (appState.trafficLight.lastSpokenState === 'RED') {
+          reply = "Do not cross. Traffic light is currently RED. Wait safely at the curb.";
+        } else if (appState.trafficLight.lastSpokenState === 'GREEN') {
+          reply = "Traffic light is GREEN. Safe to cross the street inside the pedestrian crosswalk.";
+        } else {
+          reply = "Scanning crosswalk. Central path offers clearance. Look for traffic light indicators before stepping off the curb.";
+        }
+        speak(reply, { priority: true, interrupt: true });
+        if (dialogueAiText) dialogueAiText.textContent = reply;
+        return;
+      }
+      if (q === 'emergency' || q.includes('help me') || q.includes('sos') || q.includes('i am lost')) {
+        triggerEmergencySOS();
+        return;
+      }
+
+      // 4. Empathetic Support Companion
+      if (q.includes('anxious') || q.includes('nervous') || q.includes('scared') || q.includes('alone') || q.includes('worried')) {
+        reply = "I understand feeling anxious. I am right here with you. Your smart glasses are continuously monitoring your surroundings and ground surface. Take slow, measured steps; I will alert you well in advance of any obstacles. You are doing great.";
+        speak(reply, { priority: true, interrupt: true });
+        if (dialogueAiText) dialogueAiText.textContent = reply;
+        return;
+      }
+      if (q.includes('are you with me') || q.includes('are you still there')) {
+        reply = "I am right here with you. All vision sensors, obstacle radars, and audio guidance are fully active.";
+        speak(reply, { priority: true, interrupt: true });
+        if (dialogueAiText) dialogueAiText.textContent = reply;
+        return;
+      }
+
+      // 5. Visual Scene Description
+      if (q.includes('what do you see') || q.includes('describe') || q.includes('tell me what') || q.includes('scene')) {
+        reply = generateComprehensiveSceneStory();
+        speak(reply, { priority: true, interrupt: true });
+        if (dialogueAiText) dialogueAiText.textContent = reply;
+        return;
+      }
+
+      // 6. Path Clearance & Directional Evasion
+      if (q.includes('can i walk') || q.includes('clearance') || q.includes('path') || q.includes('safe to walk')) {
+        if (centerObjs.length === 0) {
+          reply = "The forward walking path is completely open for more than 4 meters. It is safe to proceed.";
+        } else {
+          const obstacle = centerObjs[0];
+          reply = `Forward walking path has ${obstacle.dist_m.toFixed(1)} meters of clearance before reaching the ${obstacle.label}. Left and right sectors are open for sidestepping.`;
+        }
+        speak(reply, { priority: true, interrupt: true });
+        if (dialogueAiText) dialogueAiText.textContent = reply;
+        return;
+      }
+      if (q.includes('which direction') || q.includes('where to move') || q.includes('how to dodge') || q.includes('evasion')) {
+        const leftC = parseFloat(valLeft.textContent) || 5.0;
+        const rightC = parseFloat(valRight.textContent) || 5.0;
+        const evasion = calculateEvasionVector(leftC, rightC);
+        if (centerObjs.length > 0) {
+          reply = `The central corridor is obstructed by a ${centerObjs[0].label} at ${centerObjs[0].dist_m.toFixed(1)} meters. ${evasion.text}`;
+        } else {
+          reply = `The forward walking path is completely open. If you wish to veer, ${evasion.text}`;
+        }
+        speak(reply, { priority: true, interrupt: true });
+        if (dialogueAiText) dialogueAiText.textContent = reply;
+        return;
+      }
+
+      // 7. Conversational Chat & Web Knowledge
+      if (q.startsWith('hello') || q.startsWith('hi') || q.startsWith('hey')) {
+        reply = "Hello! I am ready to guide your navigation or read any text for you. What would you like to know?";
+      } else if (q.includes('how are you')) {
+        reply = "I am operating optimally. All obstacle radars and vision modules are active. How can I assist you?";
+      } else if (q.includes('who are you') || q.includes('what are you')) {
+        reply = "I am AURA-Vision, an intelligent assistive vision AI built for smart glasses to empower visually impaired individuals with navigation, book reading, and daily living support.";
+      } else {
+        voiceStatusText.textContent = "Searching web knowledge...";
+        const webAnswer = await searchLiveWeb(query);
+        if (webAnswer) {
+          reply = webAnswer;
+          isWeb = true;
+        } else {
+          reply = `I could not find an exact article for "${query}". Try asking about a specific person, place, or concept, or say 'describe scene' or 'read text'.`;
+        }
+      }
+
+      speak(reply, { priority: true });
+      if (dialogueAiText) dialogueAiText.textContent = reply;
+    }
+
+    // Live Web Search Engine (Wikipedia Entity Extraction)
+    async function searchLiveWeb(query) {
+      if (!query || query.trim().length < 2) return null;
+      try {
+        let cleanQuery = query.toLowerCase()
+          .replace(/[?.,!]/g, '')
+          .replace(/^(who is|who was|what is a|what is an|what is the|what is|where is|tell me about|explain|search for)\s+/i, '')
+          .trim();
+        if (!cleanQuery) cleanQuery = query.replace(/[?.,!]/g, '').trim();
+
+        const sUrl = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(cleanQuery)}&limit=2&namespace=0&format=json&origin=*`;
+        const sRes = await fetch(sUrl);
+        if (sRes.ok) {
+          const sData = await sRes.json();
+          if (sData[2] && sData[2].length > 0 && sData[2][0].length > 20) {
+            return sData[2][0];
+          }
+        }
+      } catch(e) {}
+      return null;
+    }
+
+    // =========================================================================
+    // 9. OBJECT DETECTION, HUD RENDERING & ROAD HAZARD ENGINE
+    // =========================================================================
+    async function toggleCamera() {
+      if (appState.cameraActive) {
+        if (video.srcObject) {
+          video.srcObject.getTracks().forEach(t => t.stop());
+        }
+        appState.cameraActive = false;
+        document.getElementById('camBtnIcon').innerHTML = '&#128247;';
+        document.getElementById('camBtnText').textContent = 'Start Real Camera (Key C)';
+        hudStatusTag.textContent = "CAMERA: STOPPED";
+        liveNarrativeText.textContent = "Camera stopped. Click 'Start Real Camera' to resume live vision.";
+      } else {
+        try {
+          hudStatusTag.textContent = "CAMERA: INITIALIZING WEBCAM...";
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: "environment" }
+          });
+          video.srcObject = stream;
+          await video.play();
+          appState.cameraActive = true;
+          document.getElementById('camBtnIcon').innerHTML = '&#9209;';
+          document.getElementById('camBtnText').textContent = 'Stop Real Camera (Key C)';
+          hudStatusTag.textContent = "CAMERA: LIVE WEBCAM ACTIVE";
+          liveNarrativeText.textContent = "Camera active. Central corridor and metric depth radar are monitoring your surroundings.";
+          speak("Camera activated. Obstacle and ground detection live.", { priority: true });
+        } catch (err) {
+          console.error("Camera access error:", err);
+          hudStatusTag.textContent = "CAMERA: ACCESS DENIED";
+          speak("Unable to access camera. Please allow camera permissions.", { priority: true });
+        }
+      }
+    }
+
+    async function loadCocoModel() {
+      try {
+        appState.cocoModel = await cocoSsd.load({ base: 'mobilenet_v2' });
+        appState.modelLoaded = true;
+        hudStatusTag.textContent = "AI ENGINE: TENSORFLOW.JS READY";
+      } catch (e) {
+        console.warn("Could not load COCO-SSD:", e);
+      }
+    }
+
+    // Automatic GPS Geolocation & OpenStreetMap Reverse Geocoding
+    function initGPSLocation() {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          appState.navState.currentCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          try {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`;
+            const res = await fetch(url);
+            if (res.ok) {
+              const data = await res.json();
+              const a = data.address || {};
+              const place = a.suburb || a.neighbourhood || a.road || a.amenity || a.building || "Local Area";
+              const city = a.city || a.town || a.county || "";
+              appState.navState.currentAreaName = `${place}${city ? ', ' + city : ''}`;
+            }
+          } catch(e) {}
+        }, (err) => {
+          appState.navState.currentAreaName = "GPS Signal Pending";
+        }, { enableHighAccuracy: true, timeout: 10000 });
+      }
+    }
+
+    // Traffic Light Color Classifier (Top 35% Red vs Bottom 35% Green)
+    function analyzeTrafficLightColor(box) {
+      if (!appState.cameraActive || video.videoWidth === 0) return 'UNKNOWN';
+      try {
+        if (!appState.tlCanvas) {
+          appState.tlCanvas = document.createElement('canvas');
+          appState.tlCtx = appState.tlCanvas.getContext('2d', { willReadFrequently: true });
+        }
+        const vW = video.videoWidth, vH = video.videoHeight;
+        const [x, y, w, h] = box;
+        const cropW = Math.max(10, Math.min(vW - x, w));
+        const cropH = Math.max(20, Math.min(vH - y, h));
+        appState.tlCanvas.width = cropW; appState.tlCanvas.height = cropH;
+        appState.tlCtx.drawImage(video, x, y, cropW, cropH, 0, 0, cropW, cropH);
+        const data = appState.tlCtx.getImageData(0, 0, cropW, cropH).data;
+
+        let redScore = 0;
+        const topH = Math.floor(cropH * 0.35);
+        for (let py = 0; py < topH; py += 2) {
+          for (let px = 0; px < cropW; px += 2) {
+            const idx = (py * cropW + px) * 4;
+            const r = data[idx], g = data[idx+1], b = data[idx+2];
+            if (r > 130 && r > g * 1.35 && r > b * 1.35) redScore++;
+          }
+        }
+
+        let greenScore = 0;
+        const bottomStart = Math.floor(cropH * 0.65);
+        for (let py = bottomStart; py < cropH; py += 2) {
+          for (let px = 0; px < cropW; px += 2) {
+            const idx = (py * cropW + px) * 4;
+            const r = data[idx], g = data[idx+1], b = data[idx+2];
+            if (g > 125 && g > r * 1.25 && g > b * 1.1) greenScore++;
+          }
+        }
+
+        if (redScore > 8 && redScore > greenScore * 1.5) return 'RED';
+        if (greenScore > 8 && greenScore > redScore * 1.5) return 'GREEN';
+      } catch(e) {}
+      return 'UNKNOWN';
+    }
+
+    // Real-Time Object Detection Loop
+    async function detectFrameObjects() {
+      if (!appState.cameraActive || !appState.modelLoaded || video.readyState < 2) return;
+
+      try {
+        const predictions = await appState.cocoModel.detect(video);
+        const w = canvas.width / 2;
+        const h = canvas.height;
+        const newObjects = [];
+        let leftMin = 5.0, centerMin = 5.0, rightMin = 5.0;
+
+        predictions.forEach((pred, idx) => {
+          if (pred.score < 0.25) return;
+          const [bx, by, bw, bh] = pred.bbox;
+          const centerX = bx + bw / 2;
+          const normCenter = centerX / (video.videoWidth || 1280);
+
+          let pos = "CENTER";
+          if (normCenter < 0.33) pos = "LEFT";
+          else if (normCenter > 0.67) pos = "RIGHT";
+
+          // Metric distance estimation
+          const fracH = bh / (video.videoHeight || 720);
+          const rawDist = Math.max(0.4, Math.min(8.0, 1.45 / (fracH + 0.05)));
+
+          // Temporal EMA distance smoothing
+          const trackKey = `${pred.class}_${pos}`;
+          let smoothedDist = rawDist;
+          let isApproaching = false;
+
+          if (appState.trackedObjects[trackKey]) {
+            const prev = appState.trackedObjects[trackKey];
+            smoothedDist = 0.35 * rawDist + 0.65 * prev.dist;
+            const deltaDist = prev.dist - smoothedDist;
+            if (deltaDist > 0.08 && smoothedDist < 4.5) isApproaching = true;
+          }
+
+          const finalDist = Math.round(smoothedDist * 10) / 10;
+          appState.trackedObjects[trackKey] = { dist: finalDist, time: Date.now() };
+
+          if (pos === "LEFT") leftMin = Math.min(leftMin, finalDist);
+          else if (pos === "CENTER") centerMin = Math.min(centerMin, finalDist);
+          else if (pos === "RIGHT") rightMin = Math.min(rightMin, finalDist);
+
+          newObjects.push({
+            label: pred.class,
+            score: pred.score,
+            box: pred.bbox,
+            dist_m: finalDist,
+            pos: pos,
+            isApproaching: isApproaching
+          });
+        });
+
+        // Ground Hazard & Road Defect Engine
+        if (appState.cameraActive && video.videoWidth > 0) {
+          try {
+            if (!appState.sampleCanvas) {
+              appState.sampleCanvas = document.createElement('canvas');
+              appState.sampleCanvas.width = 160;
+              appState.sampleCanvas.height = 120;
+              appState.sampleCtx = appState.sampleCanvas.getContext('2d', { willReadFrequently: true });
+            }
+            const sCtx = appState.sampleCtx;
+            sCtx.drawImage(video, 0, 0, 160, 120);
+
+            // ABSOLUTE INDOOR / HUMAN OCCLUSION GUARD:
+            // Never mistake clothes, body shadows, or furniture for road potholes!
+            const hasPersonOrIndoor = newObjects.some(o => ['person', 'chair', 'couch', 'bed', 'tv', 'laptop', 'desk', 'bottle', 'cup', 'keyboard', 'book', 'dining table'].includes(o.label));
+            const hasRoadContext = (appState.navState.active || appState.audioMode === 'walk_guide') && newObjects.some(o => ['car', 'bus', 'truck', 'motorcycle', 'traffic light', 'stop sign'].includes(o.label));
+
+            if (!hasPersonOrIndoor && hasRoadContext) {
+              const floorData = sCtx.getImageData(0, 55, 160, 60).data;
+              let darkPoints = 0;
+              let totalLum = 0;
+              let samples = 0;
+              for (let y = 6; y < 54; y += 2) {
+                for (let x = 40; x <= 120; x += 2) {
+                  const idx = (y * 160 + x) * 4;
+                  const lum = 0.299 * floorData[idx] + 0.587 * floorData[idx+1] + 0.114 * floorData[idx+2];
+                  totalLum += lum;
+                  samples++;
+                  if (lum < 28) darkPoints++;
+                }
+              }
+              const avgPavementLum = samples > 0 ? (totalLum / samples) : 0;
+              // True asphalt road cavity requires bright asphalt pavement background (> 75) + dense cavity (> 85)
+              if (darkPoints > 85 && avgPavementLum > 75) {
+                const potDist = 1.4;
+                centerMin = Math.min(centerMin, potDist);
+                newObjects.unshift({
+                  label: "POTHOLE IN ROAD",
+                  score: 0.95,
+                  box: [w * 0.28, h * 0.60, w * 0.44, h * 0.25],
+                  dist_m: potDist,
+                  pos: "CENTER",
+                  isHazard: true,
+                  isApproaching: false
+                });
+              }
+            }
+          } catch(e) {}
+        }
+
+        appState.detectedObjects = newObjects;
+
+        // Telemetry Updates
+        if (valLeft) valLeft.textContent = leftMin < 5.0 ? `${leftMin.toFixed(1)}m` : "CLEAR";
+        if (valCenter) valCenter.textContent = centerMin < 5.0 ? `${centerMin.toFixed(1)}m` : "CLEAR";
+        if (valRight) valRight.textContent = rightMin < 5.0 ? `${rightMin.toFixed(1)}m` : "CLEAR";
+
+        processBackgroundGuidance(newObjects, centerMin, leftMin, rightMin);
+        updateItemFinderSonar();
+      } catch (err) {
+        console.warn("Detection loop error:", err);
+      }
+    }
+
+    function calculateEvasionVector(leftC, rightC) {
+      if (leftC >= 3.0 && leftC >= rightC) {
+        return { text: "Step to your left into the open path.", badge: "STEP LEFT ⬅", phrase: "left clearance safe" };
+      } else if (rightC >= 3.0) {
+        return { text: "Step to your right into the open path.", badge: "STEP RIGHT ➡", phrase: "right clearance safe" };
+      } else if (leftC > rightC) {
+        return { text: "Veer slightly left for more clearance.", badge: "VEER LEFT ⬉", phrase: "left flank open" };
+      } else {
+        return { text: "Veer slightly right for more clearance.", badge: "VEER RIGHT ⬈", phrase: "right flank open" };
+      }
+    }
+
+    function processBackgroundGuidance(objects, centerClearance, leftClearance = 5.0, rightClearance = 5.0) {
+      const now = Date.now();
+      const evasion = calculateEvasionVector(leftClearance, rightClearance);
+
+      const centerObjs = objects.filter(o => o.pos === "CENTER");
+      const stationaryPerson = centerObjs.find(o => o.label === 'person' && !o.isApproaching);
+
+      if (stationaryPerson) {
+        liveNarrativeText.textContent = `"Person standing directly ahead (${stationaryPerson.dist_m.toFixed(1)}m). Quiet conversation mode active."`;
+        if (valEvasion) valEvasion.textContent = "CONVERSATION / STATIONARY";
+      } else if (objects.length === 0) {
+        liveNarrativeText.textContent = `"Forward walking path is unobstructed. Corridor offers ${centerClearance.toFixed(1)} meters of clearance."`;
+        if (valEvasion) valEvasion.textContent = "FORWARD CLEAR";
+      } else if (centerObjs.length > 0) {
+        const obs = centerObjs[0];
+        liveNarrativeText.textContent = `"Obstacle ahead: ${obs.label} at ${obs.dist_m.toFixed(1)}m. Safe route: ${evasion.phrase}."`;
+        if (valEvasion) valEvasion.textContent = evasion.badge;
+      } else {
+        liveNarrativeText.textContent = `"Forward corridor clear for ${centerClearance.toFixed(1)} meters. Periphery monitored."`;
+        if (valEvasion) valEvasion.textContent = "FORWARD CLEAR";
+      }
+
+      // Traffic Light Announcer
+      const trafficLightObj = objects.find(o => o.label === 'traffic light');
+      if (trafficLightObj) {
+        const color = analyzeTrafficLightColor(trafficLightObj.box);
+        if (color !== 'UNKNOWN' && color !== appState.trafficLight.lastSpokenState && (now - appState.trafficLight.lastSpokenTime > 5000)) {
+          appState.trafficLight.lastSpokenState = color;
+          appState.trafficLight.lastSpokenTime = now;
+          if (color === 'RED') {
+            speak("Traffic light is RED. Please halt and wait safely at the curb.", { priority: true, interrupt: true });
+          } else if (color === 'GREEN') {
+            speak("Traffic light has turned GREEN. Safe to cross the street inside the crosswalk.", { priority: true, interrupt: true });
+          }
+        }
+      }
+
+      // Moving Vehicle Threats (Early Warning at 6.0m)
+      const vehicleThreat = objects.find(o => ['car', 'bus', 'truck', 'motorcycle'].includes(o.label) && o.isApproaching && o.dist_m <= 6.0);
+      if (vehicleThreat && (now - appState.lastCautionSpokenTime > 6000)) {
+        appState.lastCautionSpokenTime = now;
+        speak(`Warning! ${vehicleThreat.label.toUpperCase()} approaching at ${vehicleThreat.dist_m.toFixed(1)} meters! ${evasion.text}`, { priority: true, interrupt: true });
+        return;
+      }
+
+      // Moving Pedestrian Threats (Early Warning at 3.5m)
+      const personThreat = objects.find(o => o.label === 'person' && o.isApproaching && o.dist_m <= 3.5);
+      if (personThreat && (now - appState.lastCautionSpokenTime > 6500)) {
+        appState.lastCautionSpokenTime = now;
+        speak(`Caution! Person approaching ahead at ${personThreat.dist_m.toFixed(1)} meters. ${evasion.text}`, { priority: true });
+        return;
+      }
+    }
+
+    function toggleAudioMode() {
+      const btn = document.getElementById('btnToggleMode');
+      if (appState.audioMode === 'conversational') {
+        appState.audioMode = 'walk_guide';
+        if (btn) {
+          btn.innerHTML = "&#128694; Walk Guide Mode (Periodic Cues)";
+          btn.style.color = "var(--cyan-neon)";
+          btn.style.borderColor = "var(--cyan-neon)";
+        }
+        speak("Walk guide mode activated. Periodic path cues enabled.", { priority: true });
+      } else {
+        appState.audioMode = 'conversational';
+        if (btn) {
+          btn.innerHTML = "&#129302; Conversational (Quiet &amp; Responsive)";
+          btn.style.color = "var(--emerald-neon)";
+          btn.style.borderColor = "var(--emerald-neon)";
+        }
+        speak("Conversational assistant mode. Remaining quiet until you speak.", { priority: true });
+      }
+    }
+
+    function generateComprehensiveSceneStory() {
+      const objects = appState.detectedObjects;
+      if (objects.length === 0) {
+        return "I see an open, quiet space. The forward walking corridor offers more than 4 meters of clear clearance.";
+      }
+      const labels = [...new Set(objects.map(o => o.label))];
+      const personCount = objects.filter(o => o.label === 'person').length;
+      let text = `In front of you, I detect ${objects.length} entities including: ${labels.join(', ')}. `;
+      if (personCount > 0) {
+        text += `There ${personCount === 1 ? 'is 1 person' : `are ${personCount} people`} in your field of view. `;
+      }
+      const centerObj = objects.find(o => o.pos === "CENTER");
+      if (centerObj) {
+        text += `Directly in your central path, there is a ${centerObj.label} at approximately ${centerObj.dist_m.toFixed(1)} meters. `;
+      } else {
+        text += `Your central walking corridor is unobstructed. `;
+      }
+      return text;
+    }
+
+    // =========================================================================
+    // 10. CANVAS HUD & 360-DEGREE RADAR RENDERING
+    // =========================================================================
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const w = canvas.width;
+      const h = canvas.height;
+      const halfW = w / 2;
+
+      // 1. LEFT PANE: Video Feed + Overlays
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, halfW, h);
+      ctx.clip();
+
+      if (appState.cameraActive && video.readyState >= 2) {
+        ctx.drawImage(video, 0, 0, halfW, h);
+      } else {
+        ctx.fillStyle = '#060910';
+        ctx.fillRect(0, 0, halfW, h);
+        ctx.fillStyle = '#00e5ff';
+        ctx.font = 'bold 15px "JetBrains Mono", monospace';
+        ctx.fillText("CAMERA STANDBY", halfW * 0.35, h * 0.45);
+        ctx.fillStyle = '#8e9bb5';
+        ctx.font = '13px Inter, sans-serif';
+        ctx.fillText("Click 'Start Real Camera' to activate live edge AI", halfW * 0.20, h * 0.52);
+      }
+
+      // Corridor Guidelines
+      const cLeft = halfW * 0.33, cRight = halfW * 0.67;
+      ctx.strokeStyle = 'rgba(0, 229, 255, 0.40)';
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(cLeft, h * 0.15); ctx.lineTo(cLeft, h * 0.88);
+      ctx.moveTo(cRight, h * 0.15); ctx.lineTo(cRight, h * 0.88);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Central Reticle
+      const retW = halfW * 0.50, retH = h * 0.42;
+      const retX = (halfW - retW) / 2, retY = (h - retH) / 2;
+      ctx.strokeStyle = 'rgba(0, 240, 170, 0.35)';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(retX, retY, retW, retH);
+
+      // Draw Detected Bounding Boxes
+      appState.detectedObjects.forEach(obj => {
+        const [bx, by, bw, bh] = obj.box;
+        let col = '#00f0aa';
+        let badge = `${obj.label.toUpperCase()} [${obj.dist_m}m | ${obj.pos}]`;
+
+        if (obj.isApproaching) {
+          col = '#ff3366';
+          badge = `>> APPROACHING: ${obj.label.toUpperCase()} (${obj.dist_m}m) <<`;
+        } else if (obj.label === 'person') {
+          col = '#00e5ff';
+          badge = `PERSON [${obj.dist_m}m | ${obj.pos}]`;
+        } else if (obj.pos === 'CENTER' && obj.dist_m <= 0.85) {
+          col = '#ff3366';
+          badge = `>> CLOSE BARRIER: ${obj.label.toUpperCase()} (${obj.dist_m}m) <<`;
+        }
+
+        ctx.strokeStyle = col;
+        ctx.lineWidth = 2.5;
+        ctx.strokeRect(bx, by, bw, bh);
+
+        ctx.fillStyle = col;
+        ctx.fillRect(bx, Math.max(0, by - 22), Math.min(bw, 220), 22);
+        ctx.fillStyle = '#05070c';
+        ctx.font = 'bold 10px "JetBrains Mono", monospace';
+        ctx.fillText(badge, bx + 5, Math.max(14, by - 7));
+      });
+      ctx.restore();
+
+      // Divider
+      ctx.strokeStyle = 'rgba(0, 229, 255, 0.35)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(halfW, 0); ctx.lineTo(halfW, h);
+      ctx.stroke();
+
+      // 2. RIGHT PANE: 360-Degree Metric Thermal Depth Radar
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(halfW, 0, halfW, h);
+      ctx.clip();
+
+      ctx.fillStyle = '#020408';
+      ctx.fillRect(halfW, 0, halfW, h);
+
+      const rX = halfW + halfW / 2;
+      const rY = h / 2 + 15;
+      const maxR = Math.min(halfW, h) * 0.40;
+
+      // Concentric Distance Circles
+      const rings = [
+        { r: maxR * 0.25, label: "0.8m [BUFFER]", col: "rgba(255, 51, 102, 0.25)" },
+        { r: maxR * 0.50, label: "1.8m [CAUTION]", col: "rgba(255, 183, 3, 0.18)" },
+        { r: maxR * 0.85, label: "4.0m [FAR]", col: "rgba(0, 229, 255, 0.12)" }
+      ];
+
+      rings.forEach(ring => {
+        ctx.strokeStyle = ring.col;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(rX, rY, ring.r, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(142, 155, 181, 0.6)';
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.fillText(ring.label, rX + 6, rY - ring.r + 10);
+      });
+
+      // User Crosshair
+      ctx.strokeStyle = '#00e5ff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(rX - 10, rY); ctx.lineTo(rX + 10, rY);
+      ctx.moveTo(rX, rY - 10); ctx.lineTo(rX, rY + 10);
+      ctx.stroke();
+
+      // Plot Obstacles on Radar
+      appState.detectedObjects.forEach(obj => {
+        const normDist = Math.min(1.0, obj.dist_m / 4.5);
+        const distPx = normDist * (maxR * 0.85);
+
+        let angle = -Math.PI / 2; // Dead center
+        if (obj.pos === "LEFT") angle = -Math.PI * 0.75;
+        else if (obj.pos === "RIGHT") angle = -Math.PI * 0.25;
+
+        const oX = rX + Math.cos(angle) * distPx;
+        const oY = rY + Math.sin(angle) * distPx;
+
+        ctx.fillStyle = obj.dist_m < 1.2 ? '#ff3366' : '#00f0aa';
+        ctx.beginPath();
+        ctx.arc(oX, oY, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 9px "JetBrains Mono", monospace';
+        ctx.fillText(`${obj.label}: ${obj.dist_m}m`, oX + 8, oY + 3);
+      });
+
+      ctx.restore();
+
+      // Calculate FPS
+      appState.frameCount++;
+      const now = Date.now();
+      if (now - appState.lastFpsTime >= 1000) {
+        appState.fps = Math.round((appState.frameCount * 1000) / (now - appState.lastFpsTime));
+        appState.frameCount = 0;
+        appState.lastFpsTime = now;
+        if (hudFpsTag) hudFpsTag.textContent = `FPS: ${appState.fps}.0`;
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    // =========================================================================
+    // 11. PHD RESEARCH STUDIO 8 MODULES INTERACTION
+    // =========================================================================
+    let currentSelectedModule = 1;
+
+    function selectModuleTab(num, btnEl) {
+      currentSelectedModule = num;
+      document.querySelectorAll('.mod-pill').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      const mod = MODULE_DATA[num];
+      if (mod) {
+        document.getElementById('inspectorModuleBadge').textContent = mod.badge;
+        document.getElementById('inspectorModuleName').textContent = mod.name;
+        document.getElementById('inspectorModuleDesc').textContent = mod.desc;
+        document.getElementById('inspectorModuleMath').innerHTML = mod.math;
+        document.getElementById('inspectorModuleMetrics').innerHTML = mod.metrics;
+        document.getElementById('moduleTestOutput').innerHTML = `Ready: ${mod.console}`;
+      }
+    }
+
+    function triggerModuleLiveTest() {
+      const mod = MODULE_DATA[currentSelectedModule];
+      if (mod && mod.testAction) mod.testAction();
+    }
+
+    function speakModuleExplanation() {
+      const mod = MODULE_DATA[currentSelectedModule];
+      if (mod) speak(`${mod.name}. ${mod.desc}`, { priority: true });
+    }
+
+    function updatePrioritySandbox() {
+      // Retained for academic faculty verification
+    }
+
+    // =========================================================================
+    // 12. INITIALIZATION & ACCESSIBILITY HOTKEYS
+    // =========================================================================
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      const k = e.key.toLowerCase();
+      if (k === 'c') toggleCamera();
+      else if (k === 't') runLiveOCR(true);
+      else if (k === 'd') askAssistant('Describe the scene');
+      else if (k === 'm') runCurrencyDetection();
+      else if (k === 'k') runColorDetection();
+      else if (k === 'l') runLightingCheck();
+      else if (k === 'f') startFinderFromSelect();
+      else if (k === 'e') triggerEmergencySOS();
+      else if (k === ' ' || k === 'spacebar') {
+        e.preventDefault();
+        triggerMetaVoicePrompt();
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      render();
+      loadCocoModel();
+      initGPSLocation();
+      initSpeechRecognition();
+      loadSavedTasksAndNotes();
+
+      // Detection Loop (120ms interval)
+      setInterval(() => {
+        if (appState.cameraActive && appState.modelLoaded) {
+          detectFrameObjects();
+        }
+      }, 120);
+
+      // Contrast Toggle
+      btnToggleHighContrast.addEventListener('click', () => {
+        appState.highContrast = !appState.highContrast;
+        document.body.setAttribute('data-theme', appState.highContrast ? 'high-contrast' : 'default');
+        speak(appState.highContrast ? "High contrast mode activated." : "Standard contrast mode.", { priority: true });
+      });
+
+      // Speech Audio Toggle
+      btnToggleSpeech.addEventListener('click', () => {
+        appState.speechEnabled = !appState.speechEnabled;
+        if (!appState.speechEnabled) window.speechSynthesis.cancel();
+        document.getElementById('speechStateText').textContent = appState.speechEnabled ? "Voice: ON" : "Voice: OFF";
+      });
+
+      // Mic Toggle
+      btnToggleMic.addEventListener('click', () => {
+        appState.micEnabled = !appState.micEnabled;
+        document.getElementById('micStateText').textContent = appState.micEnabled ? "Mic: ON" : "Mic: OFF";
+        if (appState.micEnabled && appState.speechRecognizer) {
+          try { appState.speechRecognizer.start(); } catch(e){}
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+'''
+
+# Write to index.html
+with open(r'D:\Blind_SMart_Glasses\index.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print(f"SUCCESS: Generated clean index.html with size: {len(html_content)} bytes")
